@@ -1,0 +1,73 @@
+import type { IProduct } from "@/services/product.service";
+
+export const staticProducts: IProduct[] = [
+  {
+    id: "rigid-pcb-prototype",
+    name: "Rigid PCB Prototype",
+    slug: "rigid-pcb-prototype",
+    category: "PCB Fabrication",
+    description:
+      "High-quality FR-4 prototype boards for validation, testing, and short-run manufacturing.",
+    specifications: {
+      layers: "1-8",
+      material: "FR-4",
+      thickness: "1.6mm",
+      finish: "HASL / ENIG",
+    },
+    images: ["/pcbimage/10005.jpg"],
+    minOrderQty: 5,
+    leadTimeDays: 5,
+    isFeatured: true,
+    status: "PUBLISHED",
+    price: 12.5,
+    stock: 120,
+    rating: 5,
+    reviewCount: 18,
+  },
+  {
+    id: "smt-assembly",
+    name: "SMT Assembly Service",
+    slug: "smt-assembly-service",
+    category: "PCBA",
+    description:
+      "Surface mount assembly for production-ready electronics with AOI inspection support.",
+    specifications: {
+      assembly: "SMT",
+      componentSize: "01005 and above",
+      inspection: "AOI / X-Ray",
+      standard: "IPC-A-610",
+    },
+    images: ["/pcbimage/10012.jpg"],
+    minOrderQty: 10,
+    leadTimeDays: 7,
+    isFeatured: true,
+    status: "PUBLISHED",
+    price: 24,
+    stock: 80,
+    rating: 4.9,
+    reviewCount: 11,
+  },
+  {
+    id: "hdi-pcb",
+    name: "HDI Multilayer PCB",
+    slug: "hdi-multilayer-pcb",
+    category: "Advanced PCB",
+    description:
+      "High-density interconnect boards for compact, high-performance electronic products.",
+    specifications: {
+      layers: "4-16",
+      microvias: "Laser drilled",
+      traceSpace: "3/3 mil",
+      finish: "ENIG",
+    },
+    images: ["/pcbimage/10023.jpg"],
+    minOrderQty: 5,
+    leadTimeDays: 10,
+    isFeatured: false,
+    status: "PUBLISHED",
+    price: 38.75,
+    stock: 45,
+    rating: 4.8,
+    reviewCount: 9,
+  },
+];
