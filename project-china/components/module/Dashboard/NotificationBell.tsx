@@ -241,22 +241,19 @@ export default function NotificationBell() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
+        <button
+          type="button"
           aria-label="Notifications"
-          className="relative size-9 rounded-xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 shadow-2xs hover:border-emerald-500 transition cursor-pointer"
+          className="relative flex size-9 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-700 shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400 cursor-pointer"
         >
           <Bell className="size-4" />
 
           {unreadCount > 0 ? (
-            <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-emerald-600 px-1 text-[9px] font-mono font-bold text-white ring-2 ring-white dark:ring-[#070b14] shadow-xs animate-in zoom-in-50 duration-200">
+            <span className="absolute -top-1.5 -right-1.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-emerald-600 px-1 text-[9px] font-mono font-bold text-white ring-2 ring-white dark:ring-slate-900 shadow-xs animate-in zoom-in-50 duration-200">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
-          ) : (
-            <span className="absolute 1.5 top-1.5 size-1.5 rounded-full bg-slate-300 dark:bg-slate-700" />
-          )}
-        </Button>
+          ) : null}
+        </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
@@ -376,11 +373,24 @@ export default function NotificationBell() {
             <div className="p-8 text-center text-xs text-slate-400">
               <CheckCheck className="size-8 mx-auto text-emerald-500 mb-2 opacity-80" />
               <p className="font-bold text-slate-700 dark:text-slate-300">
-                {filter === "UNREAD" ? "No unread notifications" : "No notifications yet"}
+                {!user ? "Sign in to view notifications" : filter === "UNREAD" ? "No unread notifications" : "No notifications yet"}
               </p>
-              <p className="text-[11px] text-slate-400 mt-0.5">
-                All activities, quote reviews, and orders will be alerted here.
+              <p className="text-[11px] text-slate-400 mt-1">
+                {!user
+                  ? "Sign in to track real-time order updates, engineering reviews, and quote status."
+                  : "All activities, quote reviews, and orders will be alerted here."}
               </p>
+              {!user && (
+                <div className="mt-3.5">
+                  <Link
+                    href="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-700 transition"
+                  >
+                    Sign In
+                  </Link>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -388,11 +398,11 @@ export default function NotificationBell() {
         {/* Dropdown Footer */}
         <div className="p-2.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/60 text-center">
           <Link
-            href={notificationsCenterHref}
+            href={user ? notificationsCenterHref : "/login"}
             onClick={() => setIsOpen(false)}
             className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center justify-center gap-1 py-1"
           >
-            <span>Open Full Notification Center</span>
+            <span>{user ? "Open Full Notification Center" : "Sign in to view notification center"}</span>
             <ExternalLink className="size-3" />
           </Link>
         </div>

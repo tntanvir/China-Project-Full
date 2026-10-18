@@ -36,6 +36,14 @@ export function XTwitterIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function TwitterBirdIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.936 9.936 0 0024 4.59z" />
+    </svg>
+  );
+}
+
 export function InstagramIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -52,12 +60,22 @@ export function LinkedInIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function TikTokIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.901 2.884 2.896 2.896 0 0 1-2.896-2.884 2.896 2.896 0 0 1 2.896-2.884c.489 0 .947.126 1.35.347V9.654a6.34 6.34 0 0 0-1.35-.145A6.343 6.343 0 0 0 3.13 15.856a6.343 6.343 0 0 0 6.343 6.343 6.343 6.343 0 0 0 6.343-6.343V8.818a8.214 8.214 0 0 0 4.773 1.516v-3.44a4.834 4.834 0 0 1-1-.208z" />
+    </svg>
+  );
+}
+
 export function SocialIcon({
   id,
   className = "size-4",
+  twitterVariant = "bird",
 }: {
   id: SocialLink["id"];
   className?: string;
+  twitterVariant?: "x" | "bird";
 }) {
   switch (id) {
     case "facebook":
@@ -67,11 +85,17 @@ export function SocialIcon({
     case "youtube":
       return <YouTubeIcon className={className} />;
     case "twitter":
-      return <XTwitterIcon className={className} />;
+      return twitterVariant === "x" ? (
+        <XTwitterIcon className={className} />
+      ) : (
+        <TwitterBirdIcon className={className} />
+      );
     case "instagram":
       return <InstagramIcon className={className} />;
     case "linkedin":
       return <LinkedInIcon className={className} />;
+    case "tiktok":
+      return <TikTokIcon className={className} />;
     default:
       return null;
   }
@@ -157,8 +181,8 @@ export function FloatingWhatsAppWidget() {
   const whatsapp = FT_SOCIAL_LINKS.find((l) => l.id === "whatsapp")!;
 
   return (
-    <aside aria-label="Instant WhatsApp support" className="fixed bottom-6 right-6 z-40 flex items-center gap-2 group">
-      <div className="pointer-events-none hidden sm:block opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200">
+    <aside aria-label="Instant WhatsApp support" className="fixed bottom-6 right-6 z-40 flex items-center gap-2 group pointer-events-none">
+      <div className="hidden sm:block opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200">
         <div className="rounded-xl border border-gray-200/90 bg-white/95 px-3 py-1.5 text-xs font-bold text-gray-800 shadow-xl backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/95 dark:text-slate-100 flex items-center gap-1.5">
           <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
           <span>Chat on WhatsApp</span>
@@ -170,7 +194,7 @@ export function FloatingWhatsAppWidget() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with FT PCB Engineering on WhatsApp"
-        className="relative flex size-13 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/35 transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-xl hover:shadow-[#25D366]/50 focus:outline-none focus:ring-4 focus:ring-[#25D366]/30"
+        className="pointer-events-auto relative flex size-13 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/35 transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-xl hover:shadow-[#25D366]/50 focus:outline-none focus:ring-4 focus:ring-[#25D366]/30"
       >
         <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-emerald-700 text-[9px] font-black text-white ring-2 ring-white dark:ring-slate-950">
           ●

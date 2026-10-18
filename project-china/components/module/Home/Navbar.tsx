@@ -63,6 +63,7 @@ import { getNavPageHref, getNavSectionHref } from "@/lib/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 import UserAccountMenu from "./UserAccountMenu";
+import NotificationBell from "@/components/module/Dashboard/NotificationBell";
 
 function navLinkClass(isActive: boolean) {
   return [
@@ -550,10 +551,11 @@ export default function Navbar() {
             {/* Primary Emerald Quote Button */}
             <Link
               href="/pcb-quote"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 sm:px-4 py-2 text-xs font-black text-white shadow-sm shadow-emerald-600/30 hover:bg-emerald-700 transition active:scale-95"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3 sm:px-4 py-2 text-xs font-black text-white shadow-sm shadow-emerald-600/30 hover:bg-emerald-700 transition active:scale-95"
             >
               <Zap className="size-3.5 fill-current" />
-              <span>{dictionary.sections?.hero?.quoteBtn || "Instant Quote"}</span>
+              <span className="hidden sm:inline">{dictionary.sections?.hero?.quoteBtn || "Instant Quote"}</span>
+              <span className="sm:hidden">Quote</span>
             </Link>
 
             {/* Shopping Cart Button */}
@@ -569,6 +571,9 @@ export default function Navbar() {
                 </span>
               ) : null}
             </Link>
+
+            {/* Realtime Notification Bell */}
+            <NotificationBell />
 
             {/* User Account / Sign In */}
             {user?.email ? (

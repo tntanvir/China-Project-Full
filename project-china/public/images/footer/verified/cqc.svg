@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 75">
+  <ellipse cx="55" cy="37.5" rx="50" ry="34" fill="none" stroke="#003399" stroke-width="2.5"/>
+  <ellipse cx="55" cy="37.5" rx="31" ry="34" fill="none" stroke="#003399" stroke-width="1.8"/>
+  <line x1="55" y1="3.5" x2="55" y2="71.5" stroke="#003399" stroke-width="1.8"/>
+  <path d="M 6 37.5 Q 55 18, 104 37.5" fill="none" stroke="#003399" stroke-width="1.8"/>
+  <path d="M 6 37.5 Q 55 57, 104 37.5" fill="none" stroke="#003399" stroke-width="1.8"/>
+  <rect x="22" y="22" width="66" height="31" fill="#FFFFFF" rx="4"/>
+  <text x="55" y="45" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="25" fill="#003399" text-anchor="middle" letter-spacing="1">CQC</text>
+</svg>

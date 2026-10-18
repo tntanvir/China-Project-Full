@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 38">
+  <text x="4" y="22" font-family="'Arial Black', Impact, sans-serif" font-weight="900" font-size="20" fill="#003399" letter-spacing="1">SEPA</text>
+  <path d="M 4 25 C 35 30, 75 30, 106 25" fill="none" stroke="#003399" stroke-width="2"/>
+  <text x="5" y="33" font-family="Arial, sans-serif" font-size="6" font-weight="700" fill="#003399" letter-spacing="0.2">Single Euro Payments Area</text>
+</svg>

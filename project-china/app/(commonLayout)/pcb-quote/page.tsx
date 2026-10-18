@@ -61,6 +61,20 @@ import { GerberService } from "@/services/gerber.service";
 import { OrderService } from "@/services/order.service";
 import { PaymentService } from "@/services/payment.service";
 import { useAuthStore } from "@/store/authStore";
+import dynamic from "next/dynamic";
+
+const PcbQuote3DViewer = dynamic(
+  () => import("@/components/module/pcb-quote/PcbQuote3DViewer"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[240px] rounded-2xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900/60 flex flex-col items-center justify-center gap-2 text-gray-400">
+        <div className="size-6 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+        <span className="text-[11px] font-mono font-bold">Initializing 3D Board...</span>
+      </div>
+    ),
+  }
+);
 
 // ============================================================================
 // PCBWay Configurator Master Specifications & Data Sets
@@ -695,45 +709,7 @@ function PCBQuoteContent() {
 
   return (
     <div className="min-h-screen bg-[#f5f7fa] dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans pb-24">
-      {/* ===================================================================== */}
-      {/* Top Banner & Breadcrumb Step Indicator (PCBWay Style)                */}
-      {/* ===================================================================== */}
-      <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 py-3 px-4 shadow-xs">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <span className="flex items-center justify-center size-8 rounded-lg bg-emerald-600 text-white font-black text-sm">
-              FT
-            </span>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-base font-black text-gray-900 dark:text-white">
-                  Feitian Technology (SYS-PCB)
-                </h1>
-                <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-700">
-                  Direct Factory Turnaround
-                </span>
-              </div>
-              <p className="text-[11px] text-gray-500 dark:text-slate-400">
-                PCB Prototype the Easy Way • IPC Class 2/3 Quality Standard • 24H Rapid Build
-              </p>
-            </div>
-          </div>
 
-          <div className="flex items-center gap-2 text-xs font-bold text-gray-500">
-            <span className="flex items-center gap-1 text-emerald-600">
-              <ShieldCheck className="size-4" /> 100% Free E-Test
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1 text-emerald-600">
-              <Clock className="size-4" /> 24H Shipping
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1 text-emerald-600">
-              <Award className="size-4" /> ISO 9001:2015
-            </span>
-          </div>
-        </div>
-      </div>
 
       {/* 6-Step Workflow Progress Bar (PCBWay Header) */}
       <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 py-2.5 px-4 sticky top-0 z-30 shadow-2xs">
@@ -965,6 +941,25 @@ function PCBQuoteContent() {
                     <span className="text-gray-300">|</span>
                     <span className="text-gray-400 font-medium">CAM Online Checker</span>
                   </div>
+                </div>
+
+                {/* Mobile & Tablet Live 3D PCB Specification Model */}
+                <div className="block lg:hidden">
+                  <PcbQuote3DViewer
+                    length={length}
+                    width={width}
+                    thickness={thickness}
+                    layers={layers}
+                    solderMask={solderMask}
+                    silkscreen={silkscreen}
+                    surfaceFinish={surfaceFinish}
+                    material={material}
+                    edgeConnector={edgeConnector}
+                    castellatedHoles={castellatedHoles}
+                    finishedCopper={finishedCopper}
+                    viaProcess={viaProcess}
+                    boardType={boardType}
+                  />
                 </div>
 
                 {/* File Attachment List if files added */}
@@ -1497,6 +1492,24 @@ function PCBQuoteContent() {
 
             {/* RIGHT SIDEBAR: "Pricing And Build Time" STICKY CARD (PCBWay Style) */}
             <div className="space-y-4">
+              {/* Desktop Live 3D PCB Specification Model Viewer */}
+              <PcbQuote3DViewer
+                length={length}
+                width={width}
+                thickness={thickness}
+                layers={layers}
+                solderMask={solderMask}
+                silkscreen={silkscreen}
+                surfaceFinish={surfaceFinish}
+                material={material}
+                edgeConnector={edgeConnector}
+                castellatedHoles={castellatedHoles}
+                finishedCopper={finishedCopper}
+                viaProcess={viaProcess}
+                boardType={boardType}
+                className="hidden lg:block shadow-xs"
+              />
+
               <div className="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 p-5 shadow-lg sticky top-16">
                 <div className="border-b border-gray-100 dark:border-slate-800 pb-3 flex items-center justify-between">
                   <div className="flex items-center gap-1.5">

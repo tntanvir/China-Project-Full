@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70">
+  <rect width="70" height="70" fill="#FFFFFF"/>
+  <circle cx="35" cy="30" r="23" fill="none" stroke="#009944" stroke-width="3"/>
+  <path d="M 27 38 C 21 25, 31 15, 45 15 C 45 29, 35 39, 27 38 Z" fill="#009944"/>
+  <path d="M 29 36 C 35 27, 41 21, 44 17" stroke="#FFFFFF" stroke-width="1.8" fill="none"/>
+  <text x="35" y="63" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="9.5" fill="#009944" text-anchor="middle" letter-spacing="0.5">RoHS</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 36">
+  <g transform="translate(6, 6)">
+    <path d="M 0 6 L 14 6 L 14 18 L 0 18 Z" fill="none"/>
+    <path d="M 3 6 L 3 18 M 11 6 L 11 18 M 0 12 L 14 12 M 7 6 L 7 18" stroke="#005A36" stroke-width="2"/>
+  </g>
+  <text x="24" y="15" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="8.5" fill="#111111">China Post</text>
+  <text x="24" y="26" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="8" fill="#111111">Air Mail</text>
+</svg>

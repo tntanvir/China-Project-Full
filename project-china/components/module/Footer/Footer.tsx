@@ -9,6 +9,7 @@ import { useDictionary } from "@/components/providers/language-provider";
 import { sourceDictionary } from "@/lib/i18n";
 import { getNavPageHref } from "@/lib/navigation";
 import { SocialLinksRow } from "@/components/ui/SocialLinksBar";
+import FooterTrustBadges from "./FooterTrustBadges";
 
 export default function Footer() {
   const dictionary = useDictionary();
@@ -21,7 +22,7 @@ export default function Footer() {
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[image:var(--gradient-primary)] opacity-70" />
       <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
 
-      <div className="premium-container py-14 lg:py-20">
+      <div className="premium-container pt-12 lg:pt-16 pb-4">
         <div className="grid gap-10 lg:grid-cols-[1.35fr_2fr]">
           <div className="max-w-md">
             <Link href="/" className="inline-flex items-center gap-3">
@@ -64,14 +65,6 @@ export default function Footer() {
                 {footer.phoneVal}
               </a>
             </div>
-
-            {/* FT Company Official Social Media Links */}
-            <div className="mt-7 pt-5 border-t border-border/70">
-              <span className="block text-[11px] font-black uppercase tracking-wider text-foreground mb-3">
-                FT Company Official Social Media
-              </span>
-              <SocialLinksRow />
-            </div>
           </div>
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -102,18 +95,25 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-border/70 pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>{footer.copyright}</p>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="self-end rounded-full sm:self-auto"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            aria-label="Back to top"
-          >
-            <ArrowUp className="h-4 w-4" />
-          </Button>
+        {/* Global Footer Trust & Methods: Payment, Delivery, Verified By, Social Links */}
+        <FooterTrustBadges />
+
+        <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-border/70 pt-3 pb-0 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-3">
+            <p>{footer.copyright}</p>
+            <span className="hidden sm:inline text-border">•</span>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="group inline-flex items-center gap-1.5 font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+              aria-label="Back to top"
+            >
+              <span className="flex size-5 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform group-hover:-translate-y-0.5">
+                <ArrowUp className="size-3" />
+              </span>
+              <span>Back to top</span>
+            </button>
+          </div>
         </div>
       </div>
     </footer>

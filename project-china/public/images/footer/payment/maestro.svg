@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 38">
+  <circle cx="36" cy="15" r="12" fill="#EB001B"/>
+  <circle cx="54" cy="15" r="12" fill="#00A2E5"/>
+  <path d="M 45 6.5 A 12 12 0 0 0 45 23.5 A 12 12 0 0 0 45 6.5" fill="#79247E"/>
+  <text x="45" y="32" font-family="Arial, sans-serif" font-weight="800" font-size="8" fill="#1f2937" text-anchor="middle" letter-spacing="-0.2">maestro</text>
+</svg>

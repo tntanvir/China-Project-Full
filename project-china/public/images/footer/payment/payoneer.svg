@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 38">
+  <defs>
+    <linearGradient id="payoneerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF3E00"/>
+      <stop offset="50%" stop-color="#FFA800"/>
+      <stop offset="100%" stop-color="#00A3FF"/>
+    </linearGradient>
+  </defs>
+  <circle cx="18" cy="19" r="10" fill="none" stroke="url(#payoneerGrad)" stroke-width="4.5"/>
+  <text x="34" y="25" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="700" font-size="16" fill="#1e293b" letter-spacing="-0.4">Payoneer</text>
+</svg>

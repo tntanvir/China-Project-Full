@@ -1,5 +1,5 @@
 export interface SocialLink {
-  id: "facebook" | "whatsapp" | "youtube" | "twitter" | "instagram" | "linkedin";
+  id: "facebook" | "whatsapp" | "youtube" | "twitter" | "instagram" | "linkedin" | "tiktok";
   name: string;
   url: string;
   color: string;
@@ -56,4 +56,13 @@ export const FT_SOCIAL_LINKS: SocialLink[] = [
     handle: "Wuping Feitian Electronic Tech",
     badge: "Enterprise Network",
   },
+  {
+    id: "tiktok",
+    name: "TikTok",
+    url: "https://www.tiktok.com/@feitianpcb",
+    color: "#010101",
+    handle: "@feitianpcb",
+    badge: "Factory Shorts",
+  },
 ];
+

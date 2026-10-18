@@ -36,6 +36,21 @@ import { toast } from "sonner";
 import GlobalNetworkGlobe from "./GlobalNetworkGlobe";
 import TestimonialsSlider from "./TestimonialsSlider";
 import ProductCategoriesHub from "./ProductCategoriesHub";
+import dynamic from "next/dynamic";
+
+const PcbModel3DViewer = dynamic(
+  () => import("./PcbModel3DViewer"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="py-20 bg-gray-50 dark:bg-slate-950 flex flex-col items-center justify-center text-gray-500 dark:text-slate-400 gap-3 border-y border-gray-200 dark:border-slate-800">
+        <div className="size-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+        <span className="text-xs font-mono font-bold">Initializing 3D WebGL PCB Visualizer...</span>
+      </div>
+    ),
+  }
+);
+
 import { SocialLinksRow, WhatsAppIcon } from "@/components/ui/SocialLinksBar";
 
 const pcbImages = [
@@ -302,6 +317,9 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
 
       {/* 2. Unified PCB & PCBA Product Families Hub */}
       <ProductCategoriesHub />
+
+      {/* 3. Interactive 3D WebGL PCB Model Inspector */}
+      <PcbModel3DViewer />
 
       {/* 4. Featured Electronics & PCB Catalog */}
       <section className="py-14 sm:py-20 bg-white dark:bg-slate-950">

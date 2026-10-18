@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70">
+  <rect width="70" height="70" fill="#003399"/>
+  <text x="35" y="19" font-family="Arial, sans-serif" font-weight="900" font-size="9" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">REACH</text>
+  <g fill="#FFCC00" transform="translate(35, 41)">
+    <circle cx="0" cy="-14" r="1.8"/>
+    <circle cx="7" cy="-12" r="1.8"/>
+    <circle cx="12" cy="-7" r="1.8"/>
+    <circle cx="14" cy="0" r="1.8"/>
+    <circle cx="12" cy="7" r="1.8"/>
+    <circle cx="7" cy="12" r="1.8"/>
+    <circle cx="0" cy="14" r="1.8"/>
+    <circle cx="-7" cy="12" r="1.8"/>
+    <circle cx="-12" cy="7" r="1.8"/>
+    <circle cx="-14" cy="0" r="1.8"/>
+    <circle cx="-12" cy="-7" r="1.8"/>
+    <circle cx="-7" cy="-12" r="1.8"/>
+  </g>
+  <text x="35" y="65" font-family="Arial, sans-serif" font-weight="700" font-size="5" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">COMPLIANCE</text>
+</svg>
