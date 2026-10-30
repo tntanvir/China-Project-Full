@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   AlertCircle,
@@ -8,6 +8,10 @@ import {
   Calendar,
   Check,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
   Clock,
   Copy,
   Download,
@@ -20,7 +24,7 @@ import {
   Mail,
   MapPin,
   Phone,
-  RefreshCw,
+  RefreshCcw,
   Search,
   ShieldAlert,
   ShieldCheck,
@@ -63,6 +67,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AdminService, type AdminCustomer } from "@/services/admin.service";
+import { PaginationMeta } from "@/services/api-client";
 
 const statusStyles: Record<string, { badge: string; dot: string; label: string }> = {
   ACTIVE: {
@@ -166,60 +171,94 @@ export default function AdminCustomersManager() {
   const [customers, setCustomers] = useState<AdminCustomer[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [meta, setMeta] = useState<PaginationMeta>({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPage: 1,
+    stats: {
+      totalCustomers: 0,
+      activeCustomers: 0,
+      verifiedCustomers: 0,
+      totalOrders: 0,
+    },
+  });
+
   const [selectedCustomer, setSelectedCustomer] = useState<AdminCustomer | null>(null);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
+  const [updatingRowId, setUpdatingRowId] = useState<string | null>(null);
   const [modalStatus, setModalStatus] = useState<string>("");
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  const handleDownloadGerber = (rawUrl: string, filename: string) => {
-    if (!rawUrl) return;
-    const downloadUrl = getDownloadProxyUrl(rawUrl, filename);
-    toast.success(`Starting download: ${filename}`);
-    const link = document.createElement("a");
-    link.href = downloadUrl;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1);
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [search]);
 
-  const loadCustomers = async () => {
+  // Reset page when filter changes
+  useEffect(() => {
+    setPage(1);
+  }, [statusFilter]);
+
+  const loadCustomers = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await AdminService.getCustomers();
-      setCustomers(Array.isArray(data) ? data : []);
+      const response = await AdminService.getCustomersWithPagination({
+        page,
+        limit,
+        status: statusFilter,
+        search: debouncedSearch,
+      });
+
+      const list = Array.isArray(response.data) ? response.data : [];
+      setCustomers(list);
+
+      if (response.meta) {
+        setMeta(response.meta);
+      }
     } catch (error) {
       console.error("Failed to fetch customers:", error);
       toast.error("Failed to load customers from server.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, limit, statusFilter, debouncedSearch]);
 
   useEffect(() => {
     loadCustomers();
-  }, []);
+  }, [loadCustomers]);
 
   const handleOpenCustomer = (customer: AdminCustomer) => {
     setSelectedCustomer(customer);
     setModalStatus(customer.status);
   };
 
-  const handleUpdateStatus = async (newStatus: "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED") => {
-    if (!selectedCustomer) return;
-
+  const handleUpdateStatus = async (
+    targetUserId: string,
+    newStatus: "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED"
+  ) => {
     try {
       setIsUpdatingStatus(true);
-      await AdminService.updateCustomerStatus(selectedCustomer.id, newStatus);
-      
+      setUpdatingRowId(targetUserId);
+      await AdminService.updateCustomerStatus(targetUserId, newStatus);
+
       // Update local states
-      const updatedCustomer = { ...selectedCustomer, status: newStatus };
-      setSelectedCustomer(updatedCustomer);
-      setModalStatus(newStatus);
       setCustomers((prev) =>
-        prev.map((c) => (c.id === selectedCustomer.id ? { ...c, status: newStatus } : c))
+        prev.map((c) => (c.id === targetUserId ? { ...c, status: newStatus } : c))
       );
+
+      if (selectedCustomer && selectedCustomer.id === targetUserId) {
+        setSelectedCustomer((prev) => (prev ? { ...prev, status: newStatus } : null));
+        setModalStatus(newStatus);
+      }
 
       toast.success(`Customer account status updated to ${newStatus}`);
     } catch (error) {
@@ -227,6 +266,7 @@ export default function AdminCustomersManager() {
       toast.error("Failed to update customer status.");
     } finally {
       setIsUpdatingStatus(false);
+      setUpdatingRowId(null);
     }
   };
 
@@ -243,35 +283,79 @@ export default function AdminCustomersManager() {
     }
   };
 
-  const filteredCustomers = useMemo(() => {
-    return customers.filter((customer) => {
-      const matchesStatus = statusFilter === "ALL" || customer.status === statusFilter;
-      const q = search.trim().toLowerCase();
-      if (!q) return matchesStatus;
-
-      const name = (customer.name || "").toLowerCase();
-      const email = (customer.email || "").toLowerCase();
-      const company = (customer.companyName || "").toLowerCase();
-      const phone = (customer.phone || "").toLowerCase();
-
-      const matchesSearch =
-        name.includes(q) || email.includes(q) || company.includes(q) || phone.includes(q);
-
-      return matchesStatus && matchesSearch;
-    });
-  }, [customers, search, statusFilter]);
-
-  // Aggregate Metrics
-  const metrics = useMemo(() => {
-    const total = customers.length;
+  // Aggregate Metrics from backend meta.stats
+  const stats = useMemo(() => {
+    if (meta?.stats) {
+      return {
+        total: meta.stats.totalCustomers || meta.total || 0,
+        active: meta.stats.activeCustomers || 0,
+        verified: meta.stats.verifiedCustomers || 0,
+        totalOrders: meta.stats.totalOrders || 0,
+      };
+    }
+    const total = meta.total || customers.length;
     const active = customers.filter((c) => c.status === "ACTIVE").length;
-    const blockedOrInactive = customers.filter(
-      (c) => c.status === "BLOCKED" || c.status === "INACTIVE"
-    ).length;
+    const verified = customers.filter((c) => c.isVerified).length;
     const totalOrders = customers.reduce((sum, c) => sum + (c._count?.orders || 0), 0);
+    return { total, active, verified, totalOrders };
+  }, [meta, customers]);
 
-    return { total, active, blockedOrInactive, totalOrders };
-  }, [customers]);
+  const exportToCsv = async () => {
+    try {
+      toast.info("Fetching customer records for export...");
+      const allCustomers = await AdminService.getCustomers({
+        status: statusFilter,
+        search: debouncedSearch,
+      });
+
+      const list = Array.isArray(allCustomers) ? allCustomers : customers;
+      if (list.length === 0) {
+        toast.error("No customer records to export");
+        return;
+      }
+
+      const headers = [
+        "Customer ID",
+        "Name",
+        "Email",
+        "Company",
+        "Phone",
+        "Address",
+        "Status",
+        "Verified",
+        "Total Orders",
+        "CAM Inquiries",
+        "Joined Date",
+      ];
+
+      const rows = list.map((c) => [
+        `"${c.id}"`,
+        `"${(c.name || "").replace(/"/g, '""')}"`,
+        `"${(c.email || "").replace(/"/g, '""')}"`,
+        `"${(c.companyName || "").replace(/"/g, '""')}"`,
+        `"${(c.phone || "").replace(/"/g, '""')}"`,
+        `"${(c.address || "").replace(/"/g, '""')}"`,
+        `"${c.status}"`,
+        `"${c.isVerified ? "Yes" : "No"}"`,
+        c._count?.orders || c.orders?.length || 0,
+        c._count?.inquiries || c.inquiries?.length || 0,
+        `"${new Date(c.createdAt).toISOString()}"`,
+      ]);
+
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `customers_export_${new Date().toISOString().split("T")[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success(`Exported ${list.length} customer records to CSV`);
+    } catch (error) {
+      console.error("Export CSV failed:", error);
+      toast.error("Failed to export customer data.");
+    }
+  };
 
   const getInitials = (name?: string, email?: string) => {
     if (name) {
@@ -283,24 +367,40 @@ export default function AdminCustomersManager() {
     return "CU";
   };
 
+  // Generate pagination page list with ellipsis
+  const getPageNumbers = (current: number, total: number) => {
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    const pages: (number | string)[] = [];
+    if (current <= 4) {
+      pages.push(1, 2, 3, 4, 5, "...", total);
+    } else if (current >= total - 3) {
+      pages.push(1, "...", total - 4, total - 3, total - 2, total - 1, total);
+    } else {
+      pages.push(1, "...", current - 1, current, current + 1, "...", total);
+    }
+    return pages;
+  };
+
   return (
     <div className="space-y-6">
       {/* ========================================================================= */}
       {/* 1. Header Section                                                         */}
       {/* ========================================================================= */}
-      <section className="rounded-2xl border border-gray-200/90 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-4">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-600/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400">
               <Users className="size-6" />
-            </div>
+            </span>
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-800 border border-emerald-200 mb-1.5 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800">
                 <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Customer CRM
+                Customer CRM & Directory
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-                Customer Management
+                Customer Accounts & Engineering Profiles
               </h1>
               <p className="mt-1 text-xs sm:text-sm text-gray-500 dark:text-slate-400">
                 Inspect customer profiles, track live orders, inspect CAM quotes, and manage account statuses.
@@ -308,17 +408,33 @@ export default function AdminCustomersManager() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5 self-start sm:self-auto">
+          <div className="flex items-center gap-2.5 self-start md:self-auto">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exportToCsv}
+              className="gap-1.5 rounded-xl border-gray-200 dark:border-slate-800 text-xs font-bold hover:border-emerald-500"
+            >
+              <Download className="size-3.5 text-gray-500" />
+              <span>Export CSV</span>
+            </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={loadCustomers}
               disabled={loading}
-              className="gap-1.5 rounded-xl border-gray-200 hover:border-emerald-500 dark:border-slate-800"
+              className="gap-1.5 rounded-xl border-gray-200 dark:border-slate-800 text-xs font-bold hover:border-emerald-500"
             >
-              <RefreshCw className={`size-3.5 ${loading ? "animate-spin text-emerald-600" : ""}`} />
+              <RefreshCcw className={`size-3.5 ${loading ? "animate-spin text-emerald-600" : ""}`} />
               <span>Refresh</span>
             </Button>
+            <Link
+              href="/admin/orders"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-black text-white shadow-xs hover:bg-emerald-700 transition"
+            >
+              <ShoppingBag className="size-3.5" />
+              <span>Orders Manager</span>
+            </Link>
           </div>
         </div>
       </section>
@@ -326,263 +442,594 @@ export default function AdminCustomersManager() {
       {/* ========================================================================= */}
       {/* 2. Key Metrics Grid                                                       */}
       {/* ========================================================================= */}
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        <Card className="border-gray-200/80 dark:border-slate-800 shadow-xs">
-          <CardHeader className="pb-2">
-            <CardDescription className="text-xs font-bold uppercase tracking-wider text-gray-500">
-              Total Customers
-            </CardDescription>
-            <CardTitle className="text-2xl font-black text-gray-900 dark:text-white flex items-center justify-between">
-              <span>{metrics.total}</span>
-              <Users className="size-5 text-emerald-600 dark:text-emerald-400" />
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-[11px] text-gray-500 dark:text-slate-400">Registered platform accounts</p>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Card className="rounded-2xl border-gray-200/80 dark:border-slate-800 shadow-xs">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                Total Customers
+              </span>
+              <Users className="size-4 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white">
+              {stats.total}
+            </div>
+            <p className="text-[11px] text-gray-400 mt-0.5">Registered platform accounts</p>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200/80 dark:border-slate-800 shadow-xs">
-          <CardHeader className="pb-2">
-            <CardDescription className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-              Active Accounts
-            </CardDescription>
-            <CardTitle className="text-2xl font-black text-emerald-600 dark:text-emerald-400 flex items-center justify-between">
-              <span>{metrics.active}</span>
-              <UserCheck className="size-5 text-emerald-600" />
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-[11px] text-gray-500 dark:text-slate-400">Good standing & verified</p>
+        <Card className="rounded-2xl border-emerald-300/80 bg-emerald-50/30 dark:bg-emerald-950/20 dark:border-emerald-800/60 shadow-xs">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                Active Accounts
+              </span>
+              <UserCheck className="size-4 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300">
+              {stats.active}
+            </div>
+            <p className="text-[11px] text-emerald-600 dark:text-emerald-400/80 font-medium mt-0.5">
+              Good standing & ready to order
+            </p>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200/80 dark:border-slate-800 shadow-xs">
-          <CardHeader className="pb-2">
-            <CardDescription className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-              Inactive / Restricted
-            </CardDescription>
-            <CardTitle className="text-2xl font-black text-amber-600 dark:text-amber-400 flex items-center justify-between">
-              <span>{metrics.blockedOrInactive}</span>
-              <ShieldAlert className="size-5 text-amber-600" />
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-[11px] text-gray-500 dark:text-slate-400">Suspended or inactive users</p>
+        <Card className="rounded-2xl border-gray-200/80 dark:border-slate-800 shadow-xs">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400">
+                Verified Customers
+              </span>
+              <ShieldCheck className="size-4 text-sky-600 dark:text-sky-400" />
+            </div>
+            <div className="mt-2 text-2xl font-black text-sky-600 dark:text-sky-400">
+              {stats.verified}
+            </div>
+            <p className="text-[11px] text-gray-400 mt-0.5">Email / enterprise verified</p>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200/80 dark:border-slate-800 shadow-xs">
-          <CardHeader className="pb-2">
-            <CardDescription className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-400">
-              Total Customer Orders
-            </CardDescription>
-            <CardTitle className="text-2xl font-black text-blue-600 dark:text-blue-400 flex items-center justify-between">
-              <span>{metrics.totalOrders}</span>
-              <ShoppingBag className="size-5 text-blue-600" />
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-[11px] text-gray-500 dark:text-slate-400">Across all customer profiles</p>
+        <Card className="rounded-2xl border-gray-200/80 dark:border-slate-800 shadow-xs">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-400">
+                Customer Orders
+              </span>
+              <ShoppingBag className="size-4 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400">
+              {stats.totalOrders}
+            </div>
+            <p className="text-[11px] text-gray-400 mt-0.5">Across all client accounts</p>
           </CardContent>
         </Card>
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. Filters & Search Bar                                                   */}
+      {/* 3. Filter Navigation & Search Bar                                         */}
       {/* ========================================================================= */}
-      <Card className="border-gray-200/90 dark:border-slate-800">
-        <CardContent className="p-4 sm:p-5">
+      <div className="space-y-3">
+        {/* Quick status tabs */}
+        <div className="flex flex-wrap items-center gap-2">
+          {[
+            { label: "All Customers", value: "ALL" },
+            { label: "Active", value: "ACTIVE" },
+            { label: "Inactive", value: "INACTIVE" },
+            { label: "Blocked", value: "BLOCKED" },
+            { label: "Deleted", value: "DELETED" },
+          ].map((item) => {
+            const isActive = statusFilter === item.value;
+            return (
+              <button
+                key={item.value}
+                type="button"
+                onClick={() => setStatusFilter(item.value)}
+                className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-bold transition cursor-pointer ${
+                  isActive
+                    ? "bg-emerald-600 text-white shadow-xs"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+                }`}
+              >
+                <span>{item.label}</span>
+                {item.value === "ALL" && (
+                  <span className="rounded-full bg-black/15 px-1.5 py-0.2 text-[10px]">
+                    {stats.total}
+                  </span>
+                )}
+                {item.value === "ACTIVE" && (
+                  <span className="rounded-full bg-black/15 px-1.5 py-0.2 text-[10px]">
+                    {stats.active}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Search and Secondary Filter */}
+        <Card className="rounded-2xl border-gray-200 dark:border-slate-800 shadow-xs">
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="relative flex-1 max-w-lg">
+                <Search className="absolute left-3 top-2.5 size-4 text-gray-400" />
+                <Input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search by customer name, email, company, phone, address..."
+                  className="pl-9 text-xs rounded-xl border-gray-200 dark:border-slate-800"
+                />
+                {search && (
+                  <button
+                    type="button"
+                    onClick={() => setSearch("")}
+                    className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                    title="Clear search"
+                  >
+                    <X className="size-4" />
+                  </button>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-gray-500 dark:text-slate-400 whitespace-nowrap">
+                  Account Status:
+                </span>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-44 text-xs font-bold rounded-xl border-gray-200 dark:border-slate-800">
+                    <SelectValue placeholder="All Statuses" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ALL">All Statuses ({stats.total})</SelectItem>
+                    <SelectItem value="ACTIVE">Active ({stats.active})</SelectItem>
+                    <SelectItem value="INACTIVE">Inactive</SelectItem>
+                    <SelectItem value="BLOCKED">Blocked</SelectItem>
+                    <SelectItem value="DELETED">Deleted</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                {(search || statusFilter !== "ALL") && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setSearch("");
+                      setStatusFilter("ALL");
+                      setPage(1);
+                    }}
+                    className="text-xs text-slate-500 hover:text-emerald-600"
+                  >
+                    Reset
+                  </Button>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 4. Customers Table Container (Drawer-Proof Widths & Sticky Actions)      */}
+      {/* ========================================================================= */}
+      <Card className="rounded-2xl border-gray-200 shadow-xs dark:border-slate-800 overflow-hidden">
+        <CardHeader className="border-b border-gray-100 bg-gradient-to-r from-gray-50/80 via-white to-gray-50/80 p-4 sm:p-5 dark:border-slate-800/80 dark:from-slate-900/90 dark:via-slate-900 dark:to-slate-900/90">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-2.5 size-4 text-gray-400" />
-              <Input
-                placeholder="Search by customer name, email, company, or phone..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 h-9 text-xs rounded-xl"
-              />
-            </div>
-
-            <div className="flex items-center gap-2.5">
-              <span className="text-xs font-bold text-gray-500 dark:text-slate-400 whitespace-nowrap">
-                Status:
-              </span>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="h-9 w-[150px] text-xs rounded-xl">
-                  <SelectValue placeholder="All Statuses" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ALL">All Statuses</SelectItem>
-                  <SelectItem value="ACTIVE">Active</SelectItem>
-                  <SelectItem value="INACTIVE">Inactive</SelectItem>
-                  <SelectItem value="BLOCKED">Blocked</SelectItem>
-                  <SelectItem value="DELETED">Deleted</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* ========================================================================= */}
-      {/* 4. Customers Table                                                        */}
-      {/* ========================================================================= */}
-      <Card className="border-gray-200/90 dark:border-slate-800 overflow-hidden shadow-sm">
-        <CardHeader className="border-b border-gray-100 bg-gray-50/50 px-6 py-4 dark:border-slate-800 dark:bg-slate-900/50">
-          <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-base font-extrabold text-gray-900 dark:text-white">
-                Customer Accounts ({filteredCustomers.length})
-              </CardTitle>
-              <CardDescription className="text-xs">
-                Click the <strong className="text-emerald-700 dark:text-emerald-400">&ldquo;Open&rdquo;</strong> button on any row to inspect complete customer profile, contact details, order history, and CAM inquiries.
+              <div className="flex items-center gap-2.5">
+                <CardTitle className="text-lg font-black text-gray-900 dark:text-white">
+                  Customer Accounts Directory
+                </CardTitle>
+                <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-black text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                  {meta.total}
+                </span>
+              </div>
+              <CardDescription className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
+                Client credentials, registered contact channels, order activity, and CAM fabrication requests.
               </CardDescription>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50/80 px-3 py-1 text-xs font-bold text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300">
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+                </span>
+                <span>Live CRM Sync</span>
+              </div>
+
+              <span className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 hidden md:inline-flex items-center gap-1">
+                ↔ Scroll horizontally for full data
+              </span>
             </div>
           </div>
         </CardHeader>
+
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader className="bg-gray-50/80 dark:bg-slate-900/80">
-                <TableRow>
-                  <TableHead className="font-extrabold">Customer</TableHead>
-                  <TableHead className="font-extrabold">Company & Contact</TableHead>
-                  <TableHead className="font-extrabold">Activity</TableHead>
-                  <TableHead className="font-extrabold">Status</TableHead>
-                  <TableHead className="font-extrabold">Joined Date</TableHead>
-                  <TableHead className="font-extrabold text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {loading ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="py-12 text-center">
-                      <div className="flex flex-col items-center justify-center gap-2">
-                        <Loader2 className="size-6 animate-spin text-emerald-600" />
-                        <span className="text-xs font-bold text-gray-500">Loading customer profiles...</span>
+          {loading ? (
+            <div className="flex flex-col items-center justify-center p-14 text-center">
+              <Loader2 className="size-8 animate-spin text-emerald-600 mb-3" />
+              <p className="text-sm font-bold text-gray-700 dark:text-slate-300">
+                Loading customer profiles from database...
+              </p>
+            </div>
+          ) : customers.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-14 text-center">
+              <div className="flex size-14 items-center justify-center rounded-2xl bg-gray-100 dark:bg-slate-800 text-gray-400 mb-3">
+                <Users className="size-7" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 dark:text-white">
+                No Customer Accounts Found
+              </h3>
+              <p className="mt-1 text-xs text-gray-500 max-w-sm">
+                {search || statusFilter !== "ALL"
+                  ? `No customer matches your search or filter settings. Try clearing the search query or status filter.`
+                  : "No customer accounts have registered yet."}
+              </p>
+              <div className="mt-4 flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setSearch("");
+                    setStatusFilter("ALL");
+                    setPage(1);
+                  }}
+                >
+                  Reset Filters
+                </Button>
+                <Button size="sm" onClick={loadCustomers} className="bg-emerald-600 text-white">
+                  Refresh
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+              <Table className="min-w-[1360px] w-full border-collapse">
+                <TableHeader>
+                  <TableRow className="border-b border-gray-200 bg-gray-50/80 dark:border-slate-800 dark:bg-slate-900/80 text-xs">
+                    {/* Customer Info */}
+                    <TableHead className="w-[280px] min-w-[280px] font-extrabold text-slate-700 dark:text-slate-300 pl-4">
+                      <div className="flex items-center gap-1.5">
+                        <User className="size-3 text-emerald-600" />
+                        <span>Customer Profile</span>
                       </div>
-                    </TableCell>
-                  </TableRow>
-                ) : filteredCustomers.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="py-12 text-center">
-                      <div className="flex flex-col items-center justify-center gap-2 max-w-sm mx-auto">
-                        <Users className="size-8 text-gray-300 dark:text-slate-600" />
-                        <p className="text-sm font-bold text-gray-700 dark:text-slate-300">No customers found</p>
-                        <p className="text-xs text-gray-400">
-                          {search ? `No customer matches "${search}". Try clearing search.` : "No customer accounts registered yet."}
-                        </p>
+                    </TableHead>
+
+                    {/* Company & Phone */}
+                    <TableHead className="w-[240px] min-w-[240px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <Building2 className="size-3 text-emerald-600" />
+                        <span>Company & Phone</span>
                       </div>
-                    </TableCell>
+                    </TableHead>
+
+                    {/* Location / Address */}
+                    <TableHead className="w-[220px] min-w-[220px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="size-3 text-emerald-600" />
+                        <span>Location / Address</span>
+                      </div>
+                    </TableHead>
+
+                    {/* Activity */}
+                    <TableHead className="w-[180px] min-w-[180px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <ShoppingBag className="size-3 text-emerald-600" />
+                        <span>Activity & Orders</span>
+                      </div>
+                    </TableHead>
+
+                    {/* Status */}
+                    <TableHead className="w-[170px] min-w-[170px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <ShieldCheck className="size-3 text-emerald-600" />
+                        <span>Account Status</span>
+                      </div>
+                    </TableHead>
+
+                    {/* Joined Date */}
+                    <TableHead className="w-[130px] min-w-[130px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="size-3 text-emerald-600" />
+                        <span>Joined Date</span>
+                      </div>
+                    </TableHead>
+
+                    {/* Sticky Actions */}
+                    <TableHead className="w-[140px] min-w-[140px] sticky right-0 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-xs z-10 text-right pr-4 font-extrabold text-slate-700 dark:text-slate-300 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] dark:shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.4)]">
+                      <span>Actions</span>
+                    </TableHead>
                   </TableRow>
-                ) : (
-                  filteredCustomers.map((customer) => {
+                </TableHeader>
+
+                <TableBody>
+                  {customers.map((customer) => {
                     const statusConfig = statusStyles[customer.status] || statusStyles.ACTIVE;
                     const ordersCount = customer._count?.orders ?? customer.orders?.length ?? 0;
                     const inquiriesCount = customer._count?.inquiries ?? customer.inquiries?.length ?? 0;
+                    const isUpdatingThisRow = updatingRowId === customer.id;
 
                     return (
                       <TableRow
                         key={customer.id}
-                        className="border-b border-gray-100 hover:bg-gray-50/60 dark:border-slate-800/60 dark:hover:bg-slate-800/40"
+                        className="group border-b border-gray-100 hover:bg-slate-50/60 dark:border-slate-800/60 dark:hover:bg-slate-800/40 transition-colors"
                       >
-                        {/* Customer Avatar & Name */}
-                        <TableCell className="align-top py-3.5">
-                          <div className="flex items-center gap-3">
-                            <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-700 text-xs font-black text-white shadow-xs">
+                        {/* 1. Customer Avatar, Name, Email */}
+                        <TableCell className="w-[280px] min-w-[280px] align-top py-3.5 pl-4">
+                          <div className="flex items-start gap-3">
+                            <div className="relative flex size-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 text-xs font-black text-white shadow-xs">
                               {getInitials(customer.name, customer.email)}
+                              <span
+                                className={cn(
+                                  "absolute -bottom-0.5 -right-0.5 size-3 rounded-full ring-2 ring-white dark:ring-slate-900",
+                                  statusConfig.dot
+                                )}
+                              />
                             </div>
-                            <div className="truncate">
+                            <div className="min-w-0 flex-1">
                               <div className="flex items-center gap-1.5 font-bold text-gray-900 dark:text-white text-xs">
-                                <span className="truncate">{customer.name || customer.email.split("@")[0]}</span>
+                                <span className="truncate">
+                                  {customer.name || customer.email.split("@")[0]}
+                                </span>
                                 {customer.isVerified && (
                                   <span title="Verified Customer">
                                     <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                                   </span>
                                 )}
                               </div>
-                              <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate flex items-center gap-1">
+                              <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate flex items-center gap-1 mt-0.5">
                                 <Mail className="size-3 shrink-0 text-gray-400" />
-                                <span>{customer.email}</span>
+                                <span className="truncate">{customer.email}</span>
+                              </div>
+                              <div className="text-[10px] text-gray-400 font-mono mt-0.5">
+                                ID: {customer.id.slice(0, 8)}...
                               </div>
                             </div>
                           </div>
                         </TableCell>
 
-                        {/* Company & Phone */}
-                        <TableCell className="align-top py-3.5">
-                          <div className="space-y-0.5 text-xs">
-                            <div className="font-semibold text-gray-800 dark:text-slate-200 flex items-center gap-1">
-                              <Building2 className="size-3 text-gray-400 shrink-0" />
-                              <span className="truncate">{customer.companyName || "Independent Engineer"}</span>
+                        {/* 2. Company & Phone */}
+                        <TableCell className="w-[240px] min-w-[240px] align-top py-3.5 whitespace-normal">
+                          <div className="space-y-1 text-xs">
+                            <div className="font-semibold text-gray-800 dark:text-slate-200 flex items-center gap-1.5">
+                              <Building2 className="size-3.5 text-gray-400 shrink-0" />
+                              <span className="truncate">
+                                {customer.companyName || "Independent Engineer"}
+                              </span>
                             </div>
-                            <div className="text-[11px] text-gray-500 dark:text-slate-400 flex items-center gap-1">
+                            <div className="text-[11px] text-gray-500 dark:text-slate-400 flex items-center gap-1.5">
                               <Phone className="size-3 text-gray-400 shrink-0" />
                               <span>{customer.phone || "No phone listed"}</span>
                             </div>
                           </div>
                         </TableCell>
 
-                        {/* Activity Counts */}
-                        <TableCell className="align-top py-3.5">
-                          <div className="flex items-center gap-2">
-                            <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 text-[11px] font-bold text-blue-700 border border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800">
+                        {/* 3. Location / Address */}
+                        <TableCell className="w-[220px] min-w-[220px] align-top py-3.5 whitespace-normal">
+                          <div className="flex items-start gap-1.5 text-xs text-gray-600 dark:text-slate-300">
+                            <MapPin className="size-3.5 text-gray-400 shrink-0 mt-0.5" />
+                            <span className="line-clamp-2 text-[11px] leading-relaxed">
+                              {customer.address || "No shipping address on file"}
+                            </span>
+                          </div>
+                        </TableCell>
+
+                        {/* 4. Activity Counts */}
+                        <TableCell className="w-[180px] min-w-[180px] align-top py-3.5">
+                          <div className="flex flex-col gap-1">
+                            <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 text-[11px] font-bold text-blue-700 border border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800 w-fit">
                               <ShoppingBag className="size-3" />
                               {ordersCount} {ordersCount === 1 ? "Order" : "Orders"}
                             </span>
                             {inquiriesCount > 0 && (
-                              <span className="inline-flex items-center gap-1 rounded-md bg-purple-50 px-2 py-0.5 text-[11px] font-bold text-purple-700 border border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800">
+                              <span className="inline-flex items-center gap-1 rounded-md bg-purple-50 px-2 py-0.5 text-[11px] font-bold text-purple-700 border border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800 w-fit">
                                 <Layers className="size-3" />
-                                {inquiriesCount} CAM
+                                {inquiriesCount} CAM Quotes
                               </span>
                             )}
                           </div>
                         </TableCell>
 
-                        {/* Status Badge */}
-                        <TableCell className="align-top py-3.5">
-                          <Badge
-                            variant="outline"
-                            className={`inline-flex items-center gap-1 text-[11px] font-bold rounded-full ${statusConfig.badge}`}
-                          >
-                            <span className={`size-1.5 rounded-full ${statusConfig.dot}`} />
-                            {statusConfig.label}
-                          </Badge>
+                        {/* 5. Status Selector / Badge */}
+                        <TableCell className="w-[170px] min-w-[170px] align-top py-3.5">
+                          <div className="flex items-center gap-1.5">
+                            <Select
+                              defaultValue={customer.status}
+                              disabled={isUpdatingThisRow}
+                              onValueChange={(val) =>
+                                handleUpdateStatus(
+                                  customer.id,
+                                  val as "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED"
+                                )
+                              }
+                            >
+                              <SelectTrigger
+                                className={`h-8 w-36 text-xs font-black border rounded-xl shadow-2xs ${statusConfig.badge}`}
+                              >
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="ACTIVE">ACTIVE</SelectItem>
+                                <SelectItem value="INACTIVE">INACTIVE</SelectItem>
+                                <SelectItem value="BLOCKED">BLOCKED</SelectItem>
+                                <SelectItem value="DELETED">DELETED</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            {isUpdatingThisRow && (
+                              <Loader2 className="size-3.5 animate-spin text-emerald-600" />
+                            )}
+                          </div>
                         </TableCell>
 
-                        {/* Joined Date */}
-                        <TableCell className="align-top py-3.5 text-xs text-gray-500 dark:text-slate-400 whitespace-nowrap">
-                          {new Date(customer.createdAt).toLocaleDateString(undefined, {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}
+                        {/* 6. Joined Date */}
+                        <TableCell className="w-[130px] min-w-[130px] align-top py-3.5 whitespace-nowrap">
+                          <div className="space-y-0.5">
+                            <div className="text-xs font-bold text-gray-800 dark:text-slate-200">
+                              {new Date(customer.createdAt).toLocaleDateString(undefined, {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              })}
+                            </div>
+                            <div className="text-[11px] text-gray-400">
+                              {customer.lastLoginAt
+                                ? `Active ${new Date(customer.lastLoginAt).toLocaleDateString()}`
+                                : "Registered"}
+                            </div>
+                          </div>
                         </TableCell>
 
-                        {/* Open Action Button */}
-                        <TableCell className="align-top py-3.5 text-right whitespace-nowrap">
+                        {/* 7. Sticky Actions Column */}
+                        <TableCell className="w-[140px] min-w-[140px] sticky right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs z-10 text-right pr-4 align-top py-3.5 whitespace-nowrap shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] dark:shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.4)] group-hover:bg-slate-50/95 dark:group-hover:bg-slate-800/95 transition-colors">
                           <Button
+                            variant="outline"
                             size="sm"
                             onClick={() => handleOpenCustomer(customer)}
-                            className="gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xs"
+                            className="h-8 text-xs font-bold text-emerald-700 bg-emerald-50/60 hover:bg-emerald-600 hover:text-white dark:text-emerald-400 dark:bg-emerald-950/40 dark:hover:bg-emerald-600 dark:hover:text-white gap-1.5 rounded-xl border-emerald-300 dark:border-emerald-800 shadow-2xs transition-all cursor-pointer"
                           >
                             <Eye className="size-3.5" />
-                            Open
+                            <span>Open Profile</span>
                           </Button>
                         </TableCell>
                       </TableRow>
                     );
-                  })
-                )}
-              </TableBody>
-            </Table>
-          </div>
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          )}
         </CardContent>
+
+        {/* Server-Side Pagination Toolbar */}
+        {!loading && meta.total > 0 && (
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-gray-100 bg-gray-50/60 p-4 dark:border-slate-800 dark:bg-slate-900/60">
+            {/* Record summary & Per-page dropdown */}
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-xs font-bold text-gray-600 dark:text-slate-400">
+                Showing{" "}
+                <span className="font-extrabold text-gray-900 dark:text-white">
+                  {(page - 1) * limit + 1}
+                </span>
+                {" - "}
+                <span className="font-extrabold text-gray-900 dark:text-white">
+                  {Math.min(page * limit, meta.total)}
+                </span>
+                {" of "}
+                <span className="font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
+                  {meta.total}
+                </span>{" "}
+                customers
+              </span>
+
+              <div className="flex items-center gap-1.5 pl-3 border-l border-gray-200 dark:border-slate-800">
+                <span className="text-[11px] font-semibold text-gray-500">Per page:</span>
+                <Select
+                  value={String(limit)}
+                  onValueChange={(val) => {
+                    setLimit(Number(val));
+                    setPage(1);
+                  }}
+                >
+                  <SelectTrigger className="h-7 w-20 text-xs font-bold rounded-lg border-gray-200 dark:border-slate-800">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="5">5</SelectItem>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="20">20</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                    <SelectItem value="100">100</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Page Navigation Controls */}
+            <div className="flex items-center gap-1.5">
+              {/* First Page */}
+              <Button
+                variant="outline"
+                size="icon"
+                className="size-8 rounded-xl border-gray-200 dark:border-slate-800 cursor-pointer"
+                disabled={page <= 1 || loading}
+                onClick={() => setPage(1)}
+                title="First Page"
+              >
+                <ChevronsLeft className="size-4" />
+              </Button>
+
+              {/* Previous Page */}
+              <Button
+                variant="outline"
+                size="icon"
+                className="size-8 rounded-xl border-gray-200 dark:border-slate-800 cursor-pointer"
+                disabled={page <= 1 || loading}
+                onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                title="Previous Page"
+              >
+                <ChevronLeft className="size-4" />
+              </Button>
+
+              {/* Dynamic Page Number Buttons */}
+              <div className="flex items-center gap-1">
+                {getPageNumbers(page, meta.totalPage || 1).map((p, idx) => {
+                  if (p === "...") {
+                    return (
+                      <span key={`dots-${idx}`} className="px-1 text-xs font-bold text-gray-400">
+                        ...
+                      </span>
+                    );
+                  }
+                  const isCurrent = p === page;
+                  return (
+                    <Button
+                      key={`page-${p}`}
+                      variant={isCurrent ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setPage(p as number)}
+                      disabled={loading}
+                      className={`size-8 p-0 text-xs font-bold rounded-xl cursor-pointer ${
+                        isCurrent
+                          ? "bg-emerald-600 text-white hover:bg-emerald-700 shadow-xs"
+                          : "border-gray-200 dark:border-slate-800 hover:bg-gray-100 dark:hover:bg-slate-800"
+                      }`}
+                    >
+                      {p}
+                    </Button>
+                  );
+                })}
+              </div>
+
+              {/* Next Page */}
+              <Button
+                variant="outline"
+                size="icon"
+                className="size-8 rounded-xl border-gray-200 dark:border-slate-800 cursor-pointer"
+                disabled={page >= (meta.totalPage || 1) || loading}
+                onClick={() => setPage((prev) => Math.min(meta.totalPage || 1, prev + 1))}
+                title="Next Page"
+              >
+                <ChevronRight className="size-4" />
+              </Button>
+
+              {/* Last Page */}
+              <Button
+                variant="outline"
+                size="icon"
+                className="size-8 rounded-xl border-gray-200 dark:border-slate-800 cursor-pointer"
+                disabled={page >= (meta.totalPage || 1) || loading}
+                onClick={() => setPage(meta.totalPage || 1)}
+                title="Last Page"
+              >
+                <ChevronsRight className="size-4" />
+              </Button>
+            </div>
+          </div>
+        )}
       </Card>
 
       {/* ========================================================================= */}
-      {/* 5. Rich Customer Details Dialog (Opened when clicking "Open")             */}
+      {/* 5. Rich Customer Details Dialog (Opened when clicking "Open Profile")     */}
       {/* ========================================================================= */}
       <Dialog open={Boolean(selectedCustomer)} onOpenChange={(open) => !open && setSelectedCustomer(null)}>
         <DialogContent
@@ -591,7 +1038,7 @@ export default function AdminCustomersManager() {
         >
           {selectedCustomer && (
             <>
-              {/* Radix Accessible Title & Description (Hidden visually, accessible for screen readers) */}
+              {/* Screen reader title */}
               <div className="sr-only">
                 <DialogTitle>{selectedCustomer.name || selectedCustomer.email} Profile</DialogTitle>
                 <DialogDescription>
@@ -701,7 +1148,7 @@ export default function AdminCustomersManager() {
                       variant="ghost"
                       size="icon"
                       onClick={() => setSelectedCustomer(null)}
-                      className="rounded-xl size-9 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      className="rounded-xl size-9 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
                       title="Close modal"
                     >
                       <X className="size-4" />
@@ -763,7 +1210,10 @@ export default function AdminCustomersManager() {
                     size="sm"
                     disabled={modalStatus === selectedCustomer.status || isUpdatingStatus}
                     onClick={() =>
-                      handleUpdateStatus(modalStatus as "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED")
+                      handleUpdateStatus(
+                        selectedCustomer.id,
+                        modalStatus as "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED"
+                      )
                     }
                     className="h-8.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs px-3.5"
                   >
@@ -1099,7 +1549,7 @@ export default function AdminCustomersManager() {
                               <button
                                 type="button"
                                 onClick={() => handleCopy(selectedCustomer.email, "Email", "email")}
-                                className="text-slate-400 hover:text-emerald-600 transition"
+                                className="text-slate-400 hover:text-emerald-600 transition cursor-pointer"
                                 title="Copy Email"
                               >
                                 {copiedField === "email" ? (
@@ -1155,7 +1605,7 @@ export default function AdminCustomersManager() {
                             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Default Shipping Address</span>
                             <div className="mt-1 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800">
                               <p className="font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
-                                {selectedCustomer.address || "No shipping address on file yet."}
+                                {customerShippingAddress(selectedCustomer)}
                               </p>
                             </div>
                           </div>
@@ -1193,7 +1643,7 @@ export default function AdminCustomersManager() {
                 <Button
                   variant="outline"
                   onClick={() => setSelectedCustomer(null)}
-                  className="rounded-xl font-bold text-xs px-5 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="rounded-xl font-bold text-xs px-5 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
                 >
                   Close Profile
                 </Button>
@@ -1204,4 +1654,13 @@ export default function AdminCustomersManager() {
       </Dialog>
     </div>
   );
+}
+
+function customerShippingAddress(customer: AdminCustomer) {
+  if (customer.address) return customer.address;
+  if (customer.orders && customer.orders.length > 0) {
+    const orderWithAddress = customer.orders.find((o) => o.shippingAddress);
+    if (orderWithAddress?.shippingAddress) return orderWithAddress.shippingAddress;
+  }
+  return "No shipping address on file yet.";
 }

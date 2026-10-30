@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { CreditCard, Loader2, ShieldCheck, WalletCards, CheckCircle2, ArrowRight, ShoppingBag } from "lucide-react";
+import { CreditCard, Loader2, ShieldCheck, WalletCards, CheckCircle2, ArrowRight, ShoppingBag, Tag, Percent, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CartService } from "@/services/cart.service";
 import { OrderService } from "@/services/order.service";
 import { PaymentService } from "@/services/payment.service";
+import { CouponService } from "@/services/coupon.service";
 import { useAuthStore } from "@/store/authStore";
 import { getCartSummary, useCartStore } from "@/store/cartStore";
 
@@ -93,6 +94,54 @@ function CheckoutContent() {
   });
 
   const hasOrderId = Boolean(queryOrderId);
+
+  // Promotional Coupon Redemption
+  const [couponCode, setCouponCode] = useState("");
+  const [applyingCoupon, setApplyingCoupon] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discountPercentage: number;
+    discountAmount: number;
+  } | null>(null);
+
+  const baseTotal = hasOrderId
+    ? Number(queryAmount) || 17.0
+    : summary.grandTotal;
+
+  const discountAmount = appliedCoupon ? appliedCoupon.discountAmount : 0;
+  const payableTotal = Math.max(0, baseTotal - discountAmount);
+
+  const handleApplyCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!couponCode.trim()) {
+      toast.error("Please enter a coupon code.");
+      return;
+    }
+    setApplyingCoupon(true);
+    try {
+      const res = await CouponService.validateCoupon(couponCode, baseTotal);
+      if (res && res.valid) {
+        setAppliedCoupon({
+          code: res.code,
+          discountPercentage: res.discountPercentage,
+          discountAmount: res.discountAmount,
+        });
+        toast.success(
+          `Coupon "${res.code}" applied! Saved $${res.discountAmount.toFixed(2)} (${res.discountPercentage}% off).`
+        );
+        setCouponCode("");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Invalid or expired coupon code.");
+    } finally {
+      setApplyingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    toast.info("Coupon removed.");
+  };
 
   const handlePayNow = async () => {
     const errors = validateCheckoutForm(form, paymentMethod, items.length, hasOrderId);
@@ -234,9 +283,6 @@ function CheckoutContent() {
     );
   }
 
-  const payableTotal = hasOrderId
-    ? Number(queryAmount) || 17.0
-    : summary.grandTotal;
 
   return (
     <main className="min-h-screen pt-24 pb-20 bg-[#F4F6F9] dark:bg-[#0B0F17] text-slate-900 dark:text-white">
@@ -343,15 +389,67 @@ function CheckoutContent() {
               </div>
             )}
 
+            {/* Coupon Code Redemption Box */}
+            <div className="rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50/70 dark:bg-slate-800/40 p-3 space-y-2">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300">
+                <Tag className="size-3.5 text-emerald-600" />
+                <span>Promotional Voucher / Coupon</span>
+              </div>
+
+              {appliedCoupon ? (
+                <div className="flex items-center justify-between rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 p-2 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono font-black text-emerald-800 dark:text-emerald-300">
+                      {appliedCoupon.code}
+                    </span>
+                    <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
+                      ({appliedCoupon.discountPercentage}% OFF - Saved ${appliedCoupon.discountAmount.toFixed(2)})
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleRemoveCoupon}
+                    className="p-1 rounded text-gray-400 hover:text-rose-600 transition cursor-pointer"
+                    title="Remove coupon"
+                  >
+                    <X className="size-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleApplyCoupon} className="flex gap-2">
+                  <Input
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                    placeholder="e.g. FT-PROTOTYPE15"
+                    className="h-8 text-xs font-mono font-bold uppercase rounded-lg border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+                  />
+                  <Button
+                    type="submit"
+                    size="sm"
+                    disabled={applyingCoupon || !couponCode.trim()}
+                    className="h-8 px-3 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
+                  >
+                    {applyingCoupon ? <Loader2 className="size-3 animate-spin" /> : "Apply"}
+                  </Button>
+                </form>
+              )}
+            </div>
+
             <div className="space-y-2 border-t border-gray-100 dark:border-slate-800 pt-3 text-xs">
               <div className="flex justify-between text-gray-500">
                 <span>Subtotal:</span>
-                <strong>${payableTotal.toFixed(2)}</strong>
+                <strong>${baseTotal.toFixed(2)}</strong>
               </div>
               <div className="flex justify-between text-gray-500">
                 <span>CAM DFM Check:</span>
                 <strong className="text-emerald-600">$0.00 (FREE)</strong>
               </div>
+              {appliedCoupon && (
+                <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-bold">
+                  <span>Coupon Discount ({appliedCoupon.code}):</span>
+                  <span>-${appliedCoupon.discountAmount.toFixed(2)}</span>
+                </div>
+              )}
               <div className="flex justify-between items-baseline pt-2 border-t border-gray-200 dark:border-slate-800 text-sm font-black">
                 <span>Total Amount:</span>
                 <strong className="text-2xl text-emerald-600 dark:text-emerald-400 font-black">

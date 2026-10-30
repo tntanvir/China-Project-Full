@@ -25,6 +25,7 @@ import {
   Truck,
   UploadCloud,
   Zap,
+  Download,
 } from "lucide-react";
 import { ProductCard } from "@/app/(commonLayout)/products/ProductCard";
 import { useDictionary } from "@/components/providers/language-provider";
@@ -262,13 +263,14 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const payload = {
-      fullName: formData.get("Name") as string,
-      email: formData.get("Email") as string,
-      phone: formData.get("Phone") as string,
-      boardType: formData.get("PCB Type") as string,
-      description: formData.get("Project Requirement") as string,
+      fullName: (formData.get("Name") as string)?.trim(),
+      email: (formData.get("Email") as string)?.trim(),
+      phone: (formData.get("Phone") as string)?.trim(),
+      boardType: (formData.get("PCB Type") as string)?.trim() || "Standard Rigid PCB",
+      description: (formData.get("Project Requirement") as string)?.trim(),
     };
 
     if (!payload.fullName || !payload.email || !payload.description) {
@@ -279,10 +281,10 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
     try {
       setIsSubmitting(true);
       await GerberService.uploadPublicInquiry([], payload);
-      toast.success("Inquiry sent successfully. An engineer will contact you shortly.");
-      (e.target as HTMLFormElement).reset();
+      toast.success("Inquiry & DFM review request sent successfully! An engineer will contact you within 2 hours.");
+      form.reset();
     } catch (error) {
-      toast.error("Failed to send inquiry. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to send inquiry. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -583,11 +585,20 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   Instant Factory Quote
                 </Link>
                 <a
-                  href="#contact"
-                  className="inline-flex items-center justify-center gap-1 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-xs font-bold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition"
+                  href="/docs/FTpcb-Company-Profile.pdf"
+                  download="Wuping-Feitian-PCB-Company-Profile.pdf"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-xs font-bold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition"
                 >
-                  Book In-Person Tour
+                  <Download className="size-3.5 text-emerald-600" />
+                  <span>Profile PDF (6.9MB)</span>
                 </a>
+                <Link
+                  href="/about-ft-pcb"
+                  className="inline-flex items-center justify-center gap-1 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2.5 text-xs font-bold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition"
+                >
+                  <span>{dictionary.navbar?.navItems?.[1]?.title || "About FT PCB"}</span>
+                  <ArrowRight className="size-3.5" />
+                </Link>
               </div>
 
             </div>
@@ -601,8 +612,8 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                 <Building2 className="size-5" />
               </span>
               <div>
-                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">18,000 m²</div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">Smart Manufacturing Base</div>
+                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">15,000 m²</div>
+                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">3 Dedicated Factory Buildings</div>
               </div>
             </div>
 
@@ -611,8 +622,8 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                 <Cpu className="size-5" />
               </span>
               <div>
-                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">6 SMT Lines</div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">Yamaha & Panasonic High-Speed</div>
+                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">100,000 m²/mo</div>
+                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">Multi-Layer & Special Board</div>
               </div>
             </div>
 
@@ -621,8 +632,8 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                 <Factory className="size-5" />
               </span>
               <div>
-                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">50,000 m²/mo</div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">Monthly Output Capacity</div>
+                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">30M RMB Capital</div>
+                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">Specialized "Little Giant"</div>
               </div>
             </div>
 
@@ -631,8 +642,8 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                 <Award className="size-5" />
               </span>
               <div>
-                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">100% Tested</div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">AOI, Flying Probe & X-Ray</div>
+                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">IATF 16949</div>
+                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">Automotive Grade Certified</div>
               </div>
             </div>
           </div>
@@ -644,9 +655,9 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
       <section className="py-14 sm:py-20 bg-white dark:bg-slate-950">
         <div className="mx-auto max-w-[1360px] px-4 sm:px-6">
           <SectionHeader
-            badge={dictionary.advantages?.eyebrow || sectionCopy.about.eyebrow || "Engineering Advantage"}
-            title={dictionary.advantages?.title || "Why Hardware Engineers Choose FT PCB"}
-            description={dictionary.advantages?.description || "We combine direct manufacturing control, rigorous IPC quality standards, and responsive customer service."}
+            badge={dictionary.advantages?.eyebrow || sectionCopy?.about?.eyebrow || "Engineering Advantage"}
+            title={dictionary.advantages?.title || sectionCopy?.about?.title || "Why Hardware Engineers Choose FT PCB"}
+            description={dictionary.advantages?.description || sectionCopy?.about?.description || "We combine direct manufacturing control, rigorous IPC quality standards, and responsive customer service."}
           />
 
           <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
@@ -845,11 +856,11 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
               className="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-md lg:col-span-7"
             >
               <h3 className="text-base font-extrabold text-gray-900 dark:text-white mb-4">
-                {inquiryCopy?.title || "Quick Project Inquiry / DFM Question"}
+                {inquiryCopy?.title || "Ready to Start Your PCB or PCBA Build?"}
               </h3>
               <div className="grid gap-3 sm:grid-cols-2">
                 <label className="space-y-1 block">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{inquiryCopy?.nameLabel || "Full Name"} *</span>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{inquiryCopy?.nameLabel || "Your Name"} *</span>
                   <input
                     name="Name"
                     required
@@ -858,7 +869,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   />
                 </label>
                 <label className="space-y-1 block">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{inquiryCopy?.emailLabel || "Corporate Email"} *</span>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{inquiryCopy?.emailLabel || "Work Email"} *</span>
                   <input
                     name="Email"
                     type="email"
@@ -868,7 +879,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   />
                 </label>
                 <label className="space-y-1 block">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{inquiryCopy?.phoneLabel || "Phone / WhatsApp"}</span>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{inquiryCopy?.phoneLabel || "Phone Number"}</span>
                   <input
                     name="Phone"
                     type="tel"
@@ -877,23 +888,23 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   />
                 </label>
                 <label className="space-y-1 block">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{inquiryCopy?.boardTypeLabel || "Board Type"}</span>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{inquiryCopy?.boardTypeLabel || "PCB Type"}</span>
                   <select
                     name="PCB Type"
                     className="h-10 w-full rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-xs font-semibold text-gray-800 dark:text-slate-100 outline-none transition focus:border-emerald-600 dark:focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
                   >
-                    <option value="Rigid PCB">Standard Rigid PCB</option>
-                    <option value="PCB Assembly">Turnkey PCB Assembly (PCBA)</option>
-                    <option value="Flexible PCB">Flexible PCB (FPC)</option>
-                    <option value="Rigid-Flex PCB">Rigid-Flex Circuit</option>
-                    <option value="Aluminum PCB">Aluminum Metal Core PCB</option>
-                    <option value="HDI PCB">HDI Microvia PCB</option>
+                    <option value="Standard Rigid PCB">Standard Rigid PCB</option>
+                    <option value="Turnkey PCB Assembly (PCBA)">Turnkey PCB Assembly (PCBA)</option>
+                    <option value="Flexible PCB (FPC)">Flexible PCB (FPC)</option>
+                    <option value="Rigid-Flex Circuit">Rigid-Flex Circuit</option>
+                    <option value="Aluminum Metal Core PCB">Aluminum Metal Core PCB</option>
+                    <option value="HDI Microvia PCB">HDI Microvia PCB</option>
                   </select>
                 </label>
               </div>
 
               <label className="mt-3 block space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{inquiryCopy?.requirementLabel || "Project Requirements"} *</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{inquiryCopy?.requirementLabel || "Project Requirement"} *</span>
                 <textarea
                   name="Project Requirement"
                   required
@@ -916,7 +927,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   disabled={isSubmitting}
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-xs font-extrabold text-white shadow-md shadow-emerald-600/30 transition hover:bg-emerald-700 disabled:opacity-50"
                 >
-                  {isSubmitting ? (inquiryCopy?.submitting || "Submitting...") : (inquiryCopy?.submitBtn || "Send Factory Inquiry")}
+                  {isSubmitting ? (inquiryCopy?.submitting || "Sending Inquiry & Requesting Review...") : (inquiryCopy?.submitBtn || "Send Inquiry & Request DFM Review")}
                   <Zap className="h-3.5 w-3.5" />
                 </button>
               </div>

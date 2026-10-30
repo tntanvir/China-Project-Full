@@ -360,6 +360,79 @@ export type Dictionary = {
       uploadBtn: string;
     };
   };
+  aboutPage?: {
+    hero: {
+      badge: string;
+      title: string;
+      highlight: string;
+      description: string;
+      downloadPdf: string;
+      browseSlides: string;
+      requestQuote: string;
+      camReview: string;
+      rapidBuild: string;
+      iatfStandard: string;
+      directFactory: string;
+    };
+    section1: {
+      badge: string;
+      title: string;
+      description: string;
+      downloadBtn: string;
+      dossierTitle: string;
+      dossierBadge: string;
+    };
+    section2: {
+      badge: string;
+      title: string;
+      description: string;
+      connectBtn: string;
+    };
+    section3: {
+      badge: string;
+      title: string;
+      description: string;
+      dfmBtn: string;
+      tableTitle: string;
+      tableBadge: string;
+      colParameter: string;
+      colDirectFactory: string;
+      colBroker: string;
+    };
+    section4: {
+      badge: string;
+      title: string;
+      description: string;
+      quoteBtn: string;
+      surfaceFinishesTitle: string;
+    };
+    section5: {
+      badge: string;
+      title: string;
+      description: string;
+    };
+    section6: {
+      badge: string;
+      title: string;
+      description: string;
+      lockRatesBtn: string;
+      faqTitle: string;
+    };
+    section7: {
+      badge: string;
+      title: string;
+      description: string;
+      startProjectBtn: string;
+    };
+    cta: {
+      badge: string;
+      title: string;
+      description: string;
+      uploadBtn: string;
+      downloadBtn: string;
+      contactBtn: string;
+    };
+  };
 };
 
 export const defaultLocale = "en" as const;
@@ -509,15 +582,15 @@ export const countryOptions: CountryOption[] = [
 
 export const sourceDictionary: Dictionary = {
   navbar: {
-    companyName: "Feitian PCB (Wuping Feitian Electronic Technology)",
-    logoAlt: "Feitian PCB Logo",
+    companyName: "FT PCB (Feitian Electronic Technology)",
+    logoAlt: "FT PCB Logo",
     badge: "Direct Factory PCB & PCBA Partner",
     countries: "Global Region",
     selectCountry: "Select Country / Language",
     navigation: "Navigation",
     explore: "Explore",
     login: "Login",
-    homePanelTitle: "Explore Feitian PCB at a Glance",
+    homePanelTitle: "Explore FT PCB at a Glance",
     homePanelDescription: "Direct manufacturing factory, cleanroom capabilities, and customer support.",
     navItems: [
       {
@@ -528,14 +601,8 @@ export const sourceDictionary: Dictionary = {
         title: "About FT PCB",
         items: [
           "Company Profile",
-          "Our Team",
-          "Our Advantage",
-          "Service",
-          "Why Choose Us",
-          "Testimonials",
-          "Industries",
-          "Privacy Policy",
-          "PCB Blogs",
+          "How It Works",
+          "Partnership",
         ],
       },
       {
@@ -546,6 +613,7 @@ export const sourceDictionary: Dictionary = {
         title: "PCB Manufacture",
         items: [
           "Overview",
+          "Process Flowchart",
           "Equipments",
           "Material",
           "Impedance PCB",
@@ -1042,6 +1110,79 @@ export const sourceDictionary: Dictionary = {
       uploadBtn: "Upload Gerber For Free DFM",
     },
   },
+  aboutPage: {
+    hero: {
+      badge: "FT PCB • National Specialized 'Little Giant' • Direct Factory",
+      title: "FT PCB",
+      highlight: "Precision Manufacturing",
+      description: "Founded in 1997, FT PCB operates a 15,000m² manufacturing campus in the Wuping High-Tech Zone. Backed by Shenzhen University doctoral R&D and 45+ in-house CAM engineers, FT PCB delivers 100,000m²/mo of precision 2L-30L PCBs, automotive IATF 16949 modules, and turnkey SMT assemblies.",
+      downloadPdf: "Download Profile PDF (6.9 MB)",
+      browseSlides: "Browse 42 Slides",
+      requestQuote: "Request Factory Quote",
+      camReview: "2-Hour CAM Review",
+      rapidBuild: "24H - 48H Rapid Build",
+      iatfStandard: "IATF 16949 Certified",
+      directFactory: "Direct Source Factory",
+    },
+    section1: {
+      badge: "Section 01 • Executive Monograph & Archive",
+      title: "Official FT PCB Profile & 28-Year Chronology",
+      description: "Review our complete corporate dossier, 28-year timeline from 1997 to 2026, and all 42 slides of the official company presentation with high-resolution slide inspection.",
+      downloadBtn: "Download 42 Slides PDF",
+      dossierTitle: "Corporate Due Diligence & Registration Record",
+      dossierBadge: "Little Giant Certified",
+    },
+    section2: {
+      badge: "Section 02 • Academic R&D & Executive Board",
+      title: "The Engineering Minds Behind FT PCB",
+      description: "Founded by Prof. Chen Jingqiu (Doctor of Engineering, Shenzhen University). Explore the FT PCB executive board, 30+ invention patents, and the Shenzhen University Joint Microwave Laboratory.",
+      connectBtn: "Connect with CAM Board",
+    },
+    section3: {
+      badge: "Section 03 • Technical Benchmarks & 3D Lab",
+      title: "FT PCB Core Advantages & Interactive 3D Inspection",
+      description: "Inspect multi-layer solder mask finishes, SMT components, and internal traces in our real-time Three.js WebGL laboratory, then review our head-to-head engineering comparison.",
+      dfmBtn: "Request DFM Review",
+      tableTitle: "Head-to-Head Technical Benchmark: FT PCB vs. Ordinary PCB Brokers",
+      tableBadge: "Audited Standards",
+      colParameter: "Engineering Parameter",
+      colDirectFactory: "FT PCB (Direct Factory)",
+      colBroker: "Standard Broker / Prototype Shop",
+    },
+    section4: {
+      badge: "Section 04 • Turnkey Manufacturing Conveyor",
+      title: "FT PCB 7-Stage Precision Manufacturing Pipeline",
+      description: "Click through each automated station from Gerber ingestion and laser direct imaging to continuous VCP plating, optical AVI scanning, and 4-wire Kelvin continuity testing.",
+      quoteBtn: "Quote Turnkey PCBA",
+      surfaceFinishesTitle: "Available PCB Surface Finishes & Thickness Specs",
+    },
+    section5: {
+      badge: "15,000m² Wuping Production Campus",
+      title: "FT PCB Virtual Factory Tour & Machinery Park",
+      description: "Take a self-guided walkthrough of Building 1, 2, and 3, and inspect our automated VCP plating, high-speed CNC drilling, and Class 10,000 cleanroom equipment with real scanning reticles.",
+    },
+    section6: {
+      badge: "Section 05 • Direct Factory Trust & Warranties",
+      title: "Why Hardware Teams Choose FT PCB Directly",
+      description: "Eliminate the 15% - 35% middleman broker surcharge. Use our interactive volume calculator to calculate direct factory savings and review our 3 Ironclad Warranties.",
+      lockRatesBtn: "Lock In Direct Rates",
+      faqTitle: "Frequently Asked Questions from Hardware Engineers",
+    },
+    section7: {
+      badge: "Section 06 • Global Case Studies & Reviews",
+      title: "FT PCB Worldwide Engineering Case Studies",
+      description: "Inspect actual engineering case studies from Germany (Automotive LED), USA (6 oz Heavy Copper), Japan (Ku-Band PTFE), Sweden (48h Prototypes), and France (Turnkey SMT).",
+      startProjectBtn: "Start Your Project",
+    },
+    cta: {
+      badge: "Direct Factory Turnaround • 2-Hour Free DFM Review",
+      title: "Ready to Build Your Circuits at Source Factory Rates?",
+      description: "Upload your Gerber files or contact our engineering team directly. You will receive an official quotation and detailed CAM DFM analysis within 2 hours.",
+      uploadBtn: "Upload Gerber Files Now",
+      downloadBtn: "Download Company PDF",
+      contactBtn: "Contact CAM Engineers",
+    },
+  },
 };
 
 import {
@@ -1083,16 +1224,26 @@ function mergeDictionary<T extends Record<string, unknown>>(base: T, override?: 
   return output as T;
 }
 
+import { getAboutPageLocale } from "./about-translations";
+
 export function getDictionary(locale: Locale): Dictionary {
+  let dict: Dictionary;
   if (locale === "en") {
-    return sourceDictionary;
+    dict = structuredClone(sourceDictionary);
+  } else {
+    const override = localeOverrides[locale];
+    dict = override
+      ? (mergeDictionary(
+          sourceDictionary as unknown as Record<string, unknown>,
+          override as unknown as PartialDictionaryObject<Record<string, unknown>>
+        ) as Dictionary)
+      : structuredClone(sourceDictionary);
   }
-  const override = localeOverrides[locale];
-  if (!override) {
-    return sourceDictionary;
+
+  const aboutOverride = getAboutPageLocale(locale);
+  if (aboutOverride) {
+    dict.aboutPage = aboutOverride;
   }
-  return mergeDictionary(
-    sourceDictionary as unknown as Record<string, unknown>,
-    override as unknown as PartialDictionaryObject<Record<string, unknown>>
-  ) as Dictionary;
+
+  return dict;
 }

@@ -8,6 +8,9 @@ const sendResponse = <T>(res: Response, jsonData: {
         page: number;
         limit: number;
         total: number;
+        totalPage?: number;
+        stats?: any;
+        [key: string]: any;
     };
     data: T | null | undefined;
 }) => {

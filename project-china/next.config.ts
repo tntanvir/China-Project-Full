@@ -4,8 +4,30 @@ const nextConfig: NextConfig = {
   output: "standalone",
   compress: true,
   poweredByHeader: false,
+  reactStrictMode: false,
+  onDemandEntries: {
+    maxInactiveAge: 60 * 60 * 1000,
+    pagesBufferLength: 100,
+  },
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "motion",
+      "recharts",
+      "three",
+      "@react-three/fiber",
+      "date-fns",
+      "country-flag-icons",
+      "@tanstack/react-table",
+      "countries-list",
+      "swiper",
+      "cobe",
+      "libphonenumber-js",
+    ],
+  },
   images: {
     formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: "https",
@@ -33,7 +55,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/:all*(svg|jpg|jpeg|png|webp|avif|ico)",
+        source: "/:all*(svg|jpg|jpeg|png|webp|avif|ico|woff|woff2)",
         headers: [
           {
             key: "Cache-Control",

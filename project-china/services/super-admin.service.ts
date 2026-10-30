@@ -64,7 +64,15 @@ export type SuperAdminOverview = {
     totalAmount: number;
     paymentStatus: string;
     createdAt: string;
-    user?: { id: string; name?: string; email: string };
+    user?: { id: string; name?: string; email: string; phone?: string };
+    inquiry?: {
+      id: string;
+      fullName: string;
+      email: string;
+      phone?: string;
+      boardType?: string;
+      description?: string;
+    };
   }>;
   recentPayments: Array<{
     id: string;

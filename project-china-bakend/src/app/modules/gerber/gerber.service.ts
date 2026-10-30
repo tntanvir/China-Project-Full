@@ -154,6 +154,13 @@ const uploadPublicInquiry = async (files: Express.Multer.File[], payload: Public
                 role: UserRole.CUSTOMER,
             },
         });
+    } else {
+        if (!user.phone && payload.phone?.trim()) {
+            user = await prisma.user.update({
+                where: { id: user.id },
+                data: { phone: payload.phone.trim() },
+            });
+        }
     }
 
     // 2. Create the Inquiry with all PCB engineering parameters
@@ -165,7 +172,7 @@ const uploadPublicInquiry = async (files: Express.Multer.File[], payload: Public
             email: customerEmail,
             companyName: payload.companyName?.trim() || undefined,
             phone: payload.phone?.trim() || undefined,
-            boardType: payload.boardType?.trim() || "Custom PCB",
+            boardType: payload.boardType?.trim() || "Standard Rigid PCB",
             length: parseSafeFloat(payload.length),
             width: parseSafeFloat(payload.width),
             quantity: parseSafeInt(payload.quantity),
@@ -175,7 +182,7 @@ const uploadPublicInquiry = async (files: Express.Multer.File[], payload: Public
             surfaceFinish: payload.surfaceFinish?.trim() || undefined,
             solderMaskColor: payload.solderMaskColor?.trim() || undefined,
             estimatedPrice: parseSafeFloat(payload.totalAmount),
-            description,
+            description: payload.description?.trim() || description,
             fileUrls: uploadedFiles.map((file) => file.fileUrl),
             userId: user.id,
         },
@@ -227,8 +234,8 @@ const uploadPublicInquiry = async (files: Express.Multer.File[], payload: Public
         });
 
         await NotificationService.notifyAdminsAndSuperAdmins({
-            title: "New Public CAM Inquiry & Order",
-            message: `New order #${order.id.slice(0, 8).toUpperCase()} ($${totalAmount.toFixed(2)}) from ${customerName} (${customerEmail}).`,
+            title: "New Public CAM Inquiry & DFM Review",
+            message: `Inquiry from ${customerName} (${customerEmail}) for ${payload.boardType || "PCB"}: ${(payload.description || "").slice(0, 60)}...`,
             type: "WARNING",
             link: `/admin/orders`,
         });

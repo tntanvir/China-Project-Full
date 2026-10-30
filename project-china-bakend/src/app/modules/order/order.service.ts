@@ -80,23 +80,98 @@ const createOrderFromCart = async (userId: string, payload: { shippingAddress: s
     return order;
 };
 
-const getMyOrders = async (userId: string, role?: string): Promise<Order[]> => {
+export type GetOrdersFilterOptions = {
+    page?: number | string;
+    limit?: number | string;
+    status?: string;
+    source?: string;
+    search?: string;
+};
+
+const getMyOrders = async (
+    userId: string,
+    role?: string,
+    query?: GetOrdersFilterOptions
+) => {
     const isPrivileged = role === "ADMIN" || role === "SUPER_ADMIN";
-    return await prisma.order.findMany({
-        where: isPrivileged ? {} : { userId },
-        include: {
-            user: {
-                select: { id: true, name: true, email: true, phone: true, companyName: true },
+    const baseWhere: any = isPrivileged ? {} : { userId };
+
+    const whereConditions: any = { ...baseWhere };
+
+    if (query?.status && query.status !== "ALL") {
+        whereConditions.status = query.status as any;
+    }
+
+    if (query?.source === "INQUIRIES") {
+        whereConditions.inquiryId = { not: null };
+    } else if (query?.source === "STANDARD") {
+        whereConditions.inquiryId = null;
+    }
+
+    if (query?.search && query.search.trim()) {
+        const searchTerm = query.search.trim();
+        whereConditions.OR = [
+            { id: { contains: searchTerm, mode: "insensitive" } },
+            { user: { name: { contains: searchTerm, mode: "insensitive" } } },
+            { user: { email: { contains: searchTerm, mode: "insensitive" } } },
+            { user: { phone: { contains: searchTerm, mode: "insensitive" } } },
+            { inquiry: { fullName: { contains: searchTerm, mode: "insensitive" } } },
+            { inquiry: { email: { contains: searchTerm, mode: "insensitive" } } },
+            { inquiry: { phone: { contains: searchTerm, mode: "insensitive" } } },
+            { inquiry: { boardType: { contains: searchTerm, mode: "insensitive" } } },
+            { inquiry: { description: { contains: searchTerm, mode: "insensitive" } } },
+        ];
+    }
+
+    const isPaginated = query?.page !== undefined || query?.limit !== undefined;
+    const page = Math.max(1, Number(query?.page) || 1);
+    const limit = Math.max(1, Number(query?.limit) || 10);
+    const skip = (page - 1) * limit;
+
+    const [total, orders, inquiriesCount, pendingCount, productionCount, aggregateVolume, totalCountAll] = await Promise.all([
+        prisma.order.count({ where: whereConditions }),
+        prisma.order.findMany({
+            where: whereConditions,
+            include: {
+                user: {
+                    select: { id: true, name: true, email: true, phone: true, companyName: true },
+                },
+                inquiry: true,
+                quote: true,
+                orderItems: {
+                    include: { product: true },
+                },
+                payments: true,
             },
-            inquiry: true,
-            quote: true,
-            orderItems: {
-                include: { product: true },
+            orderBy: { createdAt: "desc" },
+            ...(isPaginated ? { skip, take: limit } : {}),
+        }),
+        prisma.order.count({ where: { ...baseWhere, inquiryId: { not: null } } }),
+        prisma.order.count({ where: { ...baseWhere, status: { in: ["PENDING", "GERBER_REVIEW"] } } }),
+        prisma.order.count({ where: { ...baseWhere, status: { in: ["PRODUCTION", "QUALITY_CONTROL"] } } }),
+        prisma.order.aggregate({
+            where: baseWhere,
+            _sum: { totalAmount: true },
+        }),
+        prisma.order.count({ where: baseWhere }),
+    ]);
+
+    return {
+        meta: {
+            page: isPaginated ? page : 1,
+            limit: isPaginated ? limit : total,
+            total,
+            totalPage: isPaginated ? Math.ceil(total / limit) : 1,
+            stats: {
+                totalCount: totalCountAll,
+                inquiriesCount,
+                pending: pendingCount,
+                production: productionCount,
+                totalVolume: aggregateVolume._sum.totalAmount || 0,
             },
-            payments: true,
         },
-        orderBy: { createdAt: 'desc' },
-    });
+        data: orders,
+    };
 };
 
 const getOrderById = async (userId: string, orderId: string, role: string): Promise<Order | null> => {

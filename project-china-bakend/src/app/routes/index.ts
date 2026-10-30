@@ -13,6 +13,7 @@ import { chatRoutes } from "../modules/chat/chat.routes";
 import { superAdminRoutes } from "../modules/superAdmin/superAdmin.routes";
 import { reviewRoutes } from "../modules/review/review.routes";
 import { adminRoutes } from "../modules/admin/admin.routes";
+import { couponRoutes } from "../modules/coupon/coupon.routes";
 
 const router = express.Router();
 
@@ -31,6 +32,7 @@ const moduleRoutes = [
     { path: "/super-admin", route: superAdminRoutes },
     { path: "/reviews", route: reviewRoutes },
     { path: "/admin", route: adminRoutes },
+    { path: "/coupons", route: couponRoutes },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

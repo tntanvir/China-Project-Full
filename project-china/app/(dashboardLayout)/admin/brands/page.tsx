@@ -1,5 +1,5 @@
-import EnterpriseModulePage from "@/components/module/Dashboard/EnterpriseModulePage";
+import AdminBrandsManager from "@/components/module/Dashboard/AdminBrandsManager";
 
 export default function AdminBrandsPage() {
-  return <EnterpriseModulePage moduleKey="brands" />;
+  return <AdminBrandsManager />;
 }

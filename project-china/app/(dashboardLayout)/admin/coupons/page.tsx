@@ -1,5 +1,5 @@
-import EnterpriseModulePage from "@/components/module/Dashboard/EnterpriseModulePage";
+import AdminCouponsManager from "@/components/module/Dashboard/AdminCouponsManager";
 
 export default function AdminCouponsPage() {
-  return <EnterpriseModulePage moduleKey="coupons" />;
+  return <AdminCouponsManager />;
 }

@@ -33,7 +33,17 @@ const getOverview = async () => {
                 totalAmount: true,
                 paymentStatus: true,
                 createdAt: true,
-                user: { select: { id: true, name: true, email: true } },
+                user: { select: { id: true, name: true, email: true, phone: true } },
+                inquiry: {
+                    select: {
+                        id: true,
+                        fullName: true,
+                        email: true,
+                        phone: true,
+                        boardType: true,
+                        description: true,
+                    },
+                },
             },
         }),
         prisma.payment.findMany({

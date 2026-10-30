@@ -267,6 +267,7 @@ export default function SuperAdminCommandCenter() {
           </CardHeader>
           <CardContent className="grid gap-3">
             {[
+              { label: "Orders & Inquiries", href: "/super-admin/orders", icon: PackageCheck },
               { label: "Create Admin", href: "/super-admin/admin-management", icon: Users },
               { label: "Manage Roles", href: "/super-admin/roles-permissions", icon: ShieldCheck },
               { label: "Payment Control", href: "/super-admin/payments", icon: CreditCard },
@@ -335,9 +336,18 @@ export default function SuperAdminCommandCenter() {
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <Card className="rounded-2xl border-slate-200 bg-white shadow-2xs dark:border-slate-800 dark:bg-[#0b1220]">
-          <CardHeader>
-            <CardTitle className="text-sm font-bold text-slate-900 dark:text-white">Recent Customer Orders</CardTitle>
-            <CardDescription className="text-xs text-slate-500 dark:text-slate-400">Latest customer orders from backend database.</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <div>
+              <CardTitle className="text-sm font-bold text-slate-900 dark:text-white">Recent Customer Orders & Inquiries</CardTitle>
+              <CardDescription className="text-xs text-slate-500 dark:text-slate-400">Latest customer orders and factory direct inquiries from backend database.</CardDescription>
+            </div>
+            <Link
+              href="/super-admin/orders"
+              className="inline-flex items-center gap-1 text-xs font-extrabold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400"
+            >
+              <span>View All</span>
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
           </CardHeader>
           <CardContent>
             <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800">
@@ -346,26 +356,49 @@ export default function SuperAdminCommandCenter() {
                   <TableRow>
                     <TableHead className="text-xs font-bold">Order ID</TableHead>
                     <TableHead className="text-xs font-bold">Customer</TableHead>
+                    <TableHead className="text-xs font-bold">Type / Item</TableHead>
                     <TableHead className="text-xs font-bold">Status</TableHead>
                     <TableHead className="text-xs font-bold">Total</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {overview?.recentOrders.length ? (
-                    overview.recentOrders.map((order) => (
-                      <TableRow key={order.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-900/40">
-                        <TableCell className="font-mono text-xs font-bold text-slate-900 dark:text-white">{shortId(order.id)}</TableCell>
-                        <TableCell className="text-xs">{order.user?.name || order.user?.email || "Customer"}</TableCell>
-                        <TableCell>
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-500/30">
-                            {order.status}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-xs font-black">{money(order.totalAmount)}</TableCell>
-                      </TableRow>
-                    ))
+                    overview.recentOrders.map((order) => {
+                      const customerName = order.inquiry?.fullName || order.user?.name || order.user?.email || "Customer";
+                      const pcbType = order.inquiry?.boardType || "Custom PCB";
+                      return (
+                        <TableRow key={order.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-900/40">
+                          <TableCell className="font-mono text-xs font-bold text-slate-900 dark:text-white">
+                            <Link href="/super-admin/orders" className="hover:text-emerald-600 hover:underline">
+                              #{shortId(order.id)}
+                            </Link>
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            <div className="font-semibold">{customerName}</div>
+                            {order.inquiry?.email ? (
+                              <div className="text-[10px] text-muted-foreground">{order.inquiry.email}</div>
+                            ) : null}
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            {order.inquiry ? (
+                              <span className="inline-block rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800">
+                                {pcbType}
+                              </span>
+                            ) : (
+                              <span className="text-[11px] text-muted-foreground">Catalog Order</span>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-500/30">
+                              {order.status}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-xs font-black">{money(order.totalAmount)}</TableCell>
+                        </TableRow>
+                      );
+                    })
                   ) : (
-                    <TableRow><TableCell colSpan={4} className="py-10 text-center text-xs text-slate-400">No recent orders found.</TableCell></TableRow>
+                    <TableRow><TableCell colSpan={5} className="py-10 text-center text-xs text-slate-400">No recent orders found.</TableCell></TableRow>
                   )}
                 </TableBody>
               </Table>

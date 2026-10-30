@@ -44,3 +44,23 @@ model ProductCategory {
 
     @@map("product_categories")
 }
+
+model Brand {
+    id          String   @id @default(uuid())
+    name        String   @unique
+    slug        String   @unique
+    logo        String?
+    website     String?
+    category    String?
+    description String?
+    country     String?
+    status      String   @default("ACTIVE")
+    isVerified  Boolean  @default(true)
+    order       Int      @default(0)
+
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@map("brands")
+}
+

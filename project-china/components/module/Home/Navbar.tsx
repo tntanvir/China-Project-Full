@@ -539,7 +539,7 @@ export default function Navbar() {
                 {dictionary.navbar.badge || "DIRECT FACTORY"}
               </span>
               <span className="text-sm sm:text-base font-black tracking-tight text-gray-900 dark:text-white leading-tight group-hover:text-emerald-600 transition">
-                Feitian <span className="text-emerald-600 dark:text-emerald-400">PCB</span>
+                FT <span className="text-emerald-600 dark:text-emerald-400">PCB</span>
               </span>
             </div>
           </Link>

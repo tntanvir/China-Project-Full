@@ -36,9 +36,18 @@ import {
   ExternalLink,
   Sparkles,
   Cpu,
-  Layers,
   ChevronDown,
+  PanelLeftClose,
+  PanelLeftOpen,
+  PanelLeft,
 } from "lucide-react";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import UserAccountMenu from "@/components/module/Home/UserAccountMenu";
 import NotificationBell from "@/components/module/Dashboard/NotificationBell";
@@ -62,7 +71,7 @@ const adminNavGroups = [
     title: "Operations & Catalog",
     items: [
       { label: "Admin Overview", href: "/admin", icon: LayoutDashboard },
-      { label: "Orders Manager", href: "/admin/orders", icon: PackageCheck },
+      { label: "Orders & Inquiries", href: "/admin/orders", icon: PackageCheck },
       { label: "Customer Accounts", href: "/admin/customers", icon: Users },
       { label: "Products Catalog", href: "/admin/products", icon: Boxes },
       { label: "Categories", href: "/admin/categories", icon: Layers3 },
@@ -101,6 +110,7 @@ const superAdminNavGroups = [
     title: "Command Center",
     items: [
       { label: "Platform Overview", href: "/super-admin", icon: ShieldCheck },
+      { label: "Orders & Inquiries", href: "/super-admin/orders", icon: PackageCheck },
       { label: "Admin Management", href: "/super-admin/admin-management", icon: Users },
       { label: "Roles & RBAC", href: "/super-admin/roles-permissions", icon: LockKeyhole },
       { label: "Security Center", href: "/super-admin/security-center", icon: AlertTriangle },
@@ -158,6 +168,30 @@ export default function DashboardShell({ children }: { children: React.ReactNode
   const currentRole = normalizeRole(user?.role);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("dashboard_sidebar_collapsed");
+      if (saved !== null) {
+        setIsCollapsed(saved === "true");
+      }
+    } catch {
+      // LocalStorage not available in this context
+    }
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("dashboard_sidebar_collapsed", String(next));
+      } catch {
+        // LocalStorage not available in this context
+      }
+      return next;
+    });
+  };
 
   const isSuperAdmin = currentRole === "SUPER_ADMIN";
   const isAdmin = currentRole === "ADMIN";
@@ -214,7 +248,8 @@ export default function DashboardShell({ children }: { children: React.ReactNode
       }
     }
     if (pathname.startsWith("/dashboard/orders/")) return "Order Details";
-    if (pathname.startsWith("/admin/orders/")) return "Order Management";
+    if (pathname.startsWith("/admin/orders")) return "Orders & Inquiries";
+    if (pathname.startsWith("/super-admin/orders")) return "Orders & Inquiries";
     return workspaceTitle;
   }, [navGroups, pathname, workspaceTitle]);
 
@@ -270,97 +305,202 @@ export default function DashboardShell({ children }: { children: React.ReactNode
     );
   }
 
-  const sidebarContent = (
-    <div className="flex h-full flex-col">
-      {/* Brand & Workspace Identity */}
-      <div className="flex h-20 items-center justify-between border-b border-slate-200/80 px-5 dark:border-slate-800/80">
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-600 to-emerald-500 text-white shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-            <Cpu className="size-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-sm font-black tracking-tight text-slate-900 dark:text-white">FEITIAN</span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">PCB</span>
+  const renderSidebarContent = (collapsed: boolean) => (
+    <TooltipProvider delayDuration={50}>
+      <div className="flex h-full flex-col">
+        {/* Brand & Workspace Identity */}
+        <div className={`flex h-20 items-center border-b border-slate-200/80 dark:border-slate-800/80 transition-all ${
+          collapsed ? "justify-center px-2" : "justify-between px-5"
+        }`}>
+          {collapsed ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  onClick={toggleSidebar}
+                  className="group flex flex-col items-center justify-center gap-1 focus:outline-none cursor-pointer"
+                  aria-label="Expand sidebar"
+                >
+                  <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-600 to-emerald-500 text-white shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                    <Cpu className="size-5" />
+                  </div>
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right" sideOffset={12} className="font-bold text-xs bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900">
+                FEITIAN PCB - Click to expand drawer
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <>
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-600 to-emerald-500 text-white shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                  <Cpu className="size-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-black tracking-tight text-slate-900 dark:text-white">FEITIAN</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">PCB</span>
+                  </div>
+                  <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Electronics Cloud</p>
+                </div>
+              </Link>
+
+              <div className="flex items-center gap-1.5">
+                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-mono font-bold uppercase text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  {workspaceBadge}
+                </span>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      onClick={toggleSidebar}
+                      className="hidden lg:flex size-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200 transition cursor-pointer"
+                      aria-label="Minimize sidebar"
+                    >
+                      <PanelLeftClose className="size-4" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" sideOffset={8} className="text-xs font-bold">
+                    Minimize sidebar (Drawer)
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Navigation Groups */}
+        <nav className={`flex-1 overflow-y-auto scrollbar-thin transition-all ${
+          collapsed ? "p-2 space-y-4" : "p-3.5 space-y-6"
+        }`}>
+          {navGroups.map((group, groupIdx) => (
+            <div key={group.title}>
+              {collapsed ? (
+                groupIdx > 0 ? (
+                  <div className="my-2.5 mx-2 h-px bg-slate-200/80 dark:bg-slate-800/80" />
+                ) : null
+              ) : (
+                <p className="mb-2 px-3 text-[10px] font-black uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                  {group.title}
+                </p>
+              )}
+              <div className="grid gap-1">
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  const active = pathname === item.href || (item.href !== "/dashboard" && item.href !== "/admin" && item.href !== "/super-admin" && pathname.startsWith(`${item.href}/`));
+
+                  if (collapsed) {
+                    return (
+                      <Tooltip key={item.href}>
+                        <TooltipTrigger asChild>
+                          <Link
+                            href={item.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`group flex size-11 items-center justify-center rounded-xl mx-auto transition-all ${
+                              active
+                                ? "bg-gradient-to-r from-emerald-600 via-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-500/20 font-black"
+                                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-white"
+                            }`}
+                          >
+                            <Icon className={`size-5 shrink-0 transition-transform group-hover:scale-110 ${active ? "text-white" : "text-slate-500 dark:text-slate-400 group-hover:text-emerald-500"}`} />
+                          </Link>
+                        </TooltipTrigger>
+                        <TooltipContent
+                          side="right"
+                          sideOffset={14}
+                          className="flex flex-col gap-0.5 rounded-xl border border-slate-800/80 bg-slate-900 px-3 py-2 text-white shadow-2xl dark:border-slate-200/30 dark:bg-slate-100 dark:text-slate-900 z-50 animate-in fade-in-0 zoom-in-95"
+                        >
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 dark:text-emerald-700">
+                            {group.title}
+                          </span>
+                          <span className="text-xs font-black">{item.label}</span>
+                          {active && (
+                            <span className="text-[9px] font-semibold text-emerald-300 dark:text-emerald-600 flex items-center gap-1">
+                              <span className="size-1.5 rounded-full bg-emerald-400" /> Active View
+                            </span>
+                          )}
+                        </TooltipContent>
+                      </Tooltip>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`group flex items-center justify-between rounded-xl px-3 py-2 text-xs font-bold transition-all ${
+                        active
+                          ? "bg-gradient-to-r from-emerald-600 via-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-500/20 font-black"
+                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-white"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon className={`size-4 shrink-0 transition-transform group-hover:scale-110 ${active ? "text-white" : "text-slate-500 dark:text-slate-400 group-hover:text-emerald-500"}`} />
+                        <span>{item.label}</span>
+                      </div>
+                      {active && <ChevronRight className="size-3 text-white/80" />}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-            <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Electronics Cloud</p>
-          </div>
-        </Link>
+          ))}
+        </nav>
 
-        <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-mono font-bold uppercase text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
-          <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          {workspaceBadge}
-        </span>
-      </div>
-
-
-      {/* Navigation Groups */}
-      <nav className="flex-1 space-y-6 overflow-y-auto p-3.5 scrollbar-thin">
-        {navGroups.map((group) => (
-          <div key={group.title}>
-            <p className="mb-2 px-3 text-[10px] font-black uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
-              {group.title}
-            </p>
-            <div className="grid gap-1">
-              {group.items.map((item) => {
-                const Icon = item.icon;
-                const active = pathname === item.href || (item.href !== "/dashboard" && item.href !== "/admin" && item.href !== "/super-admin" && pathname.startsWith(`${item.href}/`));
-
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`group flex items-center justify-between rounded-xl px-3 py-2 text-xs font-bold transition-all ${
-                      active
-                        ? "bg-gradient-to-r from-emerald-600 via-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-500/20 font-black"
-                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-white"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Icon className={`size-4 shrink-0 transition-transform group-hover:scale-110 ${active ? "text-white" : "text-slate-500 dark:text-slate-400 group-hover:text-emerald-500"}`} />
-                      <span>{item.label}</span>
-                    </div>
-                    {active && <ChevronRight className="size-3 text-white/80" />}
-                  </Link>
-                );
-              })}
+        {/* Sidebar Footer Widget: Factory Status & Quick Actions */}
+        <div className={`border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-[#070b14]/70 transition-all ${
+          collapsed ? "p-2.5 flex justify-center" : "p-3"
+        }`}>
+          {collapsed ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex size-10 items-center justify-center rounded-xl border border-emerald-200/80 bg-white shadow-2xs dark:border-emerald-500/20 dark:bg-[#0b1220] cursor-pointer">
+                  <span className="size-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="right" sideOffset={12} className="text-xs font-bold">
+                CAM DFM Engine Online (24/7 Production)
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <div className="rounded-xl border border-emerald-200/80 bg-white p-3 shadow-2xs dark:border-emerald-500/20 dark:bg-[#0b1220]">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-1.5 text-[11px] font-bold text-slate-800 dark:text-slate-200">
+                  <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                  CAM DFM Engine
+                </span>
+                <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400">ONLINE</span>
+              </div>
+              <p className="mt-1 text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
+                Direct Wuping high-speed production line active 24/7.
+              </p>
             </div>
-          </div>
-        ))}
-      </nav>
-
-      {/* Sidebar Footer Widget: Factory Status & Quick Actions */}
-      <div className="p-3 border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-[#070b14]/70">
-        <div className="rounded-xl border border-emerald-200/80 bg-white p-3 shadow-2xs dark:border-emerald-500/20 dark:bg-[#0b1220]">
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 text-[11px] font-bold text-slate-800 dark:text-slate-200">
-              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-              CAM DFM Engine
-            </span>
-            <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400">ONLINE</span>
-          </div>
-          <p className="mt-1 text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
-            Direct Wuping high-speed production line active 24/7.
-          </p>
+          )}
         </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 
   return (
     <div className="min-h-screen bg-slate-50/80 text-slate-900 dark:bg-[#060913] dark:text-slate-100 transition-colors duration-200">
       {/* Desktop Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-slate-200/80 bg-white shadow-xl dark:border-slate-800 dark:bg-[#070b14] lg:block">
-        {sidebarContent}
+      <aside className={`fixed inset-y-0 left-0 z-40 hidden border-r border-slate-200/80 bg-white shadow-xl dark:border-slate-800 dark:bg-[#070b14] lg:block transition-all duration-300 ease-in-out ${
+        isCollapsed ? "w-[76px]" : "w-72"
+      }`}>
+        {renderSidebarContent(isCollapsed)}
       </aside>
 
       {/* Main Content Area */}
-      <div className="lg:pl-72">
+      <div className={`transition-all duration-300 ease-in-out ${
+        isCollapsed ? "lg:pl-[76px]" : "lg:pl-72"
+      }`}>
         {/* Top Sticky Header */}
         <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 shadow-2xs backdrop-blur-md dark:border-slate-800 dark:bg-[#070b14]/85 transition-colors duration-200">
           <div className="flex min-h-[64px] items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
-            {/* Left: Mobile trigger & Breadcrumb */}
+            {/* Left: Mobile trigger, Desktop Drawer Toggle & Breadcrumb */}
             <div className="flex items-center gap-3">
               <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                 <SheetTrigger asChild>
@@ -369,9 +509,33 @@ export default function DashboardShell({ children }: { children: React.ReactNode
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[84vw] max-w-xs border-slate-200 bg-white p-0 text-slate-900 dark:border-slate-800 dark:bg-[#070b14] dark:text-white">
-                  {sidebarContent}
+                  {renderSidebarContent(false)}
                 </SheetContent>
               </Sheet>
+
+              {/* Desktop Drawer Toggle Button */}
+              <TooltipProvider delayDuration={50}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={toggleSidebar}
+                      className="hidden lg:flex size-9 rounded-xl border-slate-200 dark:border-slate-800 text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white transition-colors"
+                      aria-label={isCollapsed ? "Expand sidebar drawer" : "Minimize sidebar drawer"}
+                    >
+                      {isCollapsed ? (
+                        <PanelLeftOpen className="size-4 text-emerald-600 dark:text-emerald-400" />
+                      ) : (
+                        <PanelLeftClose className="size-4 text-slate-600 dark:text-slate-400" />
+                      )}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" sideOffset={6} className="text-xs font-bold">
+                    {isCollapsed ? "Expand sidebar drawer" : "Minimize to icons drawer"}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
               {/* Breadcrumb Title */}
               <div className="hidden sm:flex items-center gap-2 text-xs font-bold">

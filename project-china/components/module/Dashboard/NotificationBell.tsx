@@ -138,8 +138,8 @@ export default function NotificationBell() {
 
       setNotifications(list);
       setUnreadCount(list.filter((n) => !n.isRead).length);
-    } catch (err) {
-      console.warn("Could not load notifications:", err);
+    } catch {
+      // Session not yet ready or unauthorized; silently ignore
     }
   }, [user?.id]);
 

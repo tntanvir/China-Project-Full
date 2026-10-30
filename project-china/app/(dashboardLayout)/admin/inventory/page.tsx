@@ -1,5 +1,5 @@
-import EnterpriseModulePage from "@/components/module/Dashboard/EnterpriseModulePage";
+import AdminInventoryManager from "@/components/module/Dashboard/AdminInventoryManager";
 
 export default function AdminInventoryPage() {
-  return <EnterpriseModulePage moduleKey="inventory" />;
+  return <AdminInventoryManager />;
 }

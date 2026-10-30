@@ -3,6 +3,7 @@ import app from "./app";
 import config from "./config";
 import { prisma } from "./app/shared/prisma";
 import { seedSuperAdmin } from "./app/shared/seedSuperAdmin";
+import { seedProductsAndCategories } from "./app/shared/seedProducts";
 import { socketManager } from "./app/shared/socket";
 
 let server: Server;
@@ -13,6 +14,7 @@ async function bootstrap() {
         console.log("🛢️  Database is connected successfully");
 
         await seedSuperAdmin();
+        await seedProductsAndCategories();
 
         server = app.listen(config.port, () => {
             console.log(`🚀 Application listening on port ${config.port}`);

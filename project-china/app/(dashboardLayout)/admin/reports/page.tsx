@@ -1,5 +1,5 @@
-import EnterpriseModulePage from "@/components/module/Dashboard/EnterpriseModulePage";
+import AdminReportsManager from "@/components/module/Dashboard/AdminReportsManager";
 
 export default function AdminReportsPage() {
-  return <EnterpriseModulePage moduleKey="reports" />;
+  return <AdminReportsManager />;
 }
