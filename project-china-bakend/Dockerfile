@@ -8,13 +8,15 @@ WORKDIR /app
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
-
-COPY . .
+# Copy dependency manifests and Prisma schema before install (postinstall runs `prisma generate`)
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml prisma.config.ts ./
+COPY prisma ./prisma
 
 # Provide placeholder DATABASE_URL for prisma.config.ts during client generation
 ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/chinaproject?schema=public"
+RUN pnpm install --frozen-lockfile
+
+COPY . .
 RUN pnpm exec prisma generate && pnpm run build
 
 # ==============================================================================
