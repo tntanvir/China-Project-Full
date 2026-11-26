@@ -6,7 +6,8 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+ENV npm_config_strict_dep_builds=false
+RUN corepack enable && corepack prepare pnpm@10.28.0 --activate
 
 # Copy dependency manifests and Prisma schema before install (postinstall runs `prisma generate`)
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml prisma.config.ts ./
@@ -27,8 +28,9 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=5000
+ENV npm_config_strict_dep_builds=false
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.28.0 --activate
 
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml

@@ -7,7 +7,8 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN corepack enable && corepack prepare pnpm@latest --activate
+ENV npm_config_strict_dep_builds=false
+RUN corepack enable && corepack prepare pnpm@10.28.0 --activate
 
 # Install dependencies cleanly using lockfile
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./

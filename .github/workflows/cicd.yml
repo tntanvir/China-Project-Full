@@ -28,7 +28,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: latest
+          version: "10.28.0"
 
       - name: Setup Node.js 22
         uses: actions/setup-node@v4
@@ -46,6 +46,7 @@ jobs:
       - name: Install & build Backend
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/chinaproject?schema=public
+          npm_config_strict_dep_builds: "false"
         run: |
           pnpm --dir project-china-bakend install --frozen-lockfile
           pnpm --dir project-china-bakend exec prisma generate
@@ -57,6 +58,7 @@ jobs:
           NEXT_PUBLIC_API_URL: /api/v1
           NEXT_PUBLIC_SOCKET_URL: same-origin
           NEXT_TELEMETRY_DISABLED: "1"
+          npm_config_strict_dep_builds: "false"
         run: |
           pnpm --dir project-china install --frozen-lockfile
           pnpm --dir project-china exec tsc --noEmit
