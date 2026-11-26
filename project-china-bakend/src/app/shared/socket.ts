@@ -46,6 +46,8 @@ class SocketManager {
         const allowedOrigins = [
             config.frontend_url,
             ...envOrigins,
+            "http://179.236.86.9",
+            "https://179.236.86.9",
             "http://localhost:3000",
             "http://localhost:3001",
             "http://127.0.0.1:3000",

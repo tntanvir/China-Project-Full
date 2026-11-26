@@ -12,21 +12,30 @@
 
 ---
 
-## 1. One-Time Hostinger VPS Setup
+## 1. One-Time Hostinger VPS Setup (AlmaLinux 10)
 
-SSH into your Hostinger VPS (Ubuntu/Debian):
+SSH into your Hostinger VPS (`179.236.86.9`):
 
 ```bash
-# Install Docker & Docker Compose plugin if not installed
-curl -fsSL https://get.docker.com | sh
-sudo usermod -aG docker $USER
+ssh root@179.236.86.9
+
+# Install tools & open firewall ports 80/443
+dnf install -y git nano openssl firewalld
+systemctl enable --now firewalld
+firewall-cmd --permanent --add-service=ssh
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --reload
+
+# Stop host web server if pre-installed so Nginx container can bind port 80/443
+systemctl disable --now nginx httpd 2>/dev/null || true
 
 # Clone repository into /opt/ftpcb
-sudo mkdir -p /opt/ftpcb && sudo chown -R $USER:$USER /opt/ftpcb
-git clone <YOUR_GITHUB_REPO_URL> /opt/ftpcb
+mkdir -p /opt/ftpcb
 cd /opt/ftpcb
+git clone <YOUR_GITHUB_REPO_URL> .
 
-# Create production .env from template and edit secrets/domain
+# Create production .env from template (already pre-filled with 179.236.86.9)
 cp .env.production.example .env
 nano .env
 
@@ -38,7 +47,7 @@ Verify everything is healthy:
 
 ```bash
 docker compose ps
-curl -i http://127.0.0.1/health
+curl -i http://179.236.86.9/health
 ```
 
 ---
@@ -66,7 +75,7 @@ In your GitHub repository → **Settings → Secrets and variables → Actions**
 
 | Secret | Value |
 | --- | --- |
-| `VPS_HOST` | Hostinger VPS public IP address |
+| `VPS_HOST` | `179.236.86.9` (your Hostinger VPS public IP) |
 | `VPS_USER` | SSH username (e.g. `root` or deploy user) |
 | `VPS_SSH_KEY` | Private SSH key matching `~/.ssh/authorized_keys` on VPS |
 | `VPS_PORT` | `22` (or custom SSH port) |

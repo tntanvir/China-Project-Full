@@ -37,6 +37,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "i.ibb.co.com",
       },
+      {
+        protocol: "http",
+        hostname: "179.236.86.9",
+      },
     ],
   },
   async headers() {
