@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { RbacService } from "@/services/rbac.service";
 
@@ -258,9 +259,15 @@ export default function SuperAdminRolesPermissions() {
                 </TableHeader>
                 <TableBody>
                   {loading ? (
-                    <TableRow>
-                      <TableCell colSpan={5} className="py-10 text-center text-sm font-bold text-muted-foreground">Loading RBAC data...</TableCell>
-                    </TableRow>
+                    [1, 2, 3, 4].map((i) => (
+                      <TableRow key={i}>
+                        <TableCell><Skeleton className="h-4 w-28" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-12" /></TableCell>
+                        <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+                        <TableCell className="text-right"><Skeleton className="h-8 w-16 rounded-md ml-auto" /></TableCell>
+                      </TableRow>
+                    ))
                   ) : filteredRoles.length ? (
                     filteredRoles.map((role) => (
                       <TableRow key={role.id}>

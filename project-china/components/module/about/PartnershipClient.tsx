@@ -128,38 +128,38 @@ export default function PartnershipClient() {
       {/* 1. HERO SECTION                                                           */}
       {/* ========================================================================= */}
       <section className="relative z-10 pt-12 pb-16 lg:pt-16 lg:pb-24 border-b border-slate-200/80 dark:border-slate-800/80 backdrop-blur-md bg-white/70 dark:bg-slate-900/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-          <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 relative w-full min-w-0">
+          <div className="grid gap-8 lg:gap-12 lg:grid-cols-12 lg:items-center w-full min-w-0">
             {/* Left Column: Heading, Badges and Actions */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700/80 px-3.5 py-1 text-xs font-black text-emerald-700 dark:text-emerald-300 shadow-xs">
-                <span className="relative flex h-2 w-2">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-6 min-w-0">
+              <div className="inline-flex flex-wrap items-center gap-1.5 sm:gap-2 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700/80 px-3 sm:px-3.5 py-1 text-xs font-black text-emerald-700 dark:text-emerald-300 shadow-xs">
+                <span className="relative flex h-2 w-2 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
-                <span>{t.hero.badge}</span>
+                <span className="truncate">{t.hero.badge}</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] text-slate-900 dark:text-white">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] text-slate-900 dark:text-white">
                 {t.hero.title}{" "}
                 <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-teal-300 dark:to-cyan-400">
                   {t.hero.highlight}
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
+              <p className="text-sm sm:text-base lg:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
                 {t.hero.description}
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-2 w-full sm:w-auto">
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black shadow-lg shadow-emerald-600/25 px-8 transition-all hover:scale-[1.02] cursor-pointer"
+                  className="w-full sm:w-auto rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black shadow-lg shadow-emerald-600/25 px-5 sm:px-8 text-xs sm:text-sm transition-all hover:scale-[1.02] cursor-pointer text-center"
                 >
                   <Link href="#bsy-alliance">
-                    <Handshake className="mr-2 size-4" />
+                    <Handshake className="mr-2 size-4 shrink-0" />
                     FT PCB & BSY Tech Alliance ↓
                   </Link>
                 </Button>
@@ -168,10 +168,10 @@ export default function PartnershipClient() {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="rounded-xl border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm text-slate-800 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 font-bold px-6 cursor-pointer"
+                  className="w-full sm:w-auto rounded-xl border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm text-slate-800 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 font-bold px-5 sm:px-6 text-xs sm:text-sm cursor-pointer text-center"
                 >
                   <Link href="#partner-form">
-                    <Zap className="mr-2 size-4 text-emerald-500" />
+                    <Zap className="mr-2 size-4 text-emerald-500 shrink-0" />
                     {t.hero.applyBtn}
                   </Link>
                 </Button>
@@ -535,7 +535,7 @@ export default function PartnershipClient() {
       {/* ========================================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-700 px-3.5 py-1 text-xs font-black text-amber-700 dark:text-amber-300">
+          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 px-3.5 py-1 text-xs font-black text-emerald-700 dark:text-emerald-300">
             <Award className="size-3.5" />
             <span>{t.whyPartner.badge}</span>
           </div>

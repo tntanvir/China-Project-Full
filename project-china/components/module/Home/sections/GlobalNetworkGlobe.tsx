@@ -419,7 +419,7 @@ export default function GlobalNetworkGlobe() {
   }, [selectedRouteIndex, isDark]);
 
   return (
-    <section className="relative overflow-hidden bg-white dark:bg-slate-950 py-14 sm:py-20 border-t border-gray-200 dark:border-slate-800 transition-colors duration-300">
+    <section className="relative overflow-hidden bg-white dark:bg-slate-950 py-10 sm:py-16 lg:py-20 border-t border-gray-200 dark:border-slate-800 transition-colors duration-300">
       
       {/* Precision Background Pattern */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:40px_40px] opacity-60 dark:opacity-30" />
@@ -428,25 +428,25 @@ export default function GlobalNetworkGlobe() {
       <div className="pointer-events-none absolute top-1/2 right-1/4 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-emerald-500/5 blur-3xl" />
       <div className="pointer-events-none absolute bottom-10 left-10 h-72 w-72 rounded-full bg-emerald-400/5 blur-3xl" />
 
-      <div className="relative mx-auto max-w-[1360px] px-4 sm:px-6">
+      <div className="relative mx-auto max-w-[1360px] px-3 sm:px-6">
         
         {/* ===================================================================== */}
         {/* TOP SECTION HEADER                                                    */}
         {/* ===================================================================== */}
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1 text-xs font-bold text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60 shadow-xs">
-            <span className="relative flex h-2 w-2">
+        <div className="mx-auto max-w-3xl text-center px-1">
+          <div className="inline-flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-3 sm:px-3.5 py-1 text-[11px] sm:text-xs font-bold text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60 shadow-xs">
+            <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600 dark:bg-emerald-400" />
             </span>
             <span>{netCopy?.badge || "Worldwide Air Express • Direct Connecting Flight Links"}</span>
           </div>
 
-          <h2 className="mt-3 text-2xl font-black tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+          <h2 className="mt-2.5 sm:mt-3 text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-black tracking-tight text-gray-900 dark:text-white leading-tight">
             {netCopy?.title || "Global Precision PCB & PCBA Supply Chain"}
           </h2>
 
-          <p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-slate-300 sm:text-base max-w-2xl mx-auto">
+          <p className="mt-2 sm:mt-3 text-xs sm:text-sm lg:text-base leading-relaxed text-gray-600 dark:text-slate-300 max-w-2xl mx-auto">
             {netCopy?.description || "Direct 3D flight routes connecting our Wuping manufacturing campus to over 60 countries. Seamless DHL, FedEx, and UPS air express networks with real-time tracking."}
           </p>
         </div>
@@ -454,70 +454,70 @@ export default function GlobalNetworkGlobe() {
         {/* ===================================================================== */}
         {/* MASTER DUAL-COLUMN LAYOUT: LOGISTICS DETAILS (LEFT) + 3D GLOBE (RIGHT) */}
         {/* ===================================================================== */}
-        <div className="mt-12 grid gap-8 lg:grid-cols-12 items-center">
+        <div className="mt-8 sm:mt-12 grid gap-6 lg:gap-8 lg:grid-cols-12 items-center w-full min-w-0">
           
           {/* ------------------------------------------------------------------- */}
           {/* LEFT: Regional Logistics Telemetry & Interactive Selector (5 Cols)   */}
           {/* ------------------------------------------------------------------- */}
-          <div className="flex flex-col justify-between space-y-5 lg:col-span-5">
+          <div className="flex flex-col justify-between space-y-4 sm:space-y-5 lg:col-span-5 w-full min-w-0">
             
             {/* 3 Quick Capacity Badges */}
-            <div className="grid grid-cols-3 gap-2.5">
-              <div className="rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 shadow-sm">
-                <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
-                  <Globe2 className="size-4" />
-                  <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 dark:text-slate-400">
+            <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5 w-full min-w-0">
+              <div className="rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 sm:p-3.5 shadow-sm min-w-0">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 dark:text-emerald-400 min-w-0">
+                  <Globe2 className="size-3 sm:size-4 shrink-0" />
+                  <span className="text-[8.5px] sm:text-[10px] font-black uppercase tracking-wider text-gray-400 dark:text-slate-400 truncate">
                     {netGlobe?.telemetry?.coverageLabel || "Coverage"}
                   </span>
                 </div>
-                <div className="mt-1 text-xl font-black text-gray-900 dark:text-white">
+                <div className="mt-0.5 sm:mt-1 text-sm sm:text-xl font-black text-gray-900 dark:text-white truncate">
                   {netGlobe?.telemetry?.coverageValue || "60+"}
                 </div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">
+                <div className="text-[9px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">
                   {netGlobe?.telemetry?.coverageSub || "Countries"}
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 shadow-sm">
-                <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
-                  <Plane className="size-4" />
-                  <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 dark:text-slate-400">
+              <div className="rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 sm:p-3.5 shadow-sm min-w-0">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 dark:text-emerald-400 min-w-0">
+                  <Plane className="size-3 sm:size-4 shrink-0" />
+                  <span className="text-[8.5px] sm:text-[10px] font-black uppercase tracking-wider text-gray-400 dark:text-slate-400 truncate">
                     {netGlobe?.telemetry?.airTransitLabel || "Air Transit"}
                   </span>
                 </div>
-                <div className="mt-1 text-xl font-black text-gray-900 dark:text-white">
+                <div className="mt-0.5 sm:mt-1 text-sm sm:text-xl font-black text-gray-900 dark:text-white truncate">
                   {netGlobe?.telemetry?.airTransitValue || "2-3 D"}
                 </div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">
+                <div className="text-[9px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">
                   {netGlobe?.telemetry?.airTransitSub || "DHL/FedEx Air"}
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 shadow-sm">
-                <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
-                  <ShieldCheck className="size-4" />
-                  <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 dark:text-slate-400">
+              <div className="rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 sm:p-3.5 shadow-sm min-w-0">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 dark:text-emerald-400 min-w-0">
+                  <ShieldCheck className="size-3 sm:size-4 shrink-0" />
+                  <span className="text-[8.5px] sm:text-[10px] font-black uppercase tracking-wider text-gray-400 dark:text-slate-400 truncate">
                     {netGlobe?.telemetry?.customsLabel || "Customs"}
                   </span>
                 </div>
-                <div className="mt-1 text-xl font-black text-gray-900 dark:text-white">
+                <div className="mt-0.5 sm:mt-1 text-sm sm:text-xl font-black text-gray-900 dark:text-white truncate">
                   {netGlobe?.telemetry?.customsValue || "99.8%"}
                 </div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">
+                <div className="text-[9px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">
                   {netGlobe?.telemetry?.customsSub || "Direct Clearance"}
                 </div>
               </div>
             </div>
 
             {/* Destination Interactive Switcher Chips */}
-            <div>
-              <div className="text-[11px] font-black uppercase tracking-wider text-gray-400 dark:text-slate-400 mb-2 flex items-center justify-between">
+            <div className="w-full min-w-0">
+              <div className="text-[10.5px] sm:text-[11px] font-black uppercase tracking-wider text-gray-400 dark:text-slate-400 mb-2 flex flex-wrap items-center justify-between gap-1">
                 <span>{netGlobe?.corridorTitle || "Select Connecting Flight Route:"}</span>
-                <span className="text-emerald-700 dark:text-emerald-400 font-extrabold text-[10px]">
+                <span className="text-emerald-700 dark:text-emerald-400 font-extrabold text-[9.5px] sm:text-[10px] shrink-0">
                   {destinationRoutes.length} {netGlobe?.corridorSubtitle || "Active Express Links"}
                 </span>
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-1 sm:gap-1.5 w-full min-w-0">
                 {destinationRoutes.map((route, idx) => {
                   const isSelected = selectedRouteIndex === idx;
                   return (
@@ -525,14 +525,14 @@ export default function GlobalNetworkGlobe() {
                       key={route.id}
                       type="button"
                       onClick={() => handleSelectRoute(idx)}
-                      className={`inline-flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-bold transition-all ${
+                      className={`inline-flex items-center gap-1 sm:gap-1.5 rounded-xl border px-2 sm:px-2.5 py-1 sm:py-1.5 text-[10.5px] sm:text-xs font-bold transition-all max-w-full ${
                         isSelected
                           ? "border-emerald-600 bg-emerald-600 text-white shadow-md shadow-emerald-600/25 ring-2 ring-emerald-500/20"
                           : "border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-700 dark:text-slate-300 hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-slate-800"
                       }`}
                     >
-                      <span>{route.flag}</span>
-                      <span>{route.name}</span>
+                      <span className="text-sm shrink-0">{route.flag}</span>
+                      <span className="truncate">{route.name}</span>
                     </button>
                   );
                 })}
@@ -540,75 +540,75 @@ export default function GlobalNetworkGlobe() {
             </div>
 
             {/* Active Connecting Flight Route Telemetry Card */}
-            <div className="rounded-3xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-xl shadow-gray-200/40 dark:shadow-none space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-slate-800">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">{activeRoute.flag}</span>
-                  <div>
-                    <h3 className="text-base font-black text-gray-900 dark:text-white leading-tight">
+            <div className="rounded-2xl sm:rounded-3xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 sm:p-5 shadow-xl shadow-gray-200/40 dark:shadow-none space-y-3 sm:space-y-4 w-full min-w-0 overflow-hidden">
+              <div className="flex items-center justify-between gap-2 pb-3 border-b border-gray-100 dark:border-slate-800 w-full min-w-0">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <span className="text-xl sm:text-2xl shrink-0">{activeRoute.flag}</span>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-xs sm:text-base font-black text-gray-900 dark:text-white leading-tight truncate">
                       {activeRoute.name}
                     </h3>
-                    <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400">{activeRoute.carrier}</p>
+                    <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 truncate">{activeRoute.carrier}</p>
                   </div>
                 </div>
-                <span className="rounded-full bg-emerald-100 dark:bg-emerald-950 px-2.5 py-1 text-[10px] font-black text-emerald-800 dark:text-emerald-300">
+                <span className="rounded-full bg-emerald-100 dark:bg-emerald-950 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9.5px] sm:text-[10px] font-black text-emerald-800 dark:text-emerald-300 shrink-0">
                   {activeRoute.transit}
                 </span>
               </div>
 
               {/* Specs Rows */}
-              <div className="grid gap-2 text-xs">
-                <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300">
+              <div className="grid gap-2 text-[10.5px] sm:text-xs w-full min-w-0">
+                <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300 min-w-0">
                   <Plane className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <span className="font-bold text-gray-900 dark:text-slate-100">{netGlobe?.panel?.originLabel || "Direct Route"}: </span>
-                    <span className="text-gray-600 dark:text-slate-400 font-semibold">
+                    <span className="text-gray-600 dark:text-slate-400 font-semibold break-words">
                       Wuping / Shenzhen (SZX) ➔ {activeRoute.name}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300">
+                <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300 min-w-0">
                   <Clock className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <span className="font-bold text-gray-900 dark:text-slate-100">{netGlobe?.panel?.leadTimeLabel || "Transit Duration"}: </span>
                     <span className="text-gray-600 dark:text-slate-400">{activeRoute.transit}</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300">
+                <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300 min-w-0">
                   <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <span className="font-bold text-gray-900 dark:text-slate-100">{netGlobe?.panel?.customsLabel || "Duty & Tax"}: </span>
                     <span className="text-gray-600 dark:text-slate-400">{activeRoute.duty}</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300">
+                <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300 min-w-0">
                   <CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <span className="font-bold text-gray-900 dark:text-slate-100">Target Sectors: </span>
                     <span className="text-gray-600 dark:text-slate-400">{activeRoute.clients}</span>
                   </div>
                 </div>
               </div>
 
-              <p className="text-[11px] text-gray-500 dark:text-slate-400 leading-relaxed pt-2 border-t border-gray-100 dark:border-slate-800">
+              <p className="text-[10px] sm:text-[11px] text-gray-500 dark:text-slate-400 leading-relaxed pt-2 border-t border-gray-100 dark:border-slate-800">
                 {activeRoute.desc}
               </p>
 
               {/* Action Buttons */}
-              <div className="pt-2 flex items-center gap-3">
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full min-w-0">
                 <Link
                   href="/pcb-quote"
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-black text-white shadow-sm hover:bg-emerald-700 transition active:scale-95"
+                  className="w-full sm:flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs font-black text-white shadow-sm hover:bg-emerald-500 transition active:scale-95 whitespace-nowrap"
                 >
                   <Zap className="size-3.5 fill-current" />
                   {netGlobe?.panel?.calculateBtn || `Instant Quote to ${activeRoute.name.split(" ")[0]}`}
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center justify-center gap-1 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-xs font-bold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2 sm:py-2.5 text-xs font-bold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition whitespace-nowrap"
                 >
                   Contact Logistics
                 </Link>
@@ -620,21 +620,21 @@ export default function GlobalNetworkGlobe() {
           {/* ------------------------------------------------------------------- */}
           {/* RIGHT: 3D Globe with Real 3D Curved Connecting Link Arcs (7 Cols)   */}
           {/* ------------------------------------------------------------------- */}
-          <div className="lg:col-span-7 flex flex-col items-center">
+          <div className="lg:col-span-7 flex flex-col items-center w-full min-w-0">
             
             <div
               ref={containerRef}
-              className="relative aspect-square w-full max-w-[560px] flex items-center justify-center select-none bg-transparent border-none shadow-none"
+              className="relative aspect-square w-full max-w-[560px] flex items-center justify-center select-none bg-transparent border-none shadow-none min-w-0 overflow-hidden"
             >
 
               {/* Top Bar on Globe: Live Telemetry */}
-              <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between text-xs pointer-events-none">
-                <div className="flex items-center gap-1.5 rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3 py-1 border border-gray-200/80 dark:border-slate-700 shadow-xs font-bold text-gray-700 dark:text-slate-200">
-                  <Compass className="size-3.5 text-emerald-600 dark:text-emerald-400 animate-spin" style={{ animationDuration: "12s" }} />
-                  <span className="text-[11px] font-extrabold text-gray-800 dark:text-slate-100">{currentCoords}</span>
+              <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4 z-20 flex flex-wrap items-center justify-between gap-1.5 text-xs pointer-events-none">
+                <div className="flex items-center gap-1.5 rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 sm:px-3 py-0.5 sm:py-1 border border-gray-200/80 dark:border-slate-700 shadow-xs font-bold text-gray-700 dark:text-slate-200">
+                  <Compass className="size-3 sm:size-3.5 text-emerald-600 dark:text-emerald-400 animate-spin" style={{ animationDuration: "12s" }} />
+                  <span className="text-[10px] sm:text-[11px] font-extrabold text-gray-800 dark:text-slate-100">{currentCoords}</span>
                 </div>
 
-                <div className="flex items-center gap-1.5 rounded-full bg-emerald-50/95 dark:bg-emerald-950/95 backdrop-blur-md px-3 py-1 border border-emerald-200/80 dark:border-emerald-800 shadow-xs text-[10px] font-black uppercase text-emerald-800 dark:text-emerald-300">
+                <div className="flex items-center gap-1.5 rounded-full bg-emerald-50/95 dark:bg-emerald-950/95 backdrop-blur-md px-2 sm:px-3 py-0.5 sm:py-1 border border-emerald-200/80 dark:border-emerald-800 shadow-xs text-[9px] sm:text-[10px] font-black uppercase text-emerald-800 dark:text-emerald-300">
                   <span className="size-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-ping" />
                   <span>3D Flight Links Active</span>
                 </div>
@@ -691,16 +691,16 @@ export default function GlobalNetworkGlobe() {
               />
 
               {/* Bottom Drag & Controls Hint */}
-              <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between text-xs pointer-events-none">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3 py-1 border border-gray-200/80 dark:border-slate-700 shadow-xs text-[10px] font-bold text-gray-600 dark:text-slate-300">
+              <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4 z-20 flex flex-wrap items-center justify-between gap-1.5 text-xs pointer-events-none">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 sm:px-3 py-0.5 sm:py-1 border border-gray-200/80 dark:border-slate-700 shadow-xs text-[9px] sm:text-[10px] font-bold text-gray-600 dark:text-slate-300">
                   <Radio className="size-3 text-emerald-600 dark:text-emerald-400" />
-                  Drag 3D Earth • Curved Air Links Synced
+                  <span className="hidden sm:inline">Drag 3D Earth • </span>Curved Air Links
                 </span>
 
                 <button
                   type="button"
                   onClick={() => focusOnCoordinates(CHINA_HQ.lat, CHINA_HQ.lon)}
-                  className="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 py-1 border border-gray-200/80 dark:border-slate-700 shadow-xs text-[10px] font-bold text-gray-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:border-emerald-500 transition"
+                  className="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-2.5 py-0.5 sm:py-1 border border-gray-200/80 dark:border-slate-700 shadow-xs text-[9.5px] sm:text-[10px] font-bold text-gray-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:border-emerald-500 transition"
                 >
                   <RotateCcw className="size-3" />
                   <span>Center China HQ</span>
@@ -709,14 +709,14 @@ export default function GlobalNetworkGlobe() {
             </div>
 
             {/* Live Flight Dispatch Ticker */}
-            <div className="mt-4 w-full max-w-[560px] rounded-2xl border border-gray-200/80 dark:border-slate-800 bg-gray-50/70 dark:bg-slate-900/60 p-3 text-xs flex items-center justify-between">
-              <div className="flex items-center gap-2 font-bold text-gray-700 dark:text-slate-300 truncate">
+            <div className="mt-3 sm:mt-4 w-full max-w-[560px] rounded-2xl border border-gray-200/80 dark:border-slate-800 bg-gray-50/70 dark:bg-slate-900/60 p-2.5 sm:p-3 text-[10.5px] sm:text-xs flex items-center justify-between gap-2 min-w-0">
+              <div className="flex items-center gap-2 font-bold text-gray-700 dark:text-slate-300 min-w-0 flex-1 truncate">
                 <span className="size-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse shrink-0" />
                 <span className="truncate">
-                  Active Link: Wuping HQ ➔ {activeRoute.name} ({activeRoute.carrier})
+                  Link: Wuping HQ ➔ {activeRoute.name} ({activeRoute.carrier})
                 </span>
               </div>
-              <span className="text-[10px] font-black uppercase text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950 rounded px-2 py-0.5 shrink-0">
+              <span className="text-[9.5px] sm:text-[10px] font-black uppercase text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950 rounded px-2 py-0.5 shrink-0">
                 Live Flight
               </span>
             </div>
@@ -728,23 +728,31 @@ export default function GlobalNetworkGlobe() {
         {/* ===================================================================== */}
         {/* BOTTOM GLOBAL CARRIER TRUST TICKER                                    */}
         {/* ===================================================================== */}
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-gray-200/80 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-900/40 p-4 text-xs text-gray-600 dark:text-slate-400">
-          <div className="flex items-center gap-2 font-black text-gray-900 dark:text-white">
+        <div className="mt-8 sm:mt-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-4 rounded-2xl border border-gray-200/80 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-900/40 p-3 sm:p-4 text-xs text-gray-600 dark:text-slate-400 w-full min-w-0">
+          <div className="flex items-center gap-2 font-black text-gray-900 dark:text-white shrink-0">
             <Truck className="size-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Authorized Global Logistics Partners:</span>
+            <span>Authorized Logistics Partners:</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 font-extrabold text-gray-700 dark:text-slate-300 text-xs">
-            <span className="hover:text-emerald-700 dark:hover:text-emerald-400 transition">DHL Express Worldwide</span>
-            <span className="text-gray-300 dark:text-slate-600">•</span>
-            <span className="hover:text-emerald-700 dark:hover:text-emerald-400 transition">FedEx International Priority</span>
-            <span className="text-gray-300 dark:text-slate-600">•</span>
-            <span className="hover:text-emerald-700 dark:hover:text-emerald-400 transition">UPS Worldwide Saver</span>
-            <span className="text-gray-300 dark:text-slate-600">•</span>
-            <span className="hover:text-emerald-700 dark:hover:text-emerald-400 transition">SF Express International</span>
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-4 font-extrabold text-gray-700 dark:text-slate-300 text-[10.5px] sm:text-xs">
+            <span className="rounded-md bg-white dark:bg-slate-800 px-2 py-0.5 sm:bg-transparent sm:dark:bg-transparent sm:p-0 hover:text-emerald-700 dark:hover:text-emerald-400 transition whitespace-nowrap shadow-xs sm:shadow-none border border-gray-200/60 dark:border-slate-700/60 sm:border-none">
+              DHL Express Worldwide
+            </span>
+            <span className="text-gray-300 dark:text-slate-600 hidden sm:inline">•</span>
+            <span className="rounded-md bg-white dark:bg-slate-800 px-2 py-0.5 sm:bg-transparent sm:dark:bg-transparent sm:p-0 hover:text-emerald-700 dark:hover:text-emerald-400 transition whitespace-nowrap shadow-xs sm:shadow-none border border-gray-200/60 dark:border-slate-700/60 sm:border-none">
+              FedEx International Priority
+            </span>
+            <span className="text-gray-300 dark:text-slate-600 hidden sm:inline">•</span>
+            <span className="rounded-md bg-white dark:bg-slate-800 px-2 py-0.5 sm:bg-transparent sm:dark:bg-transparent sm:p-0 hover:text-emerald-700 dark:hover:text-emerald-400 transition whitespace-nowrap shadow-xs sm:shadow-none border border-gray-200/60 dark:border-slate-700/60 sm:border-none">
+              UPS Worldwide Saver
+            </span>
+            <span className="text-gray-300 dark:text-slate-600 hidden sm:inline">•</span>
+            <span className="rounded-md bg-white dark:bg-slate-800 px-2 py-0.5 sm:bg-transparent sm:dark:bg-transparent sm:p-0 hover:text-emerald-700 dark:hover:text-emerald-400 transition whitespace-nowrap shadow-xs sm:shadow-none border border-gray-200/60 dark:border-slate-700/60 sm:border-none">
+              SF Express International
+            </span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
+          <div className="flex items-center gap-1.5 text-[10.5px] sm:text-[11px] font-bold text-emerald-700 dark:text-emerald-400 shrink-0">
             <ShieldCheck className="size-3.5" />
             <span>{netGlobe?.carrierTicker?.insured || "100% Insured Air Transit"}</span>
           </div>

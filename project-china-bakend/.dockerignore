@@ -1,0 +1,15 @@
+node_modules
+dist
+uploads/*
+!uploads/.gitkeep
+.git
+.env
+.env.*
+*.log
+*.docx
+test-*.ts
+test-payload.json
+update-product-images.ts
+verifyUser.ts
+create-superuser.ts
+*.tsbuildinfo

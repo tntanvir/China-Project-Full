@@ -17,9 +17,18 @@ import { swaggerSpec, swaggerUiOptions } from "./app/shared/swagger";
 
 const app: Application = express();
 
+// Trust Nginx reverse proxy headers (X-Forwarded-For, X-Forwarded-Proto)
+app.set("trust proxy", 1);
+
 // Middlewares
+const envOrigins = (process.env.CORS_ORIGINS || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
 const allowedOrigins = [
     config.frontend_url,
+    ...envOrigins,
     "http://localhost:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3000",
@@ -70,6 +79,25 @@ app.use(
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUiOptions));
 app.get("/docs", (_req: Request, res: Response) => {
     res.redirect("/api-docs");
+});
+
+// Healthcheck endpoint (for Docker, Nginx, and CI/CD)
+app.get("/health", (_req: Request, res: Response) => {
+    res.status(httpStatus.OK).json({
+        success: true,
+        status: "ok",
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString(),
+    });
+});
+
+app.get("/api/v1/health", (_req: Request, res: Response) => {
+    res.status(httpStatus.OK).json({
+        success: true,
+        status: "ok",
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString(),
+    });
 });
 
 // Root route

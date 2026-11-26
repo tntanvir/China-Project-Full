@@ -33,6 +33,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import { SuperAdminService, type MonitoringStatus, type SecurityCenter, type SuperAdminOverview } from "@/services/super-admin.service";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
@@ -215,7 +216,11 @@ export default function SuperAdminCommandCenter() {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">{item.label}</p>
-                    <p className="mt-1.5 text-xl font-black text-slate-900 dark:text-white">{item.value}</p>
+                    {loading ? (
+                      <Skeleton className="h-7 w-20 mt-1.5 rounded-lg" />
+                    ) : (
+                      <p className="mt-1.5 text-xl font-black text-slate-900 dark:text-white">{item.value}</p>
+                    )}
                     <p className="mt-0.5 text-[10px] font-medium text-slate-500 dark:text-slate-400">{item.helper}</p>
                   </div>
                   <div className={`flex size-9 items-center justify-center rounded-xl ${item.iconBg} shadow-2xs`}>

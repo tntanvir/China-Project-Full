@@ -1,0 +1,115 @@
+name: CI/CD Pipeline (Hostinger VPS Docker Deploy)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================================
+  # Job 1: Build, Typecheck & Validate Compose Configuration
+  # ============================================================================
+  ci:
+    name: Validate & Build (Backend, Frontend, Docker)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Install & build Backend
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/chinaproject?schema=public
+        run: |
+          pnpm --dir project-china-bakend install --frozen-lockfile
+          pnpm --dir project-china-bakend exec prisma generate
+          pnpm --dir project-china-bakend exec tsc --noEmit
+          pnpm --dir project-china-bakend run build
+
+      - name: Install & build Frontend
+        env:
+          NEXT_PUBLIC_API_URL: /api/v1
+          NEXT_PUBLIC_SOCKET_URL: same-origin
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: |
+          pnpm --dir project-china install --frozen-lockfile
+          pnpm --dir project-china exec tsc --noEmit
+          pnpm --dir project-china run build
+
+      - name: Validate Docker Compose config
+        run: docker compose config --quiet
+
+  # ============================================================================
+  # Job 2: Deploy to Hostinger VPS via SSH
+  # ============================================================================
+  deploy:
+    name: Deploy to Hostinger VPS
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy containers on Hostinger VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -e
+            APP_DIR="${{ secrets.VPS_APP_DIR || '/opt/ftpcb' }}"
+            cd "$APP_DIR"
+
+            echo "📥 Pulling latest main branch..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            if [ ! -f .env ]; then
+              echo "❌ Missing $APP_DIR/.env file on VPS! Copy .env.production.example to .env first."
+              exit 1
+            fi
+
+            echo "🐳 Building and starting Docker Compose stack..."
+            docker compose build --pull
+            docker compose up -d --remove-orphans
+
+            echo "⏳ Waiting for services to become healthy..."
+            sleep 10
+            docker compose ps
+
+            echo "🩺 Running health checks..."
+            curl -fsS http://127.0.0.1/nginx-health >/dev/null
+            curl -fsS http://127.0.0.1/health >/dev/null
+
+            echo "🧹 Pruning dangling Docker images..."
+            docker image prune -f
+
+            echo "✅ Hostinger VPS deployment complete!"

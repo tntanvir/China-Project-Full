@@ -39,6 +39,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import { OrderService } from "@/services/order.service";
 import { PaymentService, type PaymentRecord } from "@/services/payment.service";
 import { ProductService, type IProduct } from "@/services/product.service";
@@ -68,12 +69,14 @@ function StatCard({
   caption,
   icon: Icon,
   tone = "primary",
+  loading = false,
 }: {
   title: string;
   value: string;
   caption: string;
   icon: typeof Boxes;
   tone?: "primary" | "success" | "warning" | "danger";
+  loading?: boolean;
 }) {
   const toneClass = {
     primary: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400",
@@ -88,7 +91,11 @@ function StatCard({
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">{title}</p>
-            <p className="mt-2 text-2xl font-black tracking-tight text-slate-900 dark:text-white">{value}</p>
+            {loading ? (
+              <Skeleton className="h-8 w-20 mt-2 rounded-lg" />
+            ) : (
+              <p className="mt-2 text-2xl font-black tracking-tight text-slate-900 dark:text-white">{value}</p>
+            )}
             <p className="mt-1 text-[11px] font-medium text-slate-500 dark:text-slate-400">{caption}</p>
           </div>
           <div className={`flex size-11 items-center justify-center rounded-xl ${toneClass}`}>
@@ -260,7 +267,11 @@ export default function EnterpriseDashboardHome({ mode }: { mode: DashboardMode 
               <CardDescription className="text-xs text-slate-500 dark:text-slate-400">Paid transaction volume</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-black text-slate-900 dark:text-white">{money(analytics.monthlyRevenue)}</p>
+              {loading ? (
+                <Skeleton className="h-9 w-32 rounded-lg" />
+              ) : (
+                <p className="text-3xl font-black text-slate-900 dark:text-white">{money(analytics.monthlyRevenue)}</p>
+              )}
               {loading ? <p className="mt-1 text-[11px] text-emerald-600 dark:text-emerald-400 animate-pulse">Synchronizing live records...</p> : null}
               <Progress value={Math.min(100, (analytics.monthlyRevenue / 5000) * 100)} className="mt-4 h-2 bg-slate-100 dark:bg-slate-800" />
               <div className="mt-4 grid grid-cols-3 gap-2.5 text-center text-xs">
@@ -285,7 +296,7 @@ export default function EnterpriseDashboardHome({ mode }: { mode: DashboardMode 
       {/* KPI Cards */}
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {statCards.map((card) => (
-          <StatCard key={card.title} {...card} />
+          <StatCard key={card.title} {...card} loading={loading} />
         ))}
       </section>
 
@@ -434,7 +445,16 @@ export default function EnterpriseDashboardHome({ mode }: { mode: DashboardMode 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {orders.slice(0, 6).length ? (
+                  {loading ? (
+                    [1, 2, 3, 4].map((i) => (
+                      <TableRow key={i}>
+                        <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                        <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                      </TableRow>
+                    ))
+                  ) : orders.slice(0, 6).length ? (
                     orders.slice(0, 6).map((order) => (
                       <TableRow key={order.id}>
                         <TableCell className="font-mono text-xs">{shortId(order.id)}</TableCell>

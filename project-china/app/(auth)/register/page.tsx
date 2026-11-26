@@ -27,11 +27,13 @@ import { CountryPhoneSelect, allCountryCodes } from "@/components/ui/country-pho
 import { isValidPhoneNumber } from "libphonenumber-js";
 import { AuthService } from "@/services/auth.service";
 import { useAuthStore } from "@/store/authStore";
-import { getRoleDashboardPath } from "@/lib/auth-routes";
+import { getRoleDashboardPath, getSafeRedirectUrl } from "@/lib/auth-routes";
 
 export default function RegisterPage() {
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
+  const user = useAuthStore((state) => state.user);
+  const isAuthLoading = useAuthStore((state) => state.isLoading);
   const [loading, setLoading] = React.useState(false);
   const [redirectUrl, setRedirectUrl] = React.useState<string | null>(null);
   const [selectedCountryCode, setSelectedCountryCode] = React.useState("BD");
@@ -57,6 +59,14 @@ export default function RegisterPage() {
       if (red) setRedirectUrl(red);
     }
   }, []);
+
+  // When already authenticated, immediately redirect to target page or dashboard
+  React.useEffect(() => {
+    if (!isAuthLoading && user) {
+      const targetDestination = getSafeRedirectUrl(redirectUrl, user.role);
+      router.replace(targetDestination);
+    }
+  }, [isAuthLoading, user, redirectUrl, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -184,7 +194,7 @@ export default function RegisterPage() {
         login(loggedInUser);
         toast.success("Account created and signed in successfully!");
 
-        const targetDestination = redirectUrl || getRoleDashboardPath(loggedInUser?.role);
+        const targetDestination = getSafeRedirectUrl(redirectUrl, loggedInUser?.role);
         router.replace(targetDestination);
         return;
       } catch (autoLoginErr) {

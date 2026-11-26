@@ -95,21 +95,21 @@ function getStats(locale: string) {
 function getMarketDistribution(locale: string) {
   if (locale === "zh") {
     return [
-      { name: "工业控制与大功率电源", percent: 37, color: "bg-emerald-500" },
-      { name: "汽车电子与车载智能模块", percent: 35, color: "bg-blue-500" },
+      { name: "工业控制与大功率电源", percent: 37, color: "bg-emerald-600" },
+      { name: "汽车电子与车载智能模块", percent: 35, color: "bg-emerald-500" },
       { name: "医疗仪器与健康智能设备", percent: 10, color: "bg-teal-500" },
-      { name: "5G通信微基站与高速射频", percent: 9, color: "bg-purple-500" },
-      { name: "智能家居与物联网硬件", percent: 6, color: "bg-amber-500" },
-      { name: "高精专防务与特种电子", percent: 3, color: "bg-rose-500" },
+      { name: "5G通信微基站与高速射频", percent: 9, color: "bg-emerald-400" },
+      { name: "智能家居与物联网硬件", percent: 6, color: "bg-green-600" },
+      { name: "高精专防务与特种电子", percent: 3, color: "bg-teal-600" },
     ];
   }
   return [
-    { name: "Industrial Control & Power Supplies", percent: 37, color: "bg-emerald-500" },
-    { name: "Automotive Electronics & Vehicle-Mounted", percent: 35, color: "bg-blue-500" },
+    { name: "Industrial Control & Power Supplies", percent: 37, color: "bg-emerald-600" },
+    { name: "Automotive Electronics & Vehicle-Mounted", percent: 35, color: "bg-emerald-500" },
     { name: "Healthcare & Medical Devices", percent: 10, color: "bg-teal-500" },
-    { name: "5G Base Stations & High-Speed Telecom", percent: 9, color: "bg-purple-500" },
-    { name: "Smart Home & Consumer IoT", percent: 6, color: "bg-amber-500" },
-    { name: "High-Tech Defense & Specialized Electronics", percent: 3, color: "bg-rose-500" },
+    { name: "5G Base Stations & High-Speed Telecom", percent: 9, color: "bg-emerald-400" },
+    { name: "Smart Home & Consumer IoT", percent: 6, color: "bg-green-600" },
+    { name: "High-Tech Defense & Specialized Electronics", percent: 3, color: "bg-teal-600" },
   ];
 }
 
@@ -204,21 +204,21 @@ function getComparisonRows(locale: string) {
 function getServicesTiers(locale: string) {
   if (locale === "zh") {
     return [
-      { title: "极速打样与小批量快件", turnaround: "24 - 48 小时极速出厂", badge: "快件打样", color: "from-amber-500/20 to-orange-500/10 text-amber-600 dark:text-amber-400 border-amber-300 dark:border-amber-800", desc: "专为硬件研发试产团队打造的2-16层快速原型制造，2小时CAM审核响应，空运特快专线。", features: ["2小时急速CAM工程审核", "常规与特种叠层现货支持", "100%飞针网络电测与外观AOI"] },
-      { title: "高多层工业量产制造", turnaround: "月产 100,000 m² 产能", badge: "规模量产", color: "from-blue-500/20 to-indigo-500/10 text-blue-600 dark:text-blue-400 border-blue-300 dark:border-blue-800", desc: "福建武平15,000m²制造基地，全自动垂直连续VCP电镀与高速CNC精密钻孔，良率行业领先。", features: ["单月8万m²高多层综合产能", "激光蚀刻全板二维码追溯", "全制程自动化机械臂上下料"] },
-      { title: "汽车级IATF 16949模块板", turnaround: "车规零缺陷质量管控", badge: "车规制造", color: "from-emerald-500/20 to-teal-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800", desc: "设立专职汽车电子生产专线，服务车载仪表、矩阵大灯与BMS电池管理系统。", features: ["通过IATF 16949:2016车规认证", "288°C 10秒×3次热应力浮焊试验", "4线开尔文微欧级低阻导通测试"] },
-      { title: "5G高频微波与PTFE板材", turnaround: "射频天线特种基板", badge: "深大研发", color: "from-purple-500/20 to-violet-500/10 text-purple-600 dark:text-purple-400 border-purple-300 dark:border-purple-800", desc: "与深圳大学产学研基地联合研制，专注罗杰斯Rogers、泰康尼及PTFE特种基材微波电路。", features: ["龙岩市5G发明专利拥有量第一", "高真空等离子体活化孔壁技术", "严苛高频差分阻抗公差 ±5%"] },
-      { title: "超厚铜大电流功率板", turnaround: "最高达 10 oz 超厚铜", badge: "大功率散热", color: "from-rose-500/20 to-red-500/10 text-rose-600 dark:text-rose-400 border-rose-300 dark:border-rose-800", desc: "用于光伏逆变器、新能源汽车电机驱动与储能母排的大功率高发热厚铜电路板。", features: ["成品铜厚最高达 10 oz (350 µm)", "选用生益TG170高耐热板材", "大铜皮热平衡与散热焊盘优化"] },
-      { title: "一站式 SMT 贴片与元器件代采 (PCBA)", turnaround: "整机组装调试交钥匙", badge: "一站式代工", color: "from-cyan-500/20 to-teal-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-300 dark:border-cyan-800", desc: "富士与雅马哈高速全自动贴片线，支持0201微阻容与0.3mm BGA焊接，全BOM正品一站式齐套代采。", features: ["高精高速全自动SMT贴装产线", "3D AOI 与 X-Ray BGA 焊接无损探伤", "原厂供应链配齐代采与烧录测试"] },
+      { title: "极速打样与小批量快件", turnaround: "24 - 48 小时极速出厂", badge: "快件打样", color: "from-emerald-500/20 to-teal-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800", desc: "专为硬件研发试产团队打造的2-16层快速原型制造，2小时CAM审核响应，空运特快专线。", features: ["2小时急速CAM工程审核", "常规与特种叠层现货支持", "100%飞针网络电测与外观AOI"] },
+      { title: "高多层工业量产制造", turnaround: "月产 100,000 m² 产能", badge: "规模量产", color: "from-teal-500/20 to-emerald-600/10 text-teal-700 dark:text-teal-300 border-teal-300 dark:border-teal-800", desc: "福建武平15,000m²制造基地，全自动垂直连续VCP电镀与高速CNC精密钻孔，良率行业领先。", features: ["单月8万m²高多层综合产能", "激光蚀刻全板二维码追溯", "全制程自动化机械臂上下料"] },
+      { title: "汽车级IATF 16949模块板", turnaround: "车规零缺陷质量管控", badge: "车规制造", color: "from-emerald-600/20 to-green-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800", desc: "设立专职汽车电子生产专线，服务车载仪表、矩阵大灯与BMS电池管理系统。", features: ["通过IATF 16949:2016车规认证", "288°C 10秒×3次热应力浮焊试验", "4线开尔文微欧级低阻导通测试"] },
+      { title: "5G高频微波与PTFE板材", turnaround: "射频天线特种基板", badge: "深大研发", color: "from-teal-600/20 to-emerald-500/10 text-teal-700 dark:text-teal-300 border-teal-300 dark:border-teal-800", desc: "与深圳大学产学研基地联合研制，专注罗杰斯Rogers、泰康尼及PTFE特种基材微波电路。", features: ["龙岩市5G发明专利拥有量第一", "高真空等离子体活化孔壁技术", "严苛高频差分阻抗公差 ±5%"] },
+      { title: "超厚铜大电流功率板", turnaround: "最高达 10 oz 超厚铜", badge: "大功率散热", color: "from-emerald-500/20 to-emerald-700/10 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800", desc: "用于光伏逆变器、新能源汽车电机驱动与储能母排的大功率高发热厚铜电路板。", features: ["成品铜厚最高达 10 oz (350 µm)", "选用生益TG170高耐热板材", "大铜皮热平衡与散热焊盘优化"] },
+      { title: "一站式 SMT 贴片与元器件代采 (PCBA)", turnaround: "整机组装调试交钥匙", badge: "一站式代工", color: "from-emerald-600/20 to-teal-600/10 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800", desc: "富士与雅马哈高速全自动贴片线，支持0201微阻容与0.3mm BGA焊接，全BOM正品一站式齐套代采。", features: ["高精高速全自动SMT贴装产线", "3D AOI 与 X-Ray BGA 焊接无损探伤", "原厂供应链配齐代采与烧录测试"] },
     ];
   }
   return [
-    { title: "Quick-Turn PCB Prototype", turnaround: "24 - 48 Hours", badge: "Fast Turn", color: "from-amber-500/20 to-orange-500/10 text-amber-600 dark:text-amber-400 border-amber-300 dark:border-amber-800", desc: "Accelerated engineering turnaround for 2 to 16 layer prototypes. Automated CAM review within 2 hours and express shipping.", features: ["2-Hour automated CAM analysis", "Standard & advanced stackups", "Flying probe 100% e-tested"] },
-    { title: "High-Volume Multi-Layer Fab", turnaround: "100,000 m² / Month", badge: "Mass Production", color: "from-blue-500/20 to-indigo-500/10 text-blue-600 dark:text-blue-400 border-blue-300 dark:border-blue-800", desc: "15,000m² manufacturing capacity across 3 buildings in Wuping High-Tech Zone. Standardized lines optimized for high yield.", features: ["80k m² Multi-layer capacity", "Laser 2D barcode tracking", "Automated VCP continuous plating"] },
-    { title: "Automotive Electronics (IATF 16949)", turnaround: "Certified Zero-Defect", badge: "Automotive Grade", color: "from-emerald-500/20 to-teal-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800", desc: "Dedicated automotive production cells producing instrument clusters, headlight matrices, and BMS boards under IATF 16949.", features: ["IATF 16949:2016 audited", "288°C 10s × 3 thermal float", "Kelvin 4-wire resistance testing"] },
-    { title: "5G High-Frequency & PTFE Boards", turnaround: "Microwave Specialty", badge: "R&D Specialty", color: "from-purple-500/20 to-violet-500/10 text-purple-600 dark:text-purple-400 border-purple-300 dark:border-purple-800", desc: "Engineered in partnership with Shenzhen University laboratories. Specializing in low-loss PTFE Teflon substrates and Rogers.", features: ["#1 in Longyan 5G invention patents", "PTFE Teflon plasma surface treating", "Controlled impedance ±5%"] },
-    { title: "Heavy Copper & Power Electronics", turnaround: "Up to 10 oz Copper", badge: "Thermal Power", color: "from-rose-500/20 to-red-500/10 text-rose-600 dark:text-rose-400 border-rose-300 dark:border-rose-800", desc: "High-current circuit boards for solar inverters, EV motor drives, and energy storage systems requiring thick copper traces.", features: ["Up to 10 oz (350 µm) finished copper", "High TG170 thermal endurance", "Thermal relief pad optimization"] },
-    { title: "Turnkey PCBA Surface Mount (SMT)", turnaround: "Full Turnkey Box Build", badge: "Turnkey SMT", color: "from-cyan-500/20 to-teal-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-300 dark:border-cyan-800", desc: "High-speed SMT placement supporting 0201 passives, 0.3mm BGA pitches, conformal coating, ICT functional testing, and turnkey BOM.", features: ["Fuji & Yamaha high-speed lines", "3D AOI & X-Ray BGA inspection", "BOM procurement & kitting"] },
+    { title: "Quick-Turn PCB Prototype", turnaround: "24 - 48 Hours", badge: "Fast Turn", color: "from-emerald-500/20 to-teal-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800", desc: "Accelerated engineering turnaround for 2 to 16 layer prototypes. Automated CAM review within 2 hours and express shipping.", features: ["2-Hour automated CAM analysis", "Standard & advanced stackups", "Flying probe 100% e-tested"] },
+    { title: "High-Volume Multi-Layer Fab", turnaround: "100,000 m² / Month", badge: "Mass Production", color: "from-teal-500/20 to-emerald-600/10 text-teal-700 dark:text-teal-300 border-teal-300 dark:border-teal-800", desc: "15,000m² manufacturing capacity across 3 buildings in Wuping High-Tech Zone. Standardized lines optimized for high yield.", features: ["80k m² Multi-layer capacity", "Laser 2D barcode tracking", "Automated VCP continuous plating"] },
+    { title: "Automotive Electronics (IATF 16949)", turnaround: "Certified Zero-Defect", badge: "Automotive Grade", color: "from-emerald-600/20 to-green-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800", desc: "Dedicated automotive production cells producing instrument clusters, headlight matrices, and BMS boards under IATF 16949.", features: ["IATF 16949:2016 audited", "288°C 10s × 3 thermal float", "Kelvin 4-wire resistance testing"] },
+    { title: "5G High-Frequency & PTFE Boards", turnaround: "Microwave Specialty", badge: "R&D Specialty", color: "from-teal-600/20 to-emerald-500/10 text-teal-700 dark:text-teal-300 border-teal-300 dark:border-teal-800", desc: "Engineered in partnership with Shenzhen University laboratories. Specializing in low-loss PTFE Teflon substrates and Rogers.", features: ["#1 in Longyan 5G invention patents", "PTFE Teflon plasma surface treating", "Controlled impedance ±5%"] },
+    { title: "Heavy Copper & Power Electronics", turnaround: "Up to 10 oz Copper", badge: "Thermal Power", color: "from-emerald-500/20 to-emerald-700/10 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800", desc: "High-current circuit boards for solar inverters, EV motor drives, and energy storage systems requiring thick copper traces.", features: ["Up to 10 oz (350 µm) finished copper", "High TG170 thermal endurance", "Thermal relief pad optimization"] },
+    { title: "Turnkey PCBA Surface Mount (SMT)", turnaround: "Full Turnkey Box Build", badge: "Turnkey SMT", color: "from-emerald-600/20 to-teal-600/10 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800", desc: "High-speed SMT placement supporting 0201 passives, 0.3mm BGA pitches, conformal coating, ICT functional testing, and turnkey BOM.", features: ["Fuji & Yamaha high-speed lines", "3D AOI & X-Ray BGA inspection", "BOM procurement & kitting"] },
   ];
 }
 
@@ -306,13 +306,13 @@ export default function AboutFtPcbClient() {
       {/* ========================================================================= */}
       {/* SECTION 0: COMMAND CENTER HERO (id="overview")                             */}
       {/* ========================================================================= */}
-      <section id="overview" className="relative overflow-hidden pt-12 pb-16 lg:pt-16 lg:pb-24 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+      <section id="overview" className="relative overflow-hidden pt-10 pb-16 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-24 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.08),transparent_50%)] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-          <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+          <div className="grid gap-8 lg:gap-8 xl:gap-12 lg:grid-cols-12 items-start lg:items-center">
             {/* Left Column: Corporate Authority */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 space-y-5 sm:space-y-6 min-w-0">
               <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 px-3.5 py-1 text-xs font-black text-emerald-700 dark:text-emerald-300">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -321,60 +321,62 @@ export default function AboutFtPcbClient() {
                 <span>{t?.hero.badge || "FT PCB • National Specialized 'Little Giant' • Direct Factory"}</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] text-slate-900 dark:text-white">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] text-slate-900 dark:text-white">
                 {t?.hero.title || "FT PCB"} <br />
                 <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
                   {t?.hero.highlight || "Precision Manufacturing"}
                 </span>
               </h1>
 
-              <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+              <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl">
                 {t?.hero.description ||
                   "Founded in 1997, FT PCB operates a 15,000m² manufacturing campus in the Wuping High-Tech Zone. Backed by Shenzhen University doctoral R&D and 45+ in-house CAM engineers, FT PCB delivers 100,000m²/mo of precision 2L-30L PCBs, automotive IATF 16949 modules, and turnkey SMT assemblies."}
               </p>
 
-              {/* Primary Action Buttons */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <Button asChild size="lg" className="rounded-full px-8 bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-lg shadow-emerald-600/30">
-                  <a href={pdfDownloadUrl} download="FT-PCB-Company-Profile.pdf">
-                    <Download className="mr-2 size-5" />
-                    {t?.hero.downloadPdf || "Download Profile PDF (6.9 MB)"}
+              {/* Primary Action Buttons (Responsive flex-wrap with zero collision) */}
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-2 w-full min-w-0">
+                <Button asChild className="rounded-full px-4 sm:px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-md shadow-emerald-600/30 text-xs sm:text-sm">
+                  <a href={pdfDownloadUrl} download="FT-PCB-Company-Profile.pdf" className="inline-flex items-center justify-center">
+                    <Download className="mr-2 size-4 shrink-0" />
+                    <span>{t?.hero.downloadPdf || "Download Profile PDF (6.9 MB)"}</span>
                   </a>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="rounded-full px-8">
-                  <a href="#company-profile">
-                    <FileText className="mr-2 size-4 text-emerald-600" />
-                    {t?.hero.browseSlides || "Browse 42 Slides"}
+                <Button asChild variant="outline" className="rounded-full px-4 sm:px-5 py-2.5 text-xs sm:text-sm border-gray-300 dark:border-slate-700 hover:border-emerald-500 hover:text-emerald-600">
+                  <a href="#company-profile" className="inline-flex items-center justify-center">
+                    <FileText className="mr-2 size-4 text-emerald-600 shrink-0" />
+                    <span>{t?.hero.browseSlides || "Browse 42 Slides"}</span>
                   </a>
                 </Button>
-                <Button asChild variant="secondary" size="lg" className="rounded-full px-8">
-                  <Link href="/pcb-quote">{t?.hero.requestQuote || "Request Factory Quote"}</Link>
+                <Button asChild variant="secondary" className="rounded-full px-4 sm:px-5 py-2.5 text-xs sm:text-sm border border-emerald-200 dark:border-emerald-900 bg-emerald-50/80 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-950/70">
+                  <Link href="/pcb-quote" className="inline-flex items-center justify-center">
+                    <span>{t?.hero.requestQuote || "Request Factory Quote"}</span>
+                  </Link>
                 </Button>
               </div>
 
               {/* Fast Trust Indicators */}
-              <div className="pt-4 border-t border-gray-100 dark:border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-semibold text-slate-600 dark:text-slate-400">
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="size-4 text-emerald-600" />
-                  <span>{t?.hero.camReview || "2-Hour CAM Review"}</span>
+              <div className="pt-4 border-t border-gray-100 dark:border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 text-[11px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 min-w-0">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <CheckCircle2 className="size-3.5 sm:size-4 text-emerald-600 shrink-0" />
+                  <span className="truncate">{t?.hero.camReview || "2-Hour CAM Review"}</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Clock className="size-4 text-emerald-600" />
-                  <span>{t?.hero.rapidBuild || "24H - 48H Rapid Build"}</span>
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <Clock className="size-3.5 sm:size-4 text-emerald-600 shrink-0" />
+                  <span className="truncate">{t?.hero.rapidBuild || "24H - 48H Rapid Build"}</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <ShieldCheck className="size-4 text-emerald-600" />
-                  <span>{t?.hero.iatfStandard || "IATF 16949 Certified"}</span>
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <ShieldCheck className="size-3.5 sm:size-4 text-emerald-600 shrink-0" />
+                  <span className="truncate">{t?.hero.iatfStandard || "IATF 16949 Certified"}</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Building2 className="size-4 text-emerald-600" />
-                  <span>{t?.hero.directFactory || "Direct Source Factory"}</span>
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <Building2 className="size-3.5 sm:size-4 text-emerald-600 shrink-0" />
+                  <span className="truncate">{t?.hero.directFactory || "Direct Source Factory"}</span>
                 </div>
               </div>
             </div>
 
             {/* Right Column: Interactive Circuit Network & Dossier Card */}
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-5 w-full min-w-0">
               <AboutHeroInteractiveCard pdfDownloadUrl={pdfDownloadUrl} />
             </div>
           </div>
@@ -382,25 +384,25 @@ export default function AboutFtPcbClient() {
       </section>
 
       {/* Verified Factory Metrics Banner */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 relative z-20">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 -mt-4 sm:-mt-8 relative z-20 w-full min-w-0">
+        <div className="grid gap-2.5 sm:gap-4 grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 w-full min-w-0">
           {stats.map((stat, i) => {
             const Icon = stat.icon;
             return (
               <Card
                 key={i}
-                className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg hover:shadow-xl transition-all space-y-1 text-center group"
+                className="p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg hover:shadow-xl transition-all space-y-1 text-center group min-w-0"
               >
-                <div className="size-8 mx-auto rounded-xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2">
-                  <Icon className="size-4" />
+                <div className="size-7 sm:size-8 mx-auto rounded-xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-1.5 sm:mb-2 shrink-0">
+                  <Icon className="size-3.5 sm:size-4" />
                 </div>
-                <div className="text-xl font-black font-mono text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors">
+                <div className="text-base sm:text-xl font-black font-mono text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors truncate">
                   {stat.value}
                 </div>
-                <div className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <div className="text-[11px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 truncate">
                   {stat.label}
                 </div>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
+                <div className="text-[9.5px] sm:text-[10px] text-slate-500 dark:text-slate-400 leading-tight line-clamp-2">
                   {stat.sub}
                 </div>
               </Card>
@@ -410,24 +412,24 @@ export default function AboutFtPcbClient() {
       </section>
 
       {/* Market Distribution & Certifications Bar */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-16">
-        <div className="grid gap-8 lg:grid-cols-12 items-center">
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 pt-12 sm:pt-16 w-full min-w-0">
+        <div className="grid gap-6 sm:gap-8 lg:grid-cols-12 items-center w-full min-w-0">
           {/* Market Sectors */}
-          <Card className="lg:col-span-6 p-6 sm:p-8 rounded-3xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md space-y-5">
+          <Card className="lg:col-span-6 p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md space-y-4 sm:space-y-5 w-full min-w-0">
             <div>
               <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                 {locale === "zh" ? "多元化行业客户群" : "Diversified Client Portfolio"}
               </span>
-              <h3 className="text-xl font-black text-slate-900 dark:text-white mt-0.5">
+              <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-0.5">
                 {locale === "zh" ? "目标市场行业分布" : "Target Market Distribution"}
               </h3>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2.5 sm:space-y-3 w-full min-w-0">
               {marketDistribution.map((m, idx) => (
-                <div key={idx} className="space-y-1">
-                  <div className="flex justify-between text-xs font-semibold">
-                    <span className="text-slate-700 dark:text-slate-300">{m.name}</span>
-                    <span className="font-mono text-slate-900 dark:text-white">{m.percent}%</span>
+                <div key={idx} className="space-y-1 w-full min-w-0">
+                  <div className="flex justify-between text-xs font-semibold gap-2">
+                    <span className="text-slate-700 dark:text-slate-300 truncate">{m.name}</span>
+                    <span className="font-mono text-slate-900 dark:text-white shrink-0">{m.percent}%</span>
                   </div>
                   <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
                     <div className={`${m.color} h-full rounded-full`} style={{ width: `${m.percent}%` }} />
@@ -438,20 +440,20 @@ export default function AboutFtPcbClient() {
           </Card>
 
           {/* Quality Certifications Grid */}
-          <div className="lg:col-span-6 grid sm:grid-cols-2 gap-4">
+          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full min-w-0">
             {certifications.map((cert, idx) => (
               <Card
                 key={idx}
-                className="p-5 rounded-3xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-all space-y-2"
+                className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-all space-y-2 min-w-0"
               >
-                <div className="flex items-center justify-between">
-                  <ShieldCheck className="size-5 text-emerald-600" />
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                <div className="flex items-center justify-between gap-2">
+                  <ShieldCheck className="size-4 sm:size-5 text-emerald-600 shrink-0" />
+                  <span className="text-[9.5px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 truncate">
                     {cert.badge}
                   </span>
                 </div>
-                <h4 className="text-sm font-black text-slate-900 dark:text-white">{cert.title}</h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">{cert.desc}</p>
+                <h4 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white truncate">{cert.title}</h4>
+                <p className="text-[10.5px] sm:text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-3">{cert.desc}</p>
               </Card>
             ))}
           </div>
@@ -461,63 +463,63 @@ export default function AboutFtPcbClient() {
       {/* ========================================================================= */}
       {/* SECTION 1: COMPANY PROFILE & 42-SLIDE MONOGRAPH (id="company-profile")     */}
       {/* ========================================================================= */}
-      <section id="company-profile" className="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+      <section id="company-profile" className="max-w-7xl mx-auto px-3 sm:px-6 pt-16 sm:pt-24 w-full min-w-0">
         {/* Section Header */}
-        <div className="rounded-3xl bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 p-8 sm:p-12 text-white shadow-xl mb-12 border border-blue-900/40">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/20 border border-blue-400/40 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-blue-300">
-                <Award className="size-3.5 text-blue-400" />
-                <span>{t?.section1.badge || "Section 01 • Executive Monograph & Archive"}</span>
+        <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 p-5 sm:p-8 lg:p-12 text-white shadow-xl mb-8 sm:mb-12 border border-emerald-900/40 w-full min-w-0">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5 sm:gap-6">
+            <div className="space-y-2.5 sm:space-y-3 max-w-2xl min-w-0">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 px-3 py-1 text-xs font-black uppercase tracking-wider text-emerald-300">
+                <Award className="size-3.5 text-emerald-400 shrink-0" />
+                <span className="truncate">{t?.section1.badge || "Section 01 • Executive Monograph & Archive"}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight">
                 {t?.section1.title || "Official FT PCB Profile & 28-Year Chronology"}
               </h2>
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+              <p className="text-slate-300 text-xs sm:text-sm lg:text-base leading-relaxed">
                 {t?.section1.description ||
                   "Review our complete corporate dossier, 28-year timeline from 1997 to 2026, and all 42 slides of the official company presentation with high-resolution slide inspection."}
               </p>
             </div>
-            <Button asChild size="lg" className="rounded-full px-8 bg-blue-500 hover:bg-blue-400 text-slate-950 font-black shadow-lg">
-              <a href={pdfDownloadUrl} download="FT-PCB-Company-Profile.pdf">
-                <Download className="mr-2 size-4" /> {t?.section1.downloadBtn || "Download 42 Slides PDF"}
+            <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-5 sm:px-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg text-xs sm:text-sm shrink-0">
+              <a href={pdfDownloadUrl} download="FT-PCB-Company-Profile.pdf" className="inline-flex items-center justify-center">
+                <Download className="mr-2 size-4 shrink-0" /> <span>{t?.section1.downloadBtn || "Download 42 Slides PDF"}</span>
               </a>
             </Button>
           </div>
         </div>
 
         {/* 28-Year Historical Timeline */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16 w-full min-w-0">
           <CorporateHistoryTimeline />
         </div>
 
         {/* The 42-Slide Interactive PDF Reader */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16 w-full min-w-0">
           <CompanyProfilePdfViewer />
         </div>
 
         {/* Official Due Diligence Registration Table */}
-        <Card className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden">
-          <div className="px-6 py-4 bg-slate-50 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Building2 className="size-4 text-blue-600" />
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+        <Card className="rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden w-full min-w-0">
+          <div className="px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <Building2 className="size-4 text-emerald-600 shrink-0" />
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 truncate">
                 {t?.section1.dossierTitle || "Corporate Due Diligence & Registration Record"}
               </span>
             </div>
-            <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+            <span className="text-[11px] sm:text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold shrink-0">
               {t?.section1.dossierBadge || (locale === "zh" ? "国家专精特新“小巨人”企业" : "Little Giant Certified")}
             </span>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-sm">
+          <div className="overflow-x-auto no-scrollbar">
+            <table className="w-full text-left border-collapse text-xs sm:text-sm min-w-[500px]">
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {dossierFacts.map((fact, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3.5 px-6 font-bold text-slate-500 dark:text-slate-400 w-1/3 text-xs sm:text-sm">
+                    <td className="py-2.5 sm:py-3.5 px-3.5 sm:px-6 font-bold text-slate-500 dark:text-slate-400 w-1/3 text-xs sm:text-sm">
                       {fact.label}
                     </td>
-                    <td className="py-3.5 px-6 font-bold text-slate-900 dark:text-white text-xs sm:text-sm">
+                    <td className="py-2.5 sm:py-3.5 px-3.5 sm:px-6 font-bold text-slate-900 dark:text-white text-xs sm:text-sm">
                       {fact.value}
                     </td>
                   </tr>
@@ -531,55 +533,57 @@ export default function AboutFtPcbClient() {
       {/* ========================================================================= */}
       {/* SECTION 2: ACADEMIC PEDIGREE & EXECUTIVE TEAM (id="executive-team")        */}
       {/* ========================================================================= */}
-      <section id="executive-team" className="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+      <section id="executive-team" className="max-w-7xl mx-auto px-3 sm:px-6 pt-16 sm:pt-24 w-full min-w-0">
         {/* Section Header */}
-        <div className="rounded-3xl bg-gradient-to-r from-purple-950 via-slate-950 to-indigo-950 p-8 sm:p-12 text-white shadow-xl mb-12 border border-purple-900/40">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-purple-500/20 border border-purple-400/40 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-purple-300">
-                <GraduationCap className="size-3.5 text-purple-400" />
-                <span>{t?.section2.badge || "Section 02 • Academic R&D & Executive Board"}</span>
+        <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-teal-950 via-slate-950 to-emerald-950 p-5 sm:p-8 lg:p-12 text-white shadow-xl mb-8 sm:mb-12 border border-emerald-900/40 w-full min-w-0">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5 sm:gap-6">
+            <div className="space-y-2.5 sm:space-y-3 max-w-2xl min-w-0">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 px-3 py-1 text-xs font-black uppercase tracking-wider text-emerald-300">
+                <GraduationCap className="size-3.5 text-emerald-400 shrink-0" />
+                <span className="truncate">{t?.section2.badge || "Section 02 • Academic R&D & Executive Board"}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight">
                 {t?.section2.title || "The Engineering Minds Behind FT PCB"}
               </h2>
-              <p className="text-purple-200 text-sm sm:text-base leading-relaxed">
+              <p className="text-emerald-200 text-xs sm:text-sm lg:text-base leading-relaxed">
                 {t?.section2.description ||
                   "Founded by Prof. Chen Jingqiu (Doctor of Engineering, Shenzhen University). Explore the FT PCB executive board, 30+ invention patents, and the Shenzhen University Joint Microwave Laboratory."}
               </p>
             </div>
-            <Button asChild size="lg" className="rounded-full px-8 bg-purple-500 hover:bg-purple-400 text-white font-black shadow-lg">
-              <Link href="/contact">{t?.section2.connectBtn || "Connect with CAM Board"}</Link>
+            <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-5 sm:px-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg text-xs sm:text-sm shrink-0">
+              <Link href="/contact" className="inline-flex items-center justify-center">
+                <span>{t?.section2.connectBtn || "Connect with CAM Board"}</span>
+              </Link>
             </Button>
           </div>
         </div>
 
         {/* Master-Detail Interactive Leadership Spotlight */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16 w-full min-w-0">
           <LeadershipSpotlight />
         </div>
 
         {/* Shenzhen University Joint R&D Laboratory Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-16">
+        <div className="grid gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-12 sm:mb-16 w-full min-w-0">
           {labCapabilities.map((lab, i) => {
             const Icon = lab.icon;
             return (
               <Card
                 key={i}
-                className="p-6 rounded-3xl border border-purple-100 dark:border-purple-950/60 bg-white dark:bg-slate-900 shadow-md hover:shadow-xl transition-all space-y-3"
+                className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-emerald-100 dark:border-emerald-950/60 bg-white dark:bg-slate-900 shadow-md hover:shadow-xl transition-all space-y-2.5 sm:space-y-3 min-w-0"
               >
-                <div className="flex items-center justify-between">
-                  <div className="size-10 rounded-2xl bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-                    <Icon className="size-5" />
+                <div className="flex items-center justify-between gap-2">
+                  <div className="size-8 sm:size-10 rounded-xl sm:rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                    <Icon className="size-4 sm:size-5" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+                  <span className="text-[9.5px] sm:text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shrink-0">
                     {lab.metric}
                   </span>
                 </div>
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-snug">
                   {lab.title}
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3">
                   {lab.desc}
                 </p>
               </Card>
@@ -591,58 +595,60 @@ export default function AboutFtPcbClient() {
       {/* ========================================================================= */}
       {/* SECTION 3: CORE ADVANTAGES & 3D WEBGL LAB (id="core-advantages")           */}
       {/* ========================================================================= */}
-      <section id="core-advantages" className="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+      <section id="core-advantages" className="max-w-7xl mx-auto px-3 sm:px-6 pt-16 sm:pt-24 w-full min-w-0">
         {/* Section Header */}
-        <div className="rounded-3xl bg-gradient-to-r from-teal-950 via-slate-900 to-cyan-950 p-8 sm:p-12 text-white shadow-xl mb-12 border border-teal-900/40">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-teal-500/20 border border-teal-400/40 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-teal-300">
-                <Zap className="size-3.5 text-teal-400" />
-                <span>{t?.section3.badge || "Section 03 • Technical Benchmarks & 3D Lab"}</span>
+        <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 p-5 sm:p-8 lg:p-12 text-white shadow-xl mb-8 sm:mb-12 border border-emerald-900/40 w-full min-w-0">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5 sm:gap-6">
+            <div className="space-y-2.5 sm:space-y-3 max-w-2xl min-w-0">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 px-3 py-1 text-xs font-black uppercase tracking-wider text-emerald-300">
+                <Zap className="size-3.5 text-emerald-400 shrink-0" />
+                <span className="truncate">{t?.section3.badge || "Section 03 • Technical Benchmarks & 3D Lab"}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight">
                 {t?.section3.title || "FT PCB Core Advantages & Interactive 3D Inspection"}
               </h2>
-              <p className="text-teal-200 text-sm sm:text-base leading-relaxed">
+              <p className="text-emerald-200 text-xs sm:text-sm lg:text-base leading-relaxed">
                 {t?.section3.description ||
                   "Inspect multi-layer solder mask finishes, SMT components, and internal traces in our real-time Three.js WebGL laboratory, then review our head-to-head engineering comparison."}
               </p>
             </div>
-            <Button asChild size="lg" className="rounded-full px-8 bg-teal-400 hover:bg-teal-300 text-slate-950 font-black shadow-lg">
-              <Link href="/pcb-quote">{t?.section3.dfmBtn || "Request DFM Review"}</Link>
+            <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-5 sm:px-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg text-xs sm:text-sm shrink-0">
+              <Link href="/pcb-quote" className="inline-flex items-center justify-center">
+                <span>{t?.section3.dfmBtn || "Request DFM Review"}</span>
+              </Link>
             </Button>
           </div>
         </div>
 
         {/* 3D WebGL PCB Inspector (Front and Center) */}
-        <div className="max-w-4xl mx-auto mb-16">
+        <div className="max-w-4xl mx-auto mb-12 sm:mb-16 w-full min-w-0">
           <AboutPcb3DViewer />
         </div>
 
         {/* Head-to-Head Rigorous Benchmark Table */}
-        <Card className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden mb-16">
-          <div className="px-6 py-4 bg-slate-50 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <BarChart3 className="size-4 text-teal-600" />
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+        <Card className="rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden mb-12 sm:mb-16 w-full min-w-0">
+          <div className="px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <BarChart3 className="size-4 text-emerald-600 shrink-0" />
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 truncate">
                 {t?.section3.tableTitle || "Head-to-Head Technical Benchmark: FT PCB vs. Ordinary PCB Brokers"}
               </span>
             </div>
-            <span className="text-xs font-mono text-teal-600 dark:text-teal-400 font-bold">
+            <span className="text-[11px] sm:text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold shrink-0">
               {t?.section3.tableBadge || "Audited Standards"}
             </span>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-sm">
+          <div className="overflow-x-auto no-scrollbar">
+            <table className="w-full text-left border-collapse text-xs sm:text-sm min-w-[540px]">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
-                  <th className="py-3 px-6 font-bold text-slate-700 dark:text-slate-300 w-1/3">
+                  <th className="py-2.5 sm:py-3 px-3.5 sm:px-6 font-bold text-slate-700 dark:text-slate-300 w-1/3">
                     {t?.section3.colParameter || "Engineering Parameter"}
                   </th>
-                  <th className="py-3 px-6 font-bold text-teal-600 dark:text-teal-400 w-1/3 bg-teal-50/40 dark:bg-teal-950/20">
+                  <th className="py-2.5 sm:py-3 px-3.5 sm:px-6 font-bold text-emerald-600 dark:text-emerald-400 w-1/3 bg-emerald-50/40 dark:bg-emerald-950/20">
                     {t?.section3.colDirectFactory || "FT PCB (Direct Factory)"}
                   </th>
-                  <th className="py-3 px-6 font-bold text-slate-500 dark:text-slate-400 w-1/3">
+                  <th className="py-2.5 sm:py-3 px-3.5 sm:px-6 font-bold text-slate-500 dark:text-slate-400 w-1/3">
                     {t?.section3.colBroker || "Standard Broker / Prototype Shop"}
                   </th>
                 </tr>
@@ -650,16 +656,16 @@ export default function AboutFtPcbClient() {
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {comparisonRows.map((row, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3.5 px-6 font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
+                    <td className="py-2.5 sm:py-3.5 px-3.5 sm:px-6 font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
                       {row.feature}
                     </td>
-                    <td className="py-3.5 px-6 bg-teal-50/20 dark:bg-teal-950/10 font-semibold text-teal-800 dark:text-teal-200 text-xs sm:text-sm">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle2 className="size-4 text-teal-600 shrink-0" />
+                    <td className="py-2.5 sm:py-3.5 px-3.5 sm:px-6 bg-emerald-50/20 dark:bg-emerald-950/10 font-semibold text-emerald-800 dark:text-emerald-200 text-xs sm:text-sm">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <CheckCircle2 className="size-3.5 sm:size-4 text-emerald-600 shrink-0" />
                         <span>{row.feitian}</span>
                       </div>
                     </td>
-                    <td className="py-3.5 px-6 text-slate-500 dark:text-slate-400 text-xs sm:text-sm">
+                    <td className="py-2.5 sm:py-3.5 px-3.5 sm:px-6 text-slate-500 dark:text-slate-400 text-xs sm:text-sm">
                       <span>{row.standard}</span>
                     </td>
                   </tr>
@@ -673,65 +679,67 @@ export default function AboutFtPcbClient() {
       {/* ========================================================================= */}
       {/* SECTION 4: TURNKEY SERVICES & MANUFACTURING PIPELINE (id="turnkey-services")*/}
       {/* ========================================================================= */}
-      <section id="turnkey-services" className="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+      <section id="turnkey-services" className="max-w-7xl mx-auto px-3 sm:px-6 pt-16 sm:pt-24 w-full min-w-0">
         {/* Section Header */}
-        <div className="rounded-3xl bg-gradient-to-r from-amber-950 via-slate-900 to-yellow-950 p-8 sm:p-12 text-white shadow-xl mb-12 border border-amber-900/40">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-amber-300">
-                <Factory className="size-3.5 text-amber-400" />
-                <span>{t?.section4.badge || "Section 04 • Turnkey Manufacturing Conveyor"}</span>
+        <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 p-5 sm:p-8 lg:p-12 text-white shadow-xl mb-8 sm:mb-12 border border-emerald-900/40 w-full min-w-0">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5 sm:gap-6">
+            <div className="space-y-2.5 sm:space-y-3 max-w-2xl min-w-0">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 px-3 py-1 text-xs font-black uppercase tracking-wider text-emerald-300">
+                <Factory className="size-3.5 text-emerald-400 shrink-0" />
+                <span className="truncate">{t?.section4.badge || "Section 04 • Turnkey Manufacturing Conveyor"}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight">
                 {t?.section4.title || "FT PCB 7-Stage Precision Manufacturing Pipeline"}
               </h2>
-              <p className="text-amber-200 text-sm sm:text-base leading-relaxed">
+              <p className="text-emerald-200 text-xs sm:text-sm lg:text-base leading-relaxed">
                 {t?.section4.description ||
                   "Click through each automated station from Gerber ingestion and laser direct imaging to continuous VCP plating, optical AVI scanning, and 4-wire Kelvin continuity testing."}
               </p>
             </div>
-            <Button asChild size="lg" className="rounded-full px-8 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg">
-              <Link href="/pcb-quote">{t?.section4.quoteBtn || "Quote Turnkey PCBA"}</Link>
+            <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-5 sm:px-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg text-xs sm:text-sm shrink-0">
+              <Link href="/pcb-quote" className="inline-flex items-center justify-center">
+                <span>{t?.section4.quoteBtn || "Quote Turnkey PCBA"}</span>
+              </Link>
             </Button>
           </div>
         </div>
 
         {/* 7-Stage Horizontal Conveyor */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16 w-full min-w-0">
           <ManufacturingPipelineStepper />
         </div>
 
         {/* Turnkey Service Capability Tiers */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16 w-full min-w-0">
           {servicesTiers.map((srv, i) => (
             <Card
               key={i}
-              className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md hover:shadow-xl transition-all space-y-4 flex flex-col justify-between"
+              className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md hover:shadow-xl transition-all space-y-3.5 sm:space-y-4 flex flex-col justify-between min-w-0"
             >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className={`text-[11px] font-bold px-3 py-1 rounded-full border bg-gradient-to-r ${srv.color}`}>
+              <div className="space-y-3.5 sm:space-y-4">
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`text-[10px] sm:text-[11px] font-bold px-2.5 sm:px-3 py-1 rounded-full border bg-gradient-to-r ${srv.color} truncate`}>
                     {srv.badge}
                   </span>
-                  <span className="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
-                    <Clock className="size-3.5" /> {srv.turnaround}
+                  <span className="text-[11px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 shrink-0">
+                    <Clock className="size-3 sm:size-3.5" /> {srv.turnaround}
                   </span>
                 </div>
-                <div className="space-y-1.5">
-                  <h3 className="text-base font-bold text-slate-900 dark:text-white">{srv.title}</h3>
+                <div className="space-y-1 sm:space-y-1.5">
+                  <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">{srv.title}</h3>
                   <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{srv.desc}</p>
                 </div>
-                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-1.5">
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-1 sm:space-y-1.5">
                   {srv.features.map((feat, fi) => (
-                    <div key={fi} className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
-                      <Check className="size-3.5 text-amber-600 shrink-0" />
+                    <div key={fi} className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-slate-700 dark:text-slate-300">
+                      <Check className="size-3 sm:size-3.5 text-emerald-600 shrink-0" />
                       <span>{feat}</span>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
-                <Button asChild variant="outline" size="sm" className="w-full rounded-full cursor-pointer">
+              <div className="pt-3 sm:pt-4 border-t border-slate-100 dark:border-slate-800">
+                <Button asChild variant="outline" size="sm" className="w-full rounded-full cursor-pointer text-xs">
                   <Link href="/pcb-quote">
                     {locale === "zh" ? "获取此项服务报价" : "Quote This Service"}{" "}
                     <ArrowRight className="size-3.5 ml-1" />
@@ -743,26 +751,26 @@ export default function AboutFtPcbClient() {
         </div>
 
         {/* Surface Metallurgy Matrix */}
-        <Card className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden mb-16">
-          <div className="px-6 py-4 bg-slate-50 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800">
+        <Card className="rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden mb-12 sm:mb-16 w-full min-w-0">
+          <div className="px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
               {t?.section4.surfaceFinishesTitle || "Available PCB Surface Finishes & Thickness Specs"}
             </span>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-sm">
+          <div className="overflow-x-auto no-scrollbar">
+            <table className="w-full text-left border-collapse text-xs sm:text-sm min-w-[500px]">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
-                  <th className="py-3 px-6 font-bold text-slate-700 dark:text-slate-300">
+                  <th className="py-2.5 sm:py-3 px-3.5 sm:px-6 font-bold text-slate-700 dark:text-slate-300">
                     {locale === "zh" ? "表面处理工艺" : "Finish Name"}
                   </th>
-                  <th className="py-3 px-6 font-bold text-slate-700 dark:text-slate-300">
+                  <th className="py-2.5 sm:py-3 px-3.5 sm:px-6 font-bold text-slate-700 dark:text-slate-300">
                     {locale === "zh" ? "工艺镀层厚度" : "Plating Thickness"}
                   </th>
-                  <th className="py-3 px-6 font-bold text-slate-700 dark:text-slate-300">
+                  <th className="py-2.5 sm:py-3 px-3.5 sm:px-6 font-bold text-slate-700 dark:text-slate-300">
                     {locale === "zh" ? "保质期限" : "Shelf Life"}
                   </th>
-                  <th className="py-3 px-6 font-bold text-slate-700 dark:text-slate-300">
+                  <th className="py-2.5 sm:py-3 px-3.5 sm:px-6 font-bold text-slate-700 dark:text-slate-300">
                     {locale === "zh" ? "最佳推荐应用场景" : "Best Applications"}
                   </th>
                 </tr>
@@ -770,10 +778,10 @@ export default function AboutFtPcbClient() {
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {finishes.map((f, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3 px-6 font-bold text-slate-900 dark:text-white text-xs sm:text-sm">{f.name}</td>
-                    <td className="py-3 px-6 font-mono text-xs text-slate-600 dark:text-slate-400">{f.thickness}</td>
-                    <td className="py-3 px-6 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">{f.shelf}</td>
-                    <td className="py-3 px-6 text-xs text-slate-600 dark:text-slate-400">{f.bestFor}</td>
+                    <td className="py-2.5 sm:py-3 px-3.5 sm:px-6 font-bold text-slate-900 dark:text-white text-xs sm:text-sm">{f.name}</td>
+                    <td className="py-2.5 sm:py-3 px-3.5 sm:px-6 font-mono text-xs text-slate-600 dark:text-slate-400">{f.thickness}</td>
+                    <td className="py-2.5 sm:py-3 px-3.5 sm:px-6 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">{f.shelf}</td>
+                    <td className="py-2.5 sm:py-3 px-3.5 sm:px-6 text-xs text-slate-600 dark:text-slate-400">{f.bestFor}</td>
                   </tr>
                 ))}
               </tbody>
@@ -782,7 +790,7 @@ export default function AboutFtPcbClient() {
         </Card>
 
         {/* Electronics Business Scope (PCB Design & Prototyping, Device Repair, Component Sourcing, Embedded Systems) */}
-        <div className="mt-8">
+        <div className="mt-8 w-full min-w-0">
           <ElectronicsBusinessScope />
         </div>
       </section>
@@ -790,32 +798,32 @@ export default function AboutFtPcbClient() {
       {/* ========================================================================= */}
       {/* SECTION 5: CAMPUS TOUR & MACHINERY SCANNER (id="factory-tour")            */}
       {/* ========================================================================= */}
-      <section id="factory-tour" className="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+      <section id="factory-tour" className="max-w-7xl mx-auto px-3 sm:px-6 pt-16 sm:pt-24 w-full min-w-0">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 space-y-2.5 sm:space-y-3 px-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-emerald-700 dark:text-emerald-300">
-            <Building2 className="size-3.5" /> {t?.section5.badge || "15,000m² Wuping Production Campus"}
+            <Building2 className="size-3.5" /> <span>{t?.section5.badge || "15,000m² Wuping Production Campus"}</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white leading-tight">
             {t?.section5.title || "FT PCB Virtual Factory Tour & Machinery Park"}
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm lg:text-base leading-relaxed">
             {t?.section5.description ||
               "Take a self-guided walkthrough of Building 1, 2, and 3, and inspect our automated VCP plating, high-speed CNC drilling, and Class 10,000 cleanroom equipment with real scanning reticles."}
           </p>
         </div>
 
         {/* Virtual Campus Tour */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16 w-full min-w-0">
           <VirtualFactoryTour />
         </div>
 
         {/* Machinery Gallery with Scanlines */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16 w-full min-w-0">
           <InteractiveEquipmentGallery />
         </div>
 
         {/* Process Capabilities Tolerance Search */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16 w-full min-w-0">
           <InteractiveProcessCapabilities />
         </div>
       </section>
@@ -823,51 +831,53 @@ export default function AboutFtPcbClient() {
       {/* ========================================================================= */}
       {/* SECTION 6: WHY CHOOSE US & COST CALCULATOR (id="why-choose-us")             */}
       {/* ========================================================================= */}
-      <section id="why-choose-us" className="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+      <section id="why-choose-us" className="max-w-7xl mx-auto px-3 sm:px-6 pt-16 sm:pt-24 w-full min-w-0">
         {/* Section Header */}
-        <div className="rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 p-8 sm:p-12 text-white shadow-xl mb-12 border border-emerald-900/40">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-emerald-300">
-                <ShieldCheck className="size-3.5 text-emerald-400" />
-                <span>{t?.section6.badge || "Section 05 • Direct Factory Trust & Warranties"}</span>
+        <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 p-5 sm:p-8 lg:p-12 text-white shadow-xl mb-8 sm:mb-12 border border-emerald-900/40 w-full min-w-0">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5 sm:gap-6">
+            <div className="space-y-2.5 sm:space-y-3 max-w-2xl min-w-0">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 px-3 py-1 text-xs font-black uppercase tracking-wider text-emerald-300">
+                <ShieldCheck className="size-3.5 text-emerald-400 shrink-0" />
+                <span className="truncate">{t?.section6.badge || "Section 05 • Direct Factory Trust & Warranties"}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight">
                 {t?.section6.title || "Why Hardware Teams Choose FT PCB Directly"}
               </h2>
-              <p className="text-emerald-200 text-sm sm:text-base leading-relaxed">
+              <p className="text-emerald-200 text-xs sm:text-sm lg:text-base leading-relaxed">
                 {t?.section6.description ||
                   "Eliminate the 15% - 35% middleman broker surcharge. Use our interactive volume calculator to calculate direct factory savings and review our 3 Ironclad Warranties."}
               </p>
             </div>
-            <Button asChild size="lg" className="rounded-full px-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg">
-              <Link href="/pcb-quote">{t?.section6.lockRatesBtn || "Lock In Direct Rates"}</Link>
+            <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-5 sm:px-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg text-xs sm:text-sm shrink-0">
+              <Link href="/pcb-quote" className="inline-flex items-center justify-center">
+                <span>{t?.section6.lockRatesBtn || "Lock In Direct Rates"}</span>
+              </Link>
             </Button>
           </div>
         </div>
 
         {/* Interactive Volume Savings Calculator & 3 Guarantees */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16 w-full min-w-0">
           <CostComparisonVisualizer />
         </div>
 
         {/* Hardware Engineer FAQs */}
-        <div className="max-w-4xl mx-auto mb-16 space-y-4">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-black text-slate-900 dark:text-white">
+        <div className="max-w-4xl mx-auto mb-12 sm:mb-16 space-y-3 sm:space-y-4 w-full min-w-0">
+          <div className="text-center mb-6 sm:mb-8">
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
               {t?.section6.faqTitle || "Frequently Asked Questions from Hardware Engineers"}
             </h3>
           </div>
           {faqs.map((faq, idx) => (
             <Card
               key={idx}
-              className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-2"
+              className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-2 min-w-0"
             >
-              <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-start gap-2">
-                <span className="text-emerald-600 dark:text-emerald-400 font-mono">Q:</span>
+              <h4 className="text-xs sm:text-base font-bold text-slate-900 dark:text-white flex items-start gap-2">
+                <span className="text-emerald-600 dark:text-emerald-400 font-mono shrink-0">Q:</span>
                 <span>{faq.q}</span>
               </h4>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pl-6">
+              <p className="text-[11px] sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pl-5 sm:pl-6">
                 {faq.a}
               </p>
             </Card>
@@ -878,31 +888,33 @@ export default function AboutFtPcbClient() {
       {/* ========================================================================= */}
       {/* SECTION 7: GLOBAL CASE STUDIES & CLIENT REVIEWS (id="client-reviews")       */}
       {/* ========================================================================= */}
-      <section id="client-reviews" className="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+      <section id="client-reviews" className="max-w-7xl mx-auto px-3 sm:px-6 pt-16 sm:pt-24 w-full min-w-0">
         {/* Section Header */}
-        <div className="rounded-3xl bg-gradient-to-r from-sky-950 via-slate-900 to-blue-950 p-8 sm:p-12 text-white shadow-xl mb-12 border border-sky-900/40">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-sky-500/20 border border-sky-400/40 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-sky-300">
-                <Globe2 className="size-3.5 text-sky-400" />
-                <span>{t?.section7.badge || "Section 06 • Global Case Studies & Reviews"}</span>
+        <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 p-5 sm:p-8 lg:p-12 text-white shadow-xl mb-8 sm:mb-12 border border-emerald-900/40 w-full min-w-0">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5 sm:gap-6">
+            <div className="space-y-2.5 sm:space-y-3 max-w-2xl min-w-0">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 px-3 py-1 text-xs font-black uppercase tracking-wider text-emerald-300">
+                <Globe2 className="size-3.5 text-emerald-400 shrink-0" />
+                <span className="truncate">{t?.section7.badge || "Section 06 • Global Case Studies & Reviews"}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight">
                 {t?.section7.title || "FT PCB Worldwide Engineering Case Studies"}
               </h2>
-              <p className="text-sky-200 text-sm sm:text-base leading-relaxed">
+              <p className="text-emerald-200 text-xs sm:text-sm lg:text-base leading-relaxed">
                 {t?.section7.description ||
                   "Inspect actual engineering case studies from Germany (Automotive LED), USA (6 oz Heavy Copper), Japan (Ku-Band PTFE), Sweden (48h Prototypes), and France (Turnkey SMT)."}
               </p>
             </div>
-            <Button asChild size="lg" className="rounded-full px-8 bg-sky-400 hover:bg-sky-300 text-slate-950 font-black shadow-lg">
-              <Link href="/pcb-quote">{t?.section7.startProjectBtn || "Start Your Project"}</Link>
+            <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-5 sm:px-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg text-xs sm:text-sm shrink-0">
+              <Link href="/pcb-quote" className="inline-flex items-center justify-center">
+                <span>{t?.section7.startProjectBtn || "Start Your Project"}</span>
+              </Link>
             </Button>
           </div>
         </div>
 
         {/* Interactive World Case Studies Map */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16 w-full min-w-0">
           <GlobalCaseStudiesMap />
         </div>
       </section>
@@ -910,38 +922,40 @@ export default function AboutFtPcbClient() {
       {/* ========================================================================= */}
       {/* GRAND FINALE FACTORY CTA                                                  */}
       {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-16">
-        <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-950 p-8 sm:p-14 text-white shadow-2xl border border-emerald-800/40 relative overflow-hidden">
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 pt-12 sm:pt-16 w-full min-w-0">
+        <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-950 p-6 sm:p-10 lg:p-14 text-white shadow-2xl border border-emerald-800/40 relative overflow-hidden w-full min-w-0">
           <div className="absolute top-0 right-0 -mt-10 -mr-10 size-60 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
 
-          <div className="max-w-3xl space-y-6 relative z-10">
-            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 border border-emerald-400/30 px-3.5 py-1 text-xs font-black text-emerald-300">
-              <Cpu className="size-3.5" />
-              <span>{t?.cta.badge || "Direct Factory Turnaround • 2-Hour Free DFM Review"}</span>
+          <div className="max-w-3xl space-y-4 sm:space-y-6 relative z-10 min-w-0">
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 border border-emerald-400/30 px-3 py-1 text-xs font-black text-emerald-300">
+              <Cpu className="size-3.5 shrink-0" />
+              <span className="truncate">{t?.cta.badge || "Direct Factory Turnaround • 2-Hour Free DFM Review"}</span>
             </div>
 
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
               {t?.cta.title || "Ready to Build Your Circuits at Source Factory Rates?"}
             </h2>
 
-            <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
+            <p className="text-slate-300 text-xs sm:text-base lg:text-lg leading-relaxed">
               {t?.cta.description ||
                 "Upload your Gerber files or contact our engineering team directly. You will receive an official quotation and detailed CAM DFM analysis within 2 hours."}
             </p>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Button asChild size="lg" className="rounded-full px-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-500/30 text-base">
-                <Link href="/pcb-quote">
-                  {t?.cta.uploadBtn || "Upload Gerber Files Now"} <ArrowRight className="ml-2 size-5" />
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 pt-2 w-full min-w-0">
+              <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-5 sm:px-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-500/30 text-xs sm:text-base">
+                <Link href="/pcb-quote" className="inline-flex items-center justify-center">
+                  <span>{t?.cta.uploadBtn || "Upload Gerber Files Now"}</span> <ArrowRight className="ml-2 size-4 sm:size-5 shrink-0" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full px-8 border-white/20 bg-white/10 hover:bg-white/20 text-white">
-                <a href={pdfDownloadUrl} download="FT-PCB-Company-Profile.pdf">
-                  <Download className="mr-2 size-4" /> {t?.cta.downloadBtn || "Download Company PDF"}
+              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto rounded-full px-5 sm:px-8 border-white/20 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm">
+                <a href={pdfDownloadUrl} download="FT-PCB-Company-Profile.pdf" className="inline-flex items-center justify-center">
+                  <Download className="mr-2 size-4 shrink-0" /> <span>{t?.cta.downloadBtn || "Download Company PDF"}</span>
                 </a>
               </Button>
-              <Button asChild variant="ghost" size="lg" className="rounded-full px-6 text-slate-300 hover:text-white hover:bg-slate-800">
-                <Link href="/contact">{t?.cta.contactBtn || "Contact CAM Engineers"}</Link>
+              <Button asChild variant="ghost" size="lg" className="w-full sm:w-auto rounded-full px-4 sm:px-6 text-slate-300 hover:text-white hover:bg-slate-800 text-xs sm:text-sm">
+                <Link href="/contact" className="inline-flex items-center justify-center">
+                  <span>{t?.cta.contactBtn || "Contact CAM Engineers"}</span>
+                </Link>
               </Button>
             </div>
           </div>

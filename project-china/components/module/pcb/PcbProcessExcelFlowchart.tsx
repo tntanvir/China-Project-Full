@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import { useTheme } from "next-themes";
 import { useLanguage } from "@/components/providers/language-provider";
 import { getProcessFlowchartDictionary } from "@/lib/process-flowchart-translations";
 import {
@@ -618,7 +617,6 @@ interface PcbProcessExcelFlowchartProps {
 }
 
 export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcessExcelFlowchartProps) {
-  const { theme, resolvedTheme } = useTheme();
   const { locale } = useLanguage();
   const t = useMemo(() => getProcessFlowchartDictionary(locale), [locale]);
 
@@ -635,8 +633,6 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const activeStages = chartType === "multilayer" ? MULTILAYER_STAGES : DOUBLESIDED_STAGES;
-
-  const isDark = resolvedTheme === "dark" || theme === "dark";
 
   // Center chart
   const centerChart = useCallback(() => {
@@ -755,9 +751,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
   return (
     <div
       ref={wrapperRef}
-      className={`relative rounded-2xl border transition-colors duration-200 overflow-hidden shadow-2xl ${
-        isDark ? "bg-[#0b101b] border-slate-800 text-slate-100" : "bg-white border-slate-300 text-slate-900"
-      }`}
+      className="relative rounded-2xl border transition-colors duration-200 overflow-hidden shadow-2xl bg-white dark:bg-[#0b101b] border-slate-300 dark:border-slate-800 text-slate-900 dark:text-slate-100"
     >
       {/* ---------------- Top Floating Toolbar ---------------- */}
       <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 border-b backdrop-blur-md bg-opacity-90 border-slate-200 dark:border-slate-800 z-20 relative">
@@ -770,7 +764,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
             }}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               chartType === "multilayer"
-                ? "bg-amber-400 text-slate-950 shadow-md font-bold"
+                ? "bg-emerald-600 text-white shadow-md font-bold"
                 : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
@@ -787,7 +781,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
             }}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               chartType === "doublesided"
-                ? "bg-amber-400 text-slate-950 shadow-md font-bold"
+                ? "bg-emerald-600 text-white shadow-md font-bold"
                 : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
@@ -807,7 +801,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={locale === "zh" ? "搜索工序 / 工序号 / AOI / P2105..." : "Search step, code, e.g. AOI, ENIG..."}
-            className="w-full pl-9 pr-7 py-1.5 text-xs rounded-xl border bg-slate-50 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-400 transition"
+            className="w-full pl-9 pr-7 py-1.5 text-xs rounded-xl border bg-slate-50 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
           />
           {searchQuery && (
             <button
@@ -830,7 +824,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
             >
               <ZoomOut className="w-4 h-4" />
             </button>
-            <span className="px-2 text-xs font-mono font-bold text-amber-500 min-w-[50px] text-center">
+            <span className="px-2 text-xs font-mono font-bold text-emerald-500 min-w-[50px] text-center">
               {Math.round(zoom * 100)}%
             </span>
             <button
@@ -857,7 +851,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
                 onClick={() => setZoom(level)}
                 className={`px-2 py-1 text-[11px] font-mono rounded-lg transition ${
                   zoom === level
-                    ? "bg-amber-400 text-slate-950 font-bold"
+                    ? "bg-emerald-600 text-white font-bold"
                     : "bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800"
                 }`}
               >
@@ -885,9 +879,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
         onWheel={handleWheel}
-        className={`relative w-full h-[760px] cursor-grab active:cursor-grabbing overflow-hidden select-none ${
-          isDark ? "bg-[#0b101b]" : "bg-[#fcfdfd]"
-        }`}
+        className="relative w-full h-[760px] cursor-grab active:cursor-grabbing overflow-hidden select-none bg-[#fcfdfd] dark:bg-[#0b101b]"
       >
         {/* Interactive Transform Wrapper */}
         <div
@@ -918,7 +910,8 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
                 <path
                   d="M 36 0 L 0 0 0 24"
                   fill="none"
-                  stroke={isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.06)"}
+                  stroke="currentColor"
+                  className="text-black/[0.06] dark:text-white/[0.04]"
                   strokeWidth="0.8"
                 />
               </pattern>
@@ -960,9 +953,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
             className="absolute top-6 left-0 flex flex-col items-center justify-center text-center pointer-events-none z-10"
           >
             <h1
-              className={`text-2xl md:text-3xl font-extrabold tracking-wide ${
-                isDark ? "text-slate-100" : "text-black"
-              }`}
+              className="text-2xl md:text-3xl font-extrabold tracking-wide text-black dark:text-slate-100"
               style={{ fontFamily: "'Microsoft YaHei', 'SimHei', sans-serif" }}
             >
               武平飞天电子科技有限公司
@@ -971,9 +962,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
               Wuping Feitian Electronic Technology Co.,Ltd
             </p>
             <h2
-              className={`text-lg md:text-xl font-black tracking-wider mt-1.5 ${
-                isDark ? "text-slate-200" : "text-black"
-              }`}
+              className="text-lg md:text-xl font-black tracking-wider mt-1.5 text-black dark:text-slate-200"
               style={{ fontFamily: "'Microsoft YaHei', 'SimHei', sans-serif" }}
             >
               PCB生产工艺流程圖
@@ -1008,17 +997,11 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
                   className={`absolute rounded-none flex flex-col items-center justify-center text-center p-2.5 cursor-pointer transition-all duration-150 z-10 shadow-sm ${
                     stage.dashed ? "border-2 border-dashed" : "border-2 border-solid"
                   } ${
-                    isDark
-                      ? isSelected
-                        ? "bg-amber-400 border-white text-slate-950 font-black ring-4 ring-amber-500/50"
-                        : isMainMatched
-                        ? "bg-amber-300 border-amber-500 text-slate-950 animate-pulse ring-4 ring-amber-400"
-                        : "bg-[#facc15] hover:bg-[#fbbf24] border-black text-slate-950"
-                      : isSelected
-                      ? "bg-yellow-300 border-black ring-4 ring-amber-400 text-black font-black"
+                    isSelected
+                      ? "bg-emerald-400 dark:bg-emerald-400 border-black dark:border-white text-slate-950 font-black ring-4 ring-emerald-500/50"
                       : isMainMatched
-                      ? "bg-yellow-200 border-amber-600 ring-4 ring-amber-400 animate-pulse text-black"
-                      : "bg-[#ffff55] hover:bg-[#fff960] border-black text-black"
+                      ? "bg-emerald-300 dark:bg-emerald-300 border-emerald-500 text-slate-950 animate-pulse ring-4 ring-emerald-400"
+                      : "bg-[#ffff55] dark:bg-[#facc15] hover:bg-[#fff960] dark:hover:bg-[#fbbf24] border-black text-slate-950"
                   }`}
                 >
                   {/* Note badge e.g. "p21" */}
@@ -1129,17 +1112,11 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
                               className={`absolute rounded-none flex flex-col items-center justify-center text-center p-2 cursor-pointer transition-all duration-150 z-10 shadow-sm ${
                                 sub.dashed ? "border-2 border-dashed" : "border border-solid"
                               } ${
-                                isDark
-                                  ? isSubSelected
-                                    ? "bg-slate-700 border-amber-400 text-white ring-2 ring-amber-400"
-                                    : isSubMatched
-                                    ? "bg-amber-950/80 border-amber-400 text-amber-200 ring-2 ring-amber-400 animate-pulse"
-                                    : "bg-slate-900/90 hover:bg-slate-800 border-slate-700 text-slate-100"
-                                  : isSubSelected
-                                  ? "bg-amber-50 border-amber-600 text-black ring-2 ring-amber-500 font-bold"
+                                isSubSelected
+                                  ? "bg-emerald-50 dark:bg-slate-700 border-emerald-600 dark:border-emerald-400 text-black dark:text-white ring-2 ring-emerald-500 font-bold"
                                   : isSubMatched
-                                  ? "bg-amber-100 border-amber-500 text-amber-950 ring-2 ring-amber-400 animate-pulse font-bold"
-                                  : "bg-white hover:bg-slate-50 border-black text-black"
+                                  ? "bg-emerald-100 dark:bg-emerald-950/80 border-emerald-500 dark:border-emerald-400 text-emerald-950 dark:text-emerald-200 ring-2 ring-emerald-400 animate-pulse font-bold"
+                                  : "bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-800 border-black dark:border-slate-700 text-black dark:text-slate-100"
                               }`}
                             >
                               <div className="text-xs font-bold leading-tight truncate w-full px-1">
@@ -1210,7 +1187,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
             </button>
             <button
               onClick={centerChart}
-              className="p-1.5 rounded-lg bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold transition shadow-sm"
+              className="p-1.5 rounded-lg bg-emerald-400 hover:bg-emerald-600 text-white font-bold transition shadow-sm"
               title="Center Chart"
             >
               <Move className="w-4 h-4" />
@@ -1248,7 +1225,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
           </div>
           <div className="flex items-center gap-1.5 pl-2 border-l border-slate-200 dark:border-slate-800">
             <span className="text-slate-400 font-mono">Zoom:</span>
-            <span className="font-mono font-bold text-amber-500">{Math.round(zoom * 100)}%</span>
+            <span className="font-mono font-bold text-emerald-500">{Math.round(zoom * 100)}%</span>
           </div>
         </div>
       </div>
@@ -1257,7 +1234,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
       {selectedStation && (
         <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
           <div className="flex items-start gap-3">
-            <div className="p-2.5 rounded-xl bg-amber-400/20 text-amber-500 border border-amber-400/30">
+            <div className="p-2.5 rounded-xl bg-emerald-400/20 text-emerald-500 border border-emerald-400/30">
               <Info className="w-5 h-5" />
             </div>
             <div>

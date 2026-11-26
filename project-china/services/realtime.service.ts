@@ -1,8 +1,7 @@
 "use client";
 
 import { io, type Socket } from "socket.io-client";
-
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || process.env.NEXT_PUBLIC_API_ORIGIN || "http://localhost:5000";
+import { getSocketUrl } from "@/lib/api-config";
 
 let socket: Socket | null = null;
 
@@ -30,7 +29,7 @@ export const RealtimeService = {
       return socket;
     }
 
-    socket = io(SOCKET_URL, {
+    socket = io(getSocketUrl(), {
       withCredentials: true,
       auth: {
         token: accessToken || "",

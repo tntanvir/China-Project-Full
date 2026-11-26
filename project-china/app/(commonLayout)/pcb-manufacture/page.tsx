@@ -63,14 +63,14 @@ export default function Page() {
               href={`/pcb-manufacture/${item.pageSlug}`}
               className={`group block rounded-2xl border p-6 transition ${
                 item.badge
-                  ? "border-amber-500/40 bg-gradient-to-br from-amber-500/5 via-background to-background hover:border-amber-500 hover:shadow-lg"
+                  ? "border-emerald-500/40 bg-gradient-to-br from-emerald-500/5 via-background to-background hover:border-emerald-500 hover:shadow-lg"
                   : "border-border bg-background hover:border-primary/50 hover:bg-primary/5"
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <h2 className="text-xl font-bold text-foreground group-hover:text-primary transition">{item.title}</h2>
                 {item.badge ? (
-                  <span className="rounded-full bg-amber-500/20 px-2.5 py-0.5 text-[11px] font-bold text-amber-700 dark:text-amber-400 border border-amber-500/30">
+                  <span className="rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
                     {item.badge}
                   </span>
                 ) : null}

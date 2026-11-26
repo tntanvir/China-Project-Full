@@ -34,7 +34,7 @@ const NODES: NodePoint[] = [
     y: 72,
     metrics: "Fenghuang Zhi Gu, Bao'an",
     icon: Globe2,
-    color: "#3b82f6", // Blue
+    color: "#059669", // Emerald dark
   },
   {
     id: "xiamen",
@@ -44,7 +44,7 @@ const NODES: NodePoint[] = [
     y: 76,
     metrics: "Ridong Road, Jimei District",
     icon: MapPin,
-    color: "#a855f7", // Purple
+    color: "#14b8a6", // Teal
   },
 ];
 

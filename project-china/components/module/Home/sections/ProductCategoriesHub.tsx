@@ -26,7 +26,7 @@ export interface ProductFamilyItem {
   id: string;
   title: string;
   subtitle: string;
-  category: "Rigid & Multilayer PCB" | "Flex & Rigid-Flex PCB" | "Advanced & RF Substrates" | "Turnkey PCBA & Assembly";
+  category: "Rigid & Multilayer PCB" | "Flex & Rigid-Flex PCB" | "Advanced & RF Substrates" | "Specialty & Metal Core PCB";
   badge: string;
   imageUrl: string;
   description: string;
@@ -46,7 +46,7 @@ export const productFamiliesData: ProductFamilyItem[] = [
     subtitle: "High-Density FR-4 Multilayer Fabrication",
     category: "Rigid & Multilayer PCB",
     badge: "1-32 Layers",
-    imageUrl: "/images/generated/rigid_pcb.png",
+    imageUrl: "/images/generated/bare_rigid_pcb.png",
     description: "High-precision 1 to 32 layer rigid circuit boards built with Shengyi/KB high-TG170 laminates, controlled differential impedance, and laser microvias.",
     specs: [
       { label: "Layer Count", value: "1-32 Layers" },
@@ -64,7 +64,7 @@ export const productFamiliesData: ProductFamilyItem[] = [
     subtitle: "Laser-Drilled Via-in-Pad Interconnects",
     category: "Rigid & Multilayer PCB",
     badge: "Any-Layer HDI",
-    imageUrl: "/images/generated/hdi_pcb.png",
+    imageUrl: "/images/generated/bare_hdi_pcb.png",
     description: "Fine-line laser microvias, stacked/staggered via-in-pad (VIPPO), and high-density interconnect routing for ultra-miniaturized electronics.",
     specs: [
       { label: "Stackup Architecture", value: "1+N+1 to Any-Layer HDI" },
@@ -82,7 +82,7 @@ export const productFamiliesData: ProductFamilyItem[] = [
     subtitle: "Thermal Power Dissipation & Busbars",
     category: "Rigid & Multilayer PCB",
     badge: "Up to 6oz Copper",
-    imageUrl: "/images/categories/pcb-manufacture/material-1.jpg",
+    imageUrl: "/images/generated/bare_heavy_copper.png",
     description: "High-current circuit boards with up to 6oz (210µm) inner and outer copper weights designed for extreme current loads and rapid thermal transfer.",
     specs: [
       { label: "Copper Thickness", value: "2oz - 6oz (70µm - 210µm)" },
@@ -100,7 +100,7 @@ export const productFamiliesData: ProductFamilyItem[] = [
     subtitle: "Ultra-Thin Dynamic Bending Circuits",
     category: "Flex & Rigid-Flex PCB",
     badge: "1-6 Layers Flex",
-    imageUrl: "/images/generated/flexible_pcb.png",
+    imageUrl: "/images/generated/bare_flex_fpc.png",
     description: "Ultra-thin, featherweight polyimide flex circuits engineered for dynamic bending, tight enclosures, and high-vibration environments.",
     specs: [
       { label: "Base Film", value: "DuPont Pyralux Polyimide" },
@@ -118,7 +118,7 @@ export const productFamiliesData: ProductFamilyItem[] = [
     subtitle: "Hybrid Rigid & Polyimide Flex Integration",
     category: "Flex & Rigid-Flex PCB",
     badge: "Aerospace Grade",
-    imageUrl: "/images/generated/rigid_flex_pcb.png",
+    imageUrl: "/images/generated/bare_rigid_flex.png",
     description: "Eliminates bulky wire harnesses and solder connectors by integrating rigid multi-layer FR-4 sections directly with flexible polyimide circuits.",
     specs: [
       { label: "Structure", value: "2-16 Rigid + Flex Layers" },
@@ -136,7 +136,7 @@ export const productFamiliesData: ProductFamilyItem[] = [
     subtitle: "Superior Heat Dissipation Substrates",
     category: "Advanced & RF Substrates",
     badge: "1-3 W/m.K Thermal",
-    imageUrl: "/images/generated/aluminum_pcb.png",
+    imageUrl: "/images/generated/bare_aluminum_mcpcb.png",
     description: "Metal-backed circuit boards providing direct heat dissipation from high-power components to the chassis without requiring extra heatsinks.",
     specs: [
       { label: "Thermal Conductivity", value: "1.0 - 3.0 W/m.K" },
@@ -154,7 +154,7 @@ export const productFamiliesData: ProductFamilyItem[] = [
     subtitle: "Low Loss Hydrocarbon & PTFE Substrates",
     category: "Advanced & RF Substrates",
     badge: "Rogers / PTFE",
-    imageUrl: "/images/generated/high_freq_pcb.png",
+    imageUrl: "/images/generated/bare_rogers_rf.png",
     description: "Low dielectric loss (Df 0.002) and controlled dielectric constant (Dk 2.2 - 10.2) laminates engineered for high-frequency signal integrity up to 77GHz+.",
     specs: [
       { label: "Laminate Types", value: "Rogers RO4350B, RO4003C, Taconic" },
@@ -167,57 +167,57 @@ export const productFamiliesData: ProductFamilyItem[] = [
     quoteUrl: "/pcb-quote",
   },
   {
-    id: "smt-assembly",
-    title: "Automated High-Speed SMT Assembly",
-    subtitle: "0201 Components & 0.4mm Fine-Pitch BGA",
-    category: "Turnkey PCBA & Assembly",
-    badge: "0201 & BGA Ready",
-    imageUrl: "/images/generated/smt_assembly.png",
-    description: "State-of-the-art automated pick-and-place lines featuring Yamaha and Panasonic mounters, 10-zone nitrogen reflow, and 3D AOI inspection.",
+    id: "aluminum-metal-core",
+    title: "Aluminum & Metal Core Substrates",
+    subtitle: "High Thermal Dissipation Base for Power Systems",
+    category: "Specialty & Metal Core PCB",
+    badge: "1-4W/m-K Thermal Base",
+    imageUrl: "/images/generated/bare_aluminum_mcpcb.png",
+    description: "Thermally conductive insulated metal substrates (IMS) featuring pure aluminum or copper backing, designed for automotive headlights, power converters, and high-intensity LED matrices.",
     specs: [
-      { label: "Component Capability", value: "0201 passives, 0.4mm pitch BGA, QFN" },
-      { label: "Placement Capacity", value: "60,000 components/hour/line" },
-      { label: "Stencil Technology", value: "Electropolished Laser Stencil" },
-      { label: "Quality Inspection", value: "3D AOI & 3D X-Ray BGA Testing" },
+      { label: "Base Materials", value: "Aluminum (1060/5052), Copper Core" },
+      { label: "Thermal Conductivity", value: "1.0 - 4.0 W/m-K" },
+      { label: "Dielectric Layer", value: "High-voltage breakdown (3-5kV)" },
+      { label: "Surface Finish", value: "HASL Lead-Free, ENIG, OSP" },
     ],
-    turnaround: "⚡ 24h-48h Assembly",
-    bestFor: "High-density microelectronics, IoT boards, consumer tech, robotics",
+    turnaround: "⚡ 2-4 Days Prototype",
+    bestFor: "LED lighting, power supplies, automotive EV inverters, motor controllers",
     quoteUrl: "/pcb-quote",
   },
   {
-    id: "tht-selective-soldering",
-    title: "Through-Hole THT & Selective Soldering",
-    subtitle: "Dual-Wave & Nitrogen Mini-Wave Soldering",
-    category: "Turnkey PCBA & Assembly",
-    badge: "Wave & Selective",
-    imageUrl: "/images/generated/tht_assembly.png",
-    description: "Automated selective wave soldering and manual through-hole assembly for rugged power connectors, inductors, transformers, and relays.",
+    id: "heavy-copper-pcb",
+    title: "Heavy Copper High-Power PCB",
+    subtitle: "3oz to 12oz Extreme Current Carrying Bare Boards",
+    category: "Specialty & Metal Core PCB",
+    badge: "Up to 12oz Copper",
+    imageUrl: "/images/generated/bare_heavy_copper.png",
+    description: "Heavy copper bare boards with up to 420µm outer/inner copper thickness, engineered to conduct hundreds of amperes without overheating or thermal delamination.",
     specs: [
-      { label: "Soldering Tech", value: "Selective Nitrogen Wave Soldering" },
-      { label: "Components Handled", value: "Heavy connectors, transformers, relays" },
-      { label: "Workmanship Standard", value: "IPC-A-610 Class 2 & Class 3" },
-      { label: "Board Wash", value: "Automated DI Water Ultrasonic Cleaning" },
+      { label: "Copper Weight", value: "3oz - 12oz (105µm - 420µm)" },
+      { label: "Thermal Relief", value: "Integrated thermal vias & heat sinks" },
+      { label: "Dielectric Tg", value: "High-Tg FR-4 (Tg170°C - 180°C)" },
+      { label: "Quality Inspection", value: "100% Netlist Flying-Probe & Hi-Pot" },
     ],
-    turnaround: "⚡ 3-5 Days Assembly",
-    bestFor: "Industrial power supplies, automotive relay modules, audio equipment",
+    turnaround: "⚡ 3-5 Days Turnaround",
+    bestFor: "High-power distribution, battery management systems (BMS), industrial robotics",
     quoteUrl: "/pcb-quote",
   },
   {
-    id: "full-turnkey-pcba",
-    title: "Full Turnkey PCBA & Box Build",
-    subtitle: "Complete BOM Sourcing, Assembly & System Integration",
-    category: "Turnkey PCBA & Assembly",
-    badge: "End-to-End Turnkey",
-    imageUrl: "/images/generated/pcb4.png",
-    description: "One-stop manufacturing: PCB fabrication, authentic component sourcing via authorized distributors, SMT/THT assembly, firmware flashing, and box build.",
+    id: "high-density-hdi",
+    title: "Any-Layer HDI Microvia Boards",
+    subtitle: "Laser Microvias & Blind/Buried Stacks",
+    category: "Specialty & Metal Core PCB",
+    badge: "1+N+1 to 4+N+4 HDI",
+    imageUrl: "/images/generated/bare_hdi_pcb.png",
+    description: "Ultra-compact Any-Layer HDI bare boards with sub-3mil line/space width, copper filled microvias, and stacked laser via structures for ultra-dense packaging.",
     specs: [
-      { label: "Component Sourcing", value: "100% Genuine Authorized Sources" },
-      { label: "Testing Coverage", value: "ICT, Functional FCT, Hipot, Burn-In" },
-      { label: "Box Build Services", value: "Custom enclosures, cables, packaging" },
-      { label: "Quality Warranty", value: "100% Functional & Quality Guarantee" },
+      { label: "Microvia Technology", value: "CO2 / UV Laser (0.10mm microvia)" },
+      { label: "Min Line/Space", value: "2.5 mil / 2.5 mil (0.065mm)" },
+      { label: "Aspect Ratio", value: "0.8:1 - 1:1 Copper-Filled Via" },
+      { label: "Surface Finish", value: "ENIG (Electroless Nickel Immersion Gold)" },
     ],
-    turnaround: "⚡ Full Turnkey Batch",
-    bestFor: "Startups, OEMs, volume product launches seeking single-source accountability",
+    turnaround: "⚡ 3-5 Days Quick-Turn",
+    bestFor: "Mobile electronics, aerospace sensors, medical endoscopy, high-density wearables",
     quoteUrl: "/pcb-quote",
   },
 ];
@@ -227,7 +227,7 @@ const categoryTabs = [
   "Rigid & Multilayer PCB",
   "Flex & Rigid-Flex PCB",
   "Advanced & RF Substrates",
-  "Turnkey PCBA & Assembly",
+  "Specialty & Metal Core PCB",
 ] as const;
 
 export default function ProductCategoriesHub() {
@@ -244,7 +244,7 @@ export default function ProductCategoriesHub() {
     "Rigid & Multilayer PCB": catCopy?.categories?.rigid || "Rigid & Multilayer PCB",
     "Flex & Rigid-Flex PCB": catCopy?.categories?.flex || "Flex & Rigid-Flex PCB",
     "Advanced & RF Substrates": catCopy?.categories?.advanced || "Advanced & RF Substrates",
-    "Turnkey PCBA & Assembly": catCopy?.categories?.pcba || "Turnkey PCBA & Assembly",
+    "Specialty & Metal Core PCB": "Specialty & Metal Core PCB",
   };
 
   const localizedFamilies = useMemo(() => {
@@ -450,7 +450,7 @@ export default function ProductCategoriesHub() {
         {viewMode === "matrix" && (
           <div className="mt-8 overflow-hidden rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full min-w-[760px] text-left text-xs">
                 <thead>
                   <tr className="border-b border-gray-200 dark:border-slate-800 bg-gray-50/90 dark:bg-slate-800/90 text-gray-700 dark:text-slate-300">
                     <th className="px-5 py-4 font-black text-gray-900 dark:text-white">{catCopy?.labels?.matrixHeaderProduct || "Product Family"}</th>

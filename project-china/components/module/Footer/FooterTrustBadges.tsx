@@ -36,7 +36,7 @@ export default function FooterTrustBadges() {
 
           <div className="flex flex-col gap-1.5 flex-1 justify-center">
             {/* Row 1: 6 items */}
-            <div className="grid grid-cols-6 gap-1.5">
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
               <span
                 title="Payoneer"
                 className="h-8 sm:h-9 flex items-center justify-center rounded-md border border-slate-200/90 bg-white p-1 shadow-2xs hover:border-primary/60 hover:shadow-xs hover:scale-105 transition-all"
@@ -111,7 +111,7 @@ export default function FooterTrustBadges() {
             </div>
 
             {/* Row 2: 8 items */}
-            <div className="grid grid-cols-8 gap-1">
+            <div className="grid grid-cols-4 sm:grid-cols-8 gap-1">
               <span
                 title="VISA"
                 className="h-8 sm:h-9 flex items-center justify-center rounded-md border border-slate-200/90 bg-white px-0.5 py-1 shadow-2xs hover:border-primary/60 hover:shadow-xs hover:scale-105 transition-all"
@@ -220,7 +220,7 @@ export default function FooterTrustBadges() {
             </h4>
           </div>
 
-          <div className="grid grid-cols-4 gap-1.5 flex-1 content-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 flex-1 content-center">
             {/* Row 1 */}
             <span
               title="FedEx Express"

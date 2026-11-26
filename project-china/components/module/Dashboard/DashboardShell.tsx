@@ -54,6 +54,7 @@ import NotificationBell from "@/components/module/Dashboard/NotificationBell";
 import { ModeToggle } from "@/components/themes/darkandlight";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   DropdownMenu,
@@ -63,7 +64,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { normalizeRole } from "@/lib/auth-routes";
+import { toast } from "sonner";
+import { getRoleDashboardPath, normalizeRole } from "@/lib/auth-routes";
 import { useAuthStore } from "@/store/authStore";
 
 const adminNavGroups = [
@@ -256,16 +258,84 @@ export default function DashboardShell({ children }: { children: React.ReactNode
   useEffect(() => {
     if (isLoading) return;
     if (!user) {
-      router.replace(`/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`);
+      const currentUrl = encodeURIComponent(window.location.pathname + window.location.search);
+      router.replace(`/login?redirect=${currentUrl}`);
+    } else if (!allowed) {
+      const fallback = getRoleDashboardPath(user.role);
+      toast.error(`Access restricted. Redirecting to your workspace.`);
+      router.replace(fallback);
     }
-  }, [isLoading, router, user]);
+  }, [isLoading, router, user, allowed]);
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-[#070b14]">
-        <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-6 text-sm font-bold text-slate-700 shadow-xl dark:border-slate-800 dark:bg-[#0b1220] dark:text-slate-300">
-          <div className="size-4 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
-          <span>Loading secure enterprise workspace...</span>
+      <div className="flex min-h-screen bg-slate-50 dark:bg-[#070b14]">
+        {/* Sidebar Skeleton */}
+        <aside className="hidden lg:flex w-72 shrink-0 flex-col border-r border-slate-200/80 bg-white dark:border-slate-800/80 dark:bg-[#0b1220] p-5 space-y-6">
+          <div className="flex items-center gap-3">
+            <Skeleton className="size-10 rounded-xl" />
+            <div className="space-y-1.5 flex-1">
+              <Skeleton className="h-4 w-28" />
+              <Skeleton className="h-3 w-20" />
+            </div>
+          </div>
+          <div className="space-y-3 pt-4">
+            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-9 w-full rounded-xl" />
+            <Skeleton className="h-9 w-full rounded-xl" />
+            <Skeleton className="h-9 w-full rounded-xl" />
+          </div>
+          <div className="space-y-3 pt-4">
+            <Skeleton className="h-3 w-24" />
+            <Skeleton className="h-9 w-full rounded-xl" />
+            <Skeleton className="h-9 w-full rounded-xl" />
+          </div>
+        </aside>
+
+        {/* Main Content Area Skeleton */}
+        <div className="flex flex-1 flex-col min-w-0">
+          {/* Header Skeleton */}
+          <header className="flex h-16 items-center justify-between border-b border-slate-200/80 bg-white/80 px-6 dark:border-slate-800/80 dark:bg-[#0b1220]/80">
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-5 w-36" />
+              <Skeleton className="h-4 w-24 rounded-full" />
+            </div>
+            <div className="flex items-center gap-3">
+              <Skeleton className="size-9 rounded-xl" />
+              <Skeleton className="size-9 rounded-xl" />
+              <Skeleton className="size-9 rounded-full" />
+            </div>
+          </header>
+
+          {/* Page Body Skeleton */}
+          <main className="p-6 space-y-6">
+            <div className="flex justify-between items-center">
+              <div className="space-y-2">
+                <Skeleton className="h-7 w-48" />
+                <Skeleton className="h-4 w-72" />
+              </div>
+              <Skeleton className="h-10 w-32 rounded-xl" />
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="p-5 rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0b1220] space-y-2">
+                  <Skeleton className="h-3.5 w-24" />
+                  <Skeleton className="h-8 w-16" />
+                  <Skeleton className="h-3 w-32" />
+                </div>
+              ))}
+            </div>
+
+            <div className="p-6 rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0b1220] space-y-4">
+              <Skeleton className="h-6 w-44" />
+              <div className="space-y-3">
+                <Skeleton className="h-12 w-full rounded-xl" />
+                <Skeleton className="h-12 w-full rounded-xl" />
+                <Skeleton className="h-12 w-full rounded-xl" />
+              </div>
+            </div>
+          </main>
         </div>
       </div>
     );

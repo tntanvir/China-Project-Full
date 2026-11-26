@@ -5,7 +5,7 @@ export const siteConfig = {
   legalName: "Wuping Feitian Electronic Technology Company Limited",
   url: "https://www.ftpcb.com",
   description:
-    "Precision PCB and PCBA manufacturing services for prototype, low-volume, and high-volume electronics production.",
+    "Precision bare printed circuit board (PCB) manufacturing services for prototype, low-volume, and high-volume electronics production.",
   defaultOgImage: "/image/chinaproject.png",
   contactEmail: "ft-osr@feitianpcb.com",
   address:

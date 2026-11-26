@@ -2,10 +2,23 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/components/providers/language-provider";
 import { getProcessFlowchartDictionary } from "@/lib/process-flowchart-translations";
-import PcbProcessExcelFlowchart from "./PcbProcessExcelFlowchart";
+
+const PcbProcessExcelFlowchart = dynamic(
+  () => import("./PcbProcessExcelFlowchart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[760px] rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col items-center justify-center gap-3 text-slate-400">
+        <div className="size-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+        <span className="text-xs font-mono font-bold">Loading Interactive Process Flowchart...</span>
+      </div>
+    ),
+  }
+);
 import {
   ZoomIn,
   ZoomOut,
@@ -1264,7 +1277,7 @@ export default function PcbProcessFlowchart() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 transition-colors duration-200 dark:bg-[#0b0f19] dark:text-[#e2e8f0] font-sans antialiased pb-24 selection:bg-amber-500/30 selection:text-amber-800 dark:selection:text-amber-200">
+    <div className="min-h-screen bg-slate-50 text-slate-800 transition-colors duration-200 dark:bg-[#0b0f19] dark:text-[#e2e8f0] font-sans antialiased pb-24 selection:bg-emerald-500/30 selection:text-emerald-800 dark:selection:text-emerald-200">
       {/* Global Embedded Styles for Ultra-Crisp Mermaid Typography & Vector Rendering */}
       <style jsx global>{`
         .mermaid-svg-container {
@@ -1351,15 +1364,15 @@ export default function PcbProcessFlowchart() {
       <div className="border-b border-slate-200 bg-white/80 dark:border-slate-800 dark:bg-slate-900/60 backdrop-blur-md sticky top-0 z-30 no-print transition-colors">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between text-xs sm:text-sm">
           <nav className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-medium">
-            <Link href="/" className="hover:text-amber-600 dark:hover:text-amber-400 transition">
+            <Link href="/" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition">
               {t.breadcrumb.home}
             </Link>
             <ChevronRight className="h-3.5 w-3.5 opacity-60" />
-            <Link href="/pcb-manufacture" className="hover:text-amber-600 dark:hover:text-amber-400 transition">
+            <Link href="/pcb-manufacture" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition">
               {t.breadcrumb.pcbManufacture}
             </Link>
             <ChevronRight className="h-3.5 w-3.5 opacity-60" />
-            <span className="text-amber-600 dark:text-amber-400 font-bold">{t.breadcrumb.flowchart}</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold">{t.breadcrumb.flowchart}</span>
           </nav>
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Quick Dark/Light Mood Toggle */}
@@ -1370,7 +1383,7 @@ export default function PcbProcessFlowchart() {
             >
               {isDarkMode ? (
                 <>
-                  <Sun className="h-3.5 w-3.5 text-amber-400" />
+                  <Sun className="h-3.5 w-3.5 text-emerald-400" />
                   <span className="hidden sm:inline">{t.flowchart.whiteMood}</span>
                 </>
               ) : (
@@ -1383,7 +1396,7 @@ export default function PcbProcessFlowchart() {
 
             <Link
               href="/pcb-quote"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1 text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-full transition shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1 text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-white rounded-full transition shadow-xs"
             >
               <span>{t.breadcrumb.quote}</span>
               <ArrowRight className="h-3 w-3" />
@@ -1394,15 +1407,15 @@ export default function PcbProcessFlowchart() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         {/* OFFICIAL FACTORY DOCUMENT HEADER (武平飞天电子科技有限公司) */}
-        <div className="mb-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-amber-500/10 via-slate-100 to-white dark:from-amber-500/15 dark:via-slate-900/90 dark:to-slate-900 border-2 border-amber-500/30 shadow-2xl relative overflow-hidden transition-colors">
+        <div className="mb-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-slate-100 to-white dark:from-emerald-500/15 dark:via-slate-900/90 dark:to-slate-900 border-2 border-emerald-500/30 shadow-2xl relative overflow-hidden transition-colors">
           <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none select-none">
-            <Building2 className="w-56 h-56 text-amber-500" />
+            <Building2 className="w-56 h-56 text-emerald-500" />
           </div>
 
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className="px-3 py-1 text-xs font-black uppercase tracking-wider bg-amber-500 text-slate-950 rounded-md shadow-xs">
+                <span className="px-3 py-1 text-xs font-black uppercase tracking-wider bg-emerald-600 text-white rounded-md shadow-xs">
                   {t.header.sopBadge}
                 </span>
                 <span className="text-xs font-mono font-bold text-slate-600 dark:text-slate-300 bg-white/80 dark:bg-slate-800/80 px-2.5 py-1 rounded border border-slate-300 dark:border-slate-700">
@@ -1415,7 +1428,7 @@ export default function PcbProcessFlowchart() {
               </div>
 
               {/* Exact Company and Chart Title Provided by User */}
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-amber-400 tracking-tight leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-emerald-400 tracking-tight leading-tight">
                 {t.header.companyZh}
               </h2>
               <h3 className="text-lg sm:text-xl font-bold text-slate-700 dark:text-slate-300 font-mono mt-0.5">
@@ -1423,9 +1436,9 @@ export default function PcbProcessFlowchart() {
               </h3>
 
               <div className="mt-3 flex items-center gap-3">
-                <div className="h-6 w-1.5 bg-amber-500 rounded-full" />
+                <div className="h-6 w-1.5 bg-emerald-500 rounded-full" />
                 <div>
-                  <h1 className="text-xl sm:text-2xl font-black text-amber-700 dark:text-amber-300 tracking-wide">
+                  <h1 className="text-xl sm:text-2xl font-black text-emerald-700 dark:text-emerald-300 tracking-wide">
                     {t.header.title}
                   </h1>
                   <p className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-400">
@@ -1466,7 +1479,7 @@ export default function PcbProcessFlowchart() {
                 }}
                 className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
                   activeView === "all"
-                    ? "bg-amber-500 text-slate-950 shadow-md"
+                    ? "bg-emerald-600 text-white shadow-md"
                     : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
@@ -1481,7 +1494,7 @@ export default function PcbProcessFlowchart() {
                 }}
                 className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
                   activeView === "topology" && chartType === "multilayer"
-                    ? "bg-amber-500 text-slate-950 shadow-md"
+                    ? "bg-emerald-600 text-white shadow-md"
                     : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
@@ -1496,7 +1509,7 @@ export default function PcbProcessFlowchart() {
                 }}
                 className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
                   activeView === "topology" && chartType === "doublesided"
-                    ? "bg-amber-500 text-slate-950 shadow-md"
+                    ? "bg-emerald-600 text-white shadow-md"
                     : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
@@ -1508,7 +1521,7 @@ export default function PcbProcessFlowchart() {
                 onClick={() => setActiveView("spreadsheet")}
                 className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
                   activeView === "spreadsheet"
-                    ? "bg-amber-500 text-slate-950 shadow-md"
+                    ? "bg-emerald-600 text-white shadow-md"
                     : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
@@ -1597,13 +1610,13 @@ export default function PcbProcessFlowchart() {
             {/* Top Diagram Mode Switcher */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 rounded-2xl bg-slate-100/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur">
               <div className="flex items-center gap-2.5">
-                <span className="flex size-7 items-center justify-center rounded-xl bg-amber-500 text-slate-950 font-black text-xs shadow-xs">
+                <span className="flex size-7 items-center justify-center rounded-xl bg-emerald-600 text-white font-black text-xs shadow-xs">
                   {diagramStyle === "excel" ? "XLS" : "SVG"}
                 </span>
                 <div>
                   <h3 className="text-xs sm:text-sm font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
                     <span>{diagramStyle === "excel" ? "Excel 官方工艺流程图 (Official XLS Flowchart)" : "Mermaid 节点拓扑图 (Topology)"}</span>
-                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-md bg-amber-500/20 text-amber-700 dark:text-amber-300">
+                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-md bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">
                       {diagramStyle === "excel" ? "原厂标准图" : "自动拓扑"}
                     </span>
                   </h3>
@@ -1622,7 +1635,7 @@ export default function PcbProcessFlowchart() {
                   onClick={() => setDiagramStyle("excel")}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                     diagramStyle === "excel"
-                      ? "bg-amber-400 text-slate-950 shadow-xs"
+                      ? "bg-emerald-600 text-white shadow-xs"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
@@ -1634,7 +1647,7 @@ export default function PcbProcessFlowchart() {
                   onClick={() => setDiagramStyle("topology")}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                     diagramStyle === "topology"
-                      ? "bg-amber-400 text-slate-950 shadow-xs"
+                      ? "bg-emerald-600 text-white shadow-xs"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
@@ -1654,17 +1667,17 @@ export default function PcbProcessFlowchart() {
             ) : (
               <div>
                 {/* Active Diagram Indicator & Quick Switcher */}
-                <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/30">
+                <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/10 border border-emerald-500/30">
               <div className="flex items-center gap-2.5">
-                <span className="flex size-7 items-center justify-center rounded-xl bg-amber-500 text-slate-950 font-black text-xs shadow-xs">
+                <span className="flex size-7 items-center justify-center rounded-xl bg-emerald-600 text-white font-black text-xs shadow-xs">
                   {chartType === "multilayer" ? "ML" : "2L"}
                 </span>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs sm:text-sm font-black text-slate-900 dark:text-amber-400">
+                    <span className="text-xs sm:text-sm font-black text-slate-900 dark:text-emerald-400">
                       {chartType === "multilayer" ? t.flowchart.mlTitle : t.flowchart.dsTitle}
                     </span>
-                    <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:text-amber-300">
+                    <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
                       {chartType === "multilayer" ? t.flowchart.mlSteps : t.flowchart.dsSteps}
                     </span>
                   </div>
@@ -1683,7 +1696,7 @@ export default function PcbProcessFlowchart() {
                   }}
                   className={`px-3 py-1 text-xs font-bold rounded-lg transition ${
                     chartType === "multilayer"
-                      ? "bg-amber-500 text-slate-950 shadow-xs"
+                      ? "bg-emerald-600 text-white shadow-xs"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
@@ -1696,7 +1709,7 @@ export default function PcbProcessFlowchart() {
                   }}
                   className={`px-3 py-1 text-xs font-bold rounded-lg transition ${
                     chartType === "doublesided"
-                      ? "bg-amber-500 text-slate-950 shadow-xs"
+                      ? "bg-emerald-600 text-white shadow-xs"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
@@ -1715,7 +1728,7 @@ export default function PcbProcessFlowchart() {
                     title={t.flowchart.zoomOut}
                     className="px-2.5 py-1.5 text-xs font-bold hover:bg-white dark:hover:bg-slate-800 disabled:opacity-40 transition rounded-lg text-slate-700 dark:text-slate-200 flex items-center gap-1 shadow-xs"
                   >
-                    <ZoomOut className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                    <ZoomOut className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     <span className="hidden sm:inline">{t.flowchart.zoomOut}</span>
                   </button>
 
@@ -1725,14 +1738,14 @@ export default function PcbProcessFlowchart() {
                     title={t.flowchart.zoomIn}
                     className="px-2.5 py-1.5 text-xs font-bold hover:bg-white dark:hover:bg-slate-800 disabled:opacity-40 transition rounded-lg text-slate-700 dark:text-slate-200 flex items-center gap-1 shadow-xs"
                   >
-                    <ZoomIn className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                    <ZoomIn className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     <span className="hidden sm:inline">{t.flowchart.zoomIn}</span>
                   </button>
 
                   <button
                     onClick={handleResetZoom}
                     title={t.flowchart.center}
-                    className="px-2.5 py-1.5 text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition rounded-lg flex items-center gap-1 shadow-xs font-black"
+                    className="px-2.5 py-1.5 text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-white transition rounded-lg flex items-center gap-1 shadow-xs font-black"
                   >
                     <RotateCcw className="h-3.5 w-3.5" />
                     <span>{t.flowchart.center}</span>
@@ -1749,11 +1762,11 @@ export default function PcbProcessFlowchart() {
                     step="0.05"
                     value={zoom}
                     onChange={(e) => setClampedZoom(parseFloat(e.target.value))}
-                    className="w-24 sm:w-32 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                    className="w-24 sm:w-32 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
                     title={`Smart Zoom: ${Math.round(zoom * 100)}%`}
                   />
                   <span className="text-[11px] font-mono font-bold text-slate-500 dark:text-slate-400">500%</span>
-                  <span className="px-2 py-0.5 text-xs font-mono font-black bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 rounded-md ml-1 min-w-[52px] text-center">
+                  <span className="px-2 py-0.5 text-xs font-mono font-black bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 rounded-md ml-1 min-w-[52px] text-center">
                     {Math.round(zoom * 100)}%
                   </span>
                 </div>
@@ -1775,7 +1788,7 @@ export default function PcbProcessFlowchart() {
                       }}
                       className={`px-2 py-1 text-[11px] font-bold rounded-lg transition ${
                         Math.round(zoom * 100) === Math.round(preset.val * 100)
-                          ? "bg-amber-500 text-slate-950 shadow-xs"
+                          ? "bg-emerald-600 text-white shadow-xs"
                           : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                       }`}
                     >
@@ -1792,7 +1805,7 @@ export default function PcbProcessFlowchart() {
                   className="px-3 py-1.5 text-xs font-bold rounded-xl border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 transition flex items-center gap-1.5 shadow-xs"
                   title="Toggle White / Dark Mood"
                 >
-                  {isDarkMode ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-slate-700" />}
+                  {isDarkMode ? <Sun className="h-4 w-4 text-emerald-400" /> : <Moon className="h-4 w-4 text-slate-700" />}
                   <span>{isDarkMode ? t.flowchart.whiteMood : t.flowchart.darkMood}</span>
                 </button>
 
@@ -1822,7 +1835,7 @@ export default function PcbProcessFlowchart() {
                 <button
                   onClick={() => window.print()}
                   title={t.flowchart.print}
-                  className="px-3.5 py-1.5 text-xs font-bold bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-950 transition rounded-xl shadow-sm flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 text-xs font-bold bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 transition rounded-xl shadow-sm flex items-center gap-1.5"
                 >
                   <Printer className="h-3.5 w-3.5" />
                   <span>{t.flowchart.print}</span>
@@ -1851,7 +1864,7 @@ export default function PcbProcessFlowchart() {
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
               onPointerCancel={handlePointerUp}
-              className={`print-container w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-8 shadow-2xl relative overflow-hidden transition-colors outline-none focus:ring-2 focus:ring-amber-500/30 flex justify-center items-start ${
+              className={`print-container w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-8 shadow-2xl relative overflow-hidden transition-colors outline-none focus:ring-2 focus:ring-emerald-500/30 flex justify-center items-start ${
                 isFullscreen ? "fixed inset-0 z-50 rounded-none p-6 bg-slate-50 dark:bg-slate-950 h-screen" : "min-h-[660px]"
               }`}
               style={{
@@ -1873,21 +1886,21 @@ export default function PcbProcessFlowchart() {
 
               {/* Canvas Floating Quick Hint */}
               <div className="absolute top-3 left-4 z-10 flex flex-wrap items-center gap-2 pointer-events-none text-[11px] font-semibold text-slate-500 dark:text-slate-400 bg-white/90 dark:bg-slate-900/90 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 backdrop-blur-xs no-print shadow-xs">
-                <Move className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                <Move className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
                 <span>{t.flowchart.canvasHint}</span>
               </div>
 
               {/* Floating Pan Navigation Compass D-Pad */}
               <div className="absolute bottom-5 right-5 z-20 flex flex-col items-center bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-700/80 p-2 rounded-2xl shadow-2xl backdrop-blur-md no-print select-none">
                 <div className="text-[10px] font-black text-slate-400 dark:text-slate-500 mb-1 uppercase tracking-wider flex items-center gap-1">
-                  <Compass className="size-3 text-amber-500" />
+                  <Compass className="size-3 text-emerald-500" />
                   <span>{t.flowchart.dpadNav}</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => panStep(0, 100)}
                   title={t.flowchart.dpadUp}
-                  className="size-8 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-amber-500 hover:text-slate-950 text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-amber-500 dark:hover:text-slate-950 transition active:scale-95 shadow-xs"
+                  className="size-8 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-emerald-600 hover:text-white text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-emerald-600 dark:hover:text-white transition active:scale-95 shadow-xs"
                 >
                   <ArrowUp className="size-4" />
                 </button>
@@ -1896,7 +1909,7 @@ export default function PcbProcessFlowchart() {
                     type="button"
                     onClick={() => panStep(100, 0)}
                     title={t.flowchart.dpadLeft}
-                    className="size-8 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-amber-500 hover:text-slate-950 text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-amber-500 dark:hover:text-slate-950 transition active:scale-95 shadow-xs"
+                    className="size-8 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-emerald-600 hover:text-white text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-emerald-600 dark:hover:text-white transition active:scale-95 shadow-xs"
                   >
                     <ArrowLeft className="size-4" />
                   </button>
@@ -1904,7 +1917,7 @@ export default function PcbProcessFlowchart() {
                     type="button"
                     onClick={handleResetZoom}
                     title={t.flowchart.dpadReset}
-                    className="size-8 flex items-center justify-center rounded-xl bg-amber-500 text-slate-950 font-black text-[11px] shadow-sm hover:bg-amber-400 transition active:scale-95"
+                    className="size-8 flex items-center justify-center rounded-xl bg-emerald-600 text-white font-black text-[11px] shadow-sm hover:bg-emerald-400 transition active:scale-95"
                   >
                     <RotateCcw className="size-3.5" />
                   </button>
@@ -1912,7 +1925,7 @@ export default function PcbProcessFlowchart() {
                     type="button"
                     onClick={() => panStep(-100, 0)}
                     title={t.flowchart.dpadRight}
-                    className="size-8 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-amber-500 hover:text-slate-950 text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-amber-500 dark:hover:text-slate-950 transition active:scale-95 shadow-xs"
+                    className="size-8 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-emerald-600 hover:text-white text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-emerald-600 dark:hover:text-white transition active:scale-95 shadow-xs"
                   >
                     <ArrowRight className="size-4" />
                   </button>
@@ -1921,11 +1934,11 @@ export default function PcbProcessFlowchart() {
                   type="button"
                   onClick={() => panStep(0, -100)}
                   title={t.flowchart.dpadDown}
-                  className="size-8 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-amber-500 hover:text-slate-950 text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-amber-500 dark:hover:text-slate-950 transition active:scale-95 shadow-xs"
+                  className="size-8 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-emerald-600 hover:text-white text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-emerald-600 dark:hover:text-white transition active:scale-95 shadow-xs"
                 >
                   <ArrowDown className="size-4" />
                 </button>
-                <div className="mt-1 pt-1 border-t border-slate-200 dark:border-slate-800 text-[10px] font-mono font-bold text-amber-700 dark:text-amber-400">
+                <div className="mt-1 pt-1 border-t border-slate-200 dark:border-slate-800 text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-400">
                   {Math.round(zoom * 100)}%
                 </div>
               </div>
@@ -1933,8 +1946,8 @@ export default function PcbProcessFlowchart() {
               {/* Loading Indicator */}
               {isLoading && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm z-20">
-                  <div className="w-12 h-12 rounded-full border-4 border-amber-500/30 border-t-amber-500 animate-spin mb-4" />
-                  <p className="text-amber-700 dark:text-amber-400 font-bold text-sm tracking-wide">
+                  <div className="w-12 h-12 rounded-full border-4 border-emerald-500/30 border-t-emerald-500 animate-spin mb-4" />
+                  <p className="text-emerald-700 dark:text-emerald-400 font-bold text-sm tracking-wide">
                     {t.flowchart.loading} ({isDarkMode ? t.flowchart.darkMood : t.flowchart.whiteMood})...
                   </p>
                   <p className="text-xs text-slate-500 mt-1">{t.flowchart.loadingSub}</p>
@@ -2029,7 +2042,7 @@ export default function PcbProcessFlowchart() {
                 </button>
                 <button
                   onClick={() => window.print()}
-                  className="px-3.5 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl transition flex items-center gap-1.5 shadow-sm"
+                  className="px-3.5 py-2 text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl transition flex items-center gap-1.5 shadow-sm"
                 >
                   <Printer className="h-3.5 w-3.5" />
                   <span>{t.spreadsheet.print}</span>
@@ -2042,7 +2055,7 @@ export default function PcbProcessFlowchart() {
               {/* Spreadsheet Header Strip */}
               <div className="bg-slate-100 dark:bg-slate-800/90 border-b border-slate-300 dark:border-slate-700 px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-3 font-mono">
-                  <span className="font-bold text-amber-700 dark:text-amber-400">{t.spreadsheet.sheetName}</span>
+                  <span className="font-bold text-emerald-700 dark:text-emerald-400">{t.spreadsheet.sheetName}</span>
                   <span className="text-slate-400">|</span>
                   <span className="text-slate-600 dark:text-slate-400">{t.spreadsheet.totalStations}</span>
                   <span className="text-slate-400">|</span>
@@ -2055,7 +2068,7 @@ export default function PcbProcessFlowchart() {
                     placeholder={t.spreadsheet.searchPlaceholder}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:border-amber-500 transition"
+                    className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition"
                   />
                 </div>
               </div>
@@ -2086,10 +2099,10 @@ export default function PcbProcessFlowchart() {
                       filteredRows.map((row) => (
                         <tr
                           key={row.seq}
-                          className="hover:bg-amber-50/50 dark:hover:bg-slate-800/60 divide-x divide-slate-200 dark:divide-slate-800 transition-colors"
+                          className="hover:bg-emerald-50/50 dark:hover:bg-slate-800/60 divide-x divide-slate-200 dark:divide-slate-800 transition-colors"
                         >
                           {/* Seq */}
-                          <td className="py-3 px-3 text-center font-mono font-bold text-amber-700 dark:text-amber-400 bg-slate-50/80 dark:bg-slate-900/40">
+                          <td className="py-3 px-3 text-center font-mono font-bold text-emerald-700 dark:text-emerald-400 bg-slate-50/80 dark:bg-slate-900/40">
                             {row.seq}
                           </td>
 
@@ -2151,8 +2164,8 @@ export default function PcbProcessFlowchart() {
                           </td>
 
                           {/* Standard */}
-                          <td className="py-3 px-3 text-right font-mono text-[11px] font-semibold text-amber-700 dark:text-amber-400 whitespace-nowrap">
-                            <span className="bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                          <td className="py-3 px-3 text-right font-mono text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 whitespace-nowrap">
+                            <span className="bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                               {row.ipcStandard}
                             </span>
                           </td>
@@ -2167,9 +2180,9 @@ export default function PcbProcessFlowchart() {
         )}
 
         {/* Quick Quote / CTA Banner */}
-        <section className="mt-12 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-amber-500/10 dark:from-amber-500/15 dark:via-slate-800/80 dark:to-amber-500/10 border border-amber-500/30 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 no-print transition-colors shadow-lg">
+        <section className="mt-12 bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-emerald-500/10 dark:from-emerald-500/15 dark:via-slate-800/80 dark:to-emerald-500/10 border border-emerald-500/30 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 no-print transition-colors shadow-lg">
           <div className="space-y-1 text-center md:text-left">
-            <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-amber-400">
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-emerald-400">
               {t.cta.title}
             </h3>
             <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl">
@@ -2179,7 +2192,7 @@ export default function PcbProcessFlowchart() {
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <Link
               href="/pcb-quote"
-              className="px-6 py-3 rounded-full font-bold text-sm bg-amber-500 hover:bg-amber-400 text-slate-950 transition shadow-lg flex items-center gap-2"
+              className="px-6 py-3 rounded-full font-bold text-sm bg-emerald-500 hover:bg-emerald-600 text-white transition shadow-lg flex items-center gap-2"
             >
               <span>{t.cta.quoteBtn}</span>
               <ArrowRight className="h-4 w-4" />

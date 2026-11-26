@@ -354,10 +354,10 @@ export default function HowItWorksClient() {
       {/* ========================================================================= */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         {/* Top Glow Blob */}
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-b from-blue-600/15 via-cyan-500/10 to-transparent rounded-full blur-3xl opacity-70 dark:opacity-40" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-b from-emerald-600/15 via-teal-500/10 to-transparent rounded-full blur-3xl opacity-70 dark:opacity-40" />
         {/* Subtle Side Ambient Blobs */}
-        <div className="absolute top-[30%] -left-60 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-3xl" />
-        <div className="absolute top-[60%] -right-60 w-[500px] h-[500px] bg-cyan-500/10 dark:bg-cyan-600/15 rounded-full blur-3xl" />
+        <div className="absolute top-[30%] -left-60 w-96 h-96 bg-emerald-500/10 dark:bg-emerald-600/15 rounded-full blur-3xl" />
+        <div className="absolute top-[60%] -right-60 w-[500px] h-[500px] bg-teal-500/10 dark:bg-teal-600/15 rounded-full blur-3xl" />
         {/* Cyber Circuit Dot Grid */}
         <div className="absolute inset-0 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px] opacity-40 dark:opacity-30 [mask-image:radial-gradient(ellipse_70%_70%_at_50%_20%,#000_60%,transparent_100%)]" />
       </div>
@@ -365,14 +365,14 @@ export default function HowItWorksClient() {
       {/* ========================================================================= */}
       {/* 1. TOP HERO & INTERACTIVE 4-PHASE STEERING BAR                            */}
       {/* ========================================================================= */}
-      <section className="relative z-10 pt-10 sm:pt-14 pb-10 border-b border-slate-200/80 dark:border-slate-800/80 backdrop-blur-md bg-white/70 dark:bg-slate-900/60">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <section className="relative z-10 pt-10 sm:pt-14 pb-10 border-b border-slate-200/80 dark:border-slate-800/80 backdrop-blur-md bg-white/70 dark:bg-slate-900/60 w-full min-w-0">
+        <div className="max-w-6xl mx-auto px-3 sm:px-6 w-full min-w-0">
           {/* Header Row */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div className="max-w-3xl">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-6">
+            <div className="max-w-3xl min-w-0">
               {/* Futuristic Pill Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/30 text-blue-600 dark:text-cyan-400 text-xs font-black uppercase tracking-wider mb-3.5 shadow-xs">
-                <span className="size-2 rounded-full bg-blue-500 dark:bg-cyan-400 animate-ping" />
+              <div className="inline-flex flex-wrap items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-black uppercase tracking-wider mb-3.5 shadow-xs">
+                <span className="size-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-ping" />
                 <span>FT PCB • Smart Factory & Turnkey Assembly</span>
                 <span className="hidden sm:inline-block text-slate-300 dark:text-slate-600">|</span>
                 <span className="hidden sm:inline-block text-emerald-600 dark:text-emerald-400 font-bold lowercase">
@@ -380,22 +380,22 @@ export default function HowItWorksClient() {
                 </span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.12]">
-                <span className="bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 dark:from-white dark:via-blue-100 dark:to-cyan-300 bg-clip-text text-transparent">
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.12]">
+                <span className="bg-gradient-to-r from-slate-900 via-emerald-950 to-teal-950 dark:from-white dark:via-emerald-100 dark:to-teal-300 bg-clip-text text-transparent">
                   {t.pageTitle}
                 </span>
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
+              <p className="text-xs sm:text-sm lg:text-base text-slate-600 dark:text-slate-300 mt-2.5 sm:mt-3 leading-relaxed">
                 {t.pageSubtitle}
               </p>
             </div>
 
             {/* Top Quick Actions */}
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0 w-full sm:w-auto">
               <Button
                 asChild
-                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-black text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.02] cursor-pointer"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs sm:text-sm px-5 sm:px-6 py-2.5 rounded-xl shadow-lg shadow-emerald-600/25 transition-all hover:scale-[1.02] cursor-pointer w-full sm:w-auto text-center"
               >
                 <Link href="/pcb-quote">
                   <Zap className="mr-2 size-4" />
@@ -405,7 +405,7 @@ export default function HowItWorksClient() {
               <Button
                 asChild
                 variant="outline"
-                className="border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl hover:border-blue-500 hover:text-blue-600 dark:hover:text-cyan-400 cursor-pointer transition-all"
+                className="border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm font-bold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-xl hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 cursor-pointer transition-all w-full sm:w-auto text-center"
               >
                 <Link href="/pcb-assembly">
                   <Cpu className="mr-2 size-4 text-slate-500 dark:text-slate-400" />
@@ -416,7 +416,7 @@ export default function HowItWorksClient() {
           </div>
 
           {/* Smart Factory KPI Ticker Bar */}
-          <div className="mt-8 pt-4 pb-2 border-t border-slate-200/60 dark:border-slate-800/80 flex items-center gap-6 overflow-x-auto text-[11px] font-mono text-slate-600 dark:text-slate-300 scrollbar-none">
+          <div className="mt-6 sm:mt-8 pt-3 sm:pt-4 pb-2 border-t border-slate-200/60 dark:border-slate-800/80 flex items-center gap-4 sm:gap-6 overflow-x-auto text-[10.5px] sm:text-[11px] font-mono text-slate-600 dark:text-slate-300 no-scrollbar">
             <div className="flex items-center gap-2 shrink-0">
               <span className="size-2 rounded-full bg-emerald-500" />
               <span className="font-bold text-slate-800 dark:text-white">Genesis2000 CAM:</span>
@@ -424,25 +424,25 @@ export default function HowItWorksClient() {
             </div>
             <span className="text-slate-300 dark:text-slate-700">•</span>
             <div className="flex items-center gap-2 shrink-0">
-              <span className="size-2 rounded-full bg-blue-500" />
+              <span className="size-2 rounded-full bg-teal-500" />
               <span className="font-bold text-slate-800 dark:text-white">LDI Cleanroom:</span>
               <span>Class 10,000 ISO 7</span>
             </div>
             <span className="text-slate-300 dark:text-slate-700">•</span>
             <div className="flex items-center gap-2 shrink-0">
-              <span className="size-2 rounded-full bg-amber-500" />
+              <span className="size-2 rounded-full bg-emerald-500" />
               <span className="font-bold text-slate-800 dark:text-white">Prototype Lead:</span>
-              <span className="text-amber-600 dark:text-amber-400 font-bold">24h Rapid Turn</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold">24h Rapid Turn</span>
             </div>
             <span className="text-slate-300 dark:text-slate-700">•</span>
             <div className="flex items-center gap-2 shrink-0">
-              <span className="size-2 rounded-full bg-purple-500" />
+              <span className="size-2 rounded-full bg-teal-500" />
               <span className="font-bold text-slate-800 dark:text-white">Quality Standard:</span>
               <span>IPC-6012 Class 2 / 3</span>
             </div>
             <span className="text-slate-300 dark:text-slate-700">•</span>
             <div className="flex items-center gap-2 shrink-0">
-              <span className="size-2 rounded-full bg-cyan-500" />
+              <span className="size-2 rounded-full bg-emerald-500" />
               <span className="font-bold text-slate-800 dark:text-white">Air Cargo Priority:</span>
               <span>DHL / FedEx Priority</span>
             </div>
@@ -457,7 +457,7 @@ export default function HowItWorksClient() {
                 title: "Instant Quoting",
                 sub: "CAD & Gerber DFM Parser",
                 icon: Zap,
-                gradient: "from-blue-600 to-cyan-600",
+                gradient: "from-emerald-600 to-teal-600",
               },
               {
                 id: "step-2",
@@ -465,7 +465,7 @@ export default function HowItWorksClient() {
                 title: "CAM Engineering",
                 sub: "< 2h Response Window",
                 icon: ShieldCheck,
-                gradient: "from-cyan-600 to-blue-600",
+                gradient: "from-teal-600 to-emerald-600",
               },
               {
                 id: "step-3",
@@ -473,7 +473,7 @@ export default function HowItWorksClient() {
                 title: "Smart Fabrication",
                 sub: "24h Rapid Prototype",
                 icon: Activity,
-                gradient: "from-indigo-600 to-blue-600",
+                gradient: "from-emerald-700 to-teal-700",
               },
               {
                 id: "step-4",
@@ -481,17 +481,17 @@ export default function HowItWorksClient() {
                 title: "Global Express",
                 sub: "2-3 Days Priority Door-to-Door",
                 icon: Plane,
-                gradient: "from-emerald-600 to-teal-600",
+                gradient: "from-teal-700 to-emerald-700",
               },
             ].map((step, idx) => (
               <button
                 key={step.id}
                 type="button"
                 onClick={() => scrollToStep(step.id)}
-                className="group p-3.5 rounded-2xl bg-white/80 dark:bg-slate-800/60 backdrop-blur-md border border-slate-200/90 dark:border-slate-700/80 hover:border-blue-500/80 dark:hover:border-cyan-400/80 shadow-xs hover:shadow-md transition-all duration-300 text-left cursor-pointer relative overflow-hidden"
+                className="group p-3.5 rounded-2xl bg-white/80 dark:bg-slate-800/60 backdrop-blur-md border border-slate-200/90 dark:border-slate-700/80 hover:border-emerald-500/80 dark:hover:border-emerald-400/80 shadow-xs hover:shadow-md transition-all duration-300 text-left cursor-pointer relative overflow-hidden"
               >
                 {/* Subtle Hover Gradient Glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 
                 <div className="flex items-center gap-3 relative z-10">
                   <div
@@ -609,7 +609,7 @@ export default function HowItWorksClient() {
                       <span className="font-bold truncate max-w-[210px] drop-shadow">
                         FT-PCB • {currentPreset.name}
                       </span>
-                      <span className="text-amber-300 font-bold bg-black/40 px-1.5 py-0.5 rounded">
+                      <span className="text-emerald-300 font-bold bg-black/40 px-1.5 py-0.5 rounded">
                         {currentPreset.dimensions}
                       </span>
                     </div>
@@ -1392,7 +1392,7 @@ export default function HowItWorksClient() {
                     <span>51.8% RH</span>
                   </div>
                   <div className="flex items-center gap-1.5 truncate">
-                    <Wind className="size-3.5 text-amber-400" />
+                    <Wind className="size-3.5 text-emerald-400" />
                     <span className="truncate">ISO 7 / 10k</span>
                   </div>
                 </div>
@@ -1633,7 +1633,7 @@ export default function HowItWorksClient() {
                 </button>
               </div>
 
-              <span className="text-[10px] font-bold text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded-lg border border-amber-800 flex items-center gap-1">
+              <span className="text-[10px] font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-lg border border-emerald-800 flex items-center gap-1">
                 <Box className="size-3" />
                 <span>{t.fasterDelivery.statShipping}</span>
               </span>
@@ -1702,7 +1702,7 @@ export default function HowItWorksClient() {
                     </div>
                     <div className="flex justify-between items-center text-[11px]">
                       <span className="text-slate-400">{t.fasterDelivery.customsLabel}</span>
-                      <span className="text-amber-300 font-medium">
+                      <span className="text-emerald-300 font-medium">
                         {selectedCountry.customs}
                       </span>
                     </div>
@@ -2019,12 +2019,12 @@ export default function HowItWorksClient() {
             {/* Channel 3: Help Center */}
             <div className="pt-4 md:pt-0 md:px-6 space-y-2">
               <div className="flex items-center gap-2.5">
-                <div className="size-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                <div className="size-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
                   <HelpCircle className="size-4" />
                 </div>
                 <Link
                   href="/contact"
-                  className="text-base font-black text-white hover:text-amber-400 transition inline-flex items-center gap-1"
+                  className="text-base font-black text-white hover:text-emerald-400 transition inline-flex items-center gap-1"
                 >
                   {t.contactBar.helpTitle} →
                 </Link>
@@ -2032,7 +2032,7 @@ export default function HowItWorksClient() {
               <p className="text-xs text-slate-300 leading-relaxed">
                 {t.contactBar.helpDesc}
               </p>
-              <div className="text-[11px] text-amber-400 font-mono font-bold">
+              <div className="text-[11px] text-emerald-400 font-mono font-bold">
                 {t.contactBar.helpTime}
               </div>
             </div>
@@ -2291,7 +2291,7 @@ export default function HowItWorksClient() {
             {t.ctaBanner.guarantees.map((g, idx) => {
               const icons = [DollarSign, Clock, CheckCircle2, ShieldCheck];
               const IconComp = icons[idx] || ShieldCheck;
-              const colors = ["text-amber-400", "text-cyan-400", "text-emerald-400", "text-purple-400"];
+              const colors = ["text-emerald-400", "text-teal-400", "text-emerald-300", "text-teal-300"];
               return (
                 <div key={idx} className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1.5">
                   <div className="flex items-center gap-2">

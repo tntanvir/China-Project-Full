@@ -29,6 +29,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { OrderService } from "@/services/order.service";
 import { QuoteService } from "@/services/quote.service";
 import { useAuthStore } from "@/store/authStore";
@@ -72,11 +73,13 @@ function formatDate(dateStr?: string) {
 
 export default function CustomerDashboardPage() {
   const user = useAuthStore((state) => state.user);
+  const isAuthLoading = useAuthStore((state) => state.isLoading);
   const [orders, setOrders] = useState<OrderItem[]>([]);
   const [quotes, setQuotes] = useState<QuoteItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (isAuthLoading || !user) return;
     let active = true;
 
     async function loadCustomerData() {
@@ -101,7 +104,7 @@ export default function CustomerDashboardPage() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [isAuthLoading, user]);
 
   const metrics = useMemo(() => {
     const totalOrders = orders.length;
@@ -186,7 +189,11 @@ export default function CustomerDashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total PCB Orders</p>
-                <p className="mt-2 text-2xl font-black text-slate-900 dark:text-white">{metrics.totalOrders}</p>
+                {loading ? (
+                  <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+                ) : (
+                  <p className="mt-2 text-2xl font-black text-slate-900 dark:text-white">{metrics.totalOrders}</p>
+                )}
                 <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">Lifetime manufactured</p>
               </div>
               <div className="flex size-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
@@ -202,7 +209,11 @@ export default function CustomerDashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">In Production</p>
-                <p className="mt-2 text-2xl font-black text-emerald-600 dark:text-emerald-400">{metrics.activeProduction}</p>
+                {loading ? (
+                  <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+                ) : (
+                  <p className="mt-2 text-2xl font-black text-emerald-600 dark:text-emerald-400">{metrics.activeProduction}</p>
+                )}
                 <p className="mt-0.5 text-[11px] text-emerald-600/80 dark:text-emerald-400/80 font-medium">CAM & fab active</p>
               </div>
               <div className="flex size-11 items-center justify-center rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-950/50 dark:text-teal-400">
@@ -218,7 +229,11 @@ export default function CustomerDashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Saved Quotes</p>
-                <p className="mt-2 text-2xl font-black text-slate-900 dark:text-white">{metrics.savedQuotesCount}</p>
+                {loading ? (
+                  <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+                ) : (
+                  <p className="mt-2 text-2xl font-black text-slate-900 dark:text-white">{metrics.savedQuotesCount}</p>
+                )}
                 <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">Ready to manufacture</p>
               </div>
               <div className="flex size-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400">
@@ -234,10 +249,14 @@ export default function CustomerDashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Investment</p>
-                <p className="mt-2 text-2xl font-black text-slate-900 dark:text-white">{money(metrics.totalSpent)}</p>
+                {loading ? (
+                  <Skeleton className="h-8 w-24 mt-2 rounded-lg" />
+                ) : (
+                  <p className="mt-2 text-2xl font-black text-slate-900 dark:text-white">{money(metrics.totalSpent)}</p>
+                )}
                 <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">Paid invoices</p>
               </div>
-              <div className="flex size-11 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400">
+              <div className="flex size-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
                 <CreditCard className="size-5" />
               </div>
             </div>
@@ -317,9 +336,26 @@ export default function CustomerDashboardPage() {
 
           <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs dark:border-slate-800 dark:bg-[#0b1220]">
             {loading ? (
-              <div className="p-8 text-center text-xs text-slate-500">
-                <div className="size-5 mx-auto mb-2 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
-                Loading your orders...
+              <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      <Skeleton className="size-10 rounded-xl shrink-0" />
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <Skeleton className="h-4 w-32" />
+                          <Skeleton className="h-4 w-16 rounded-full" />
+                        </div>
+                        <Skeleton className="h-3 w-48" />
+                        <Skeleton className="h-3 w-28" />
+                      </div>
+                    </div>
+                    <div className="flex items-center sm:flex-col sm:items-end justify-between gap-1 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-slate-800">
+                      <Skeleton className="h-5 w-20" />
+                      <Skeleton className="h-3 w-28" />
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : recentOrders.length === 0 ? (
               <div className="p-8 text-center">
@@ -403,7 +439,25 @@ export default function CustomerDashboardPage() {
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs dark:border-slate-800 dark:bg-[#0b1220] space-y-3">
-              {recentQuotes.length === 0 ? (
+              {loading ? (
+                <div className="space-y-2.5">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="p-3 rounded-xl border border-slate-100 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-900/50 flex items-center justify-between gap-2"
+                    >
+                      <div className="space-y-1.5">
+                        <Skeleton className="h-3.5 w-28" />
+                        <Skeleton className="h-2.5 w-36" />
+                      </div>
+                      <div className="flex flex-col items-end gap-1.5">
+                        <Skeleton className="h-4 w-14" />
+                        <Skeleton className="h-6 w-12 rounded-lg" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : recentQuotes.length === 0 ? (
                 <div className="py-6 text-center">
                   <p className="text-xs text-slate-500">No saved quotes right now.</p>
                   <Button asChild size="sm" variant="outline" className="mt-2.5 h-8 text-xs font-bold">

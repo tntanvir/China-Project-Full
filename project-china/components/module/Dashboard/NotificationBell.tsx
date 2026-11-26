@@ -244,9 +244,9 @@ export default function NotificationBell() {
         <button
           type="button"
           aria-label="Notifications"
-          className="relative flex size-9 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-700 shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400 cursor-pointer"
+          className="relative flex size-8 sm:size-9 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-700 shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400 cursor-pointer"
         >
-          <Bell className="size-4" />
+          <Bell className="size-3.5 sm:size-4" />
 
           {unreadCount > 0 ? (
             <span className="absolute -top-1.5 -right-1.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-emerald-600 px-1 text-[9px] font-mono font-bold text-white ring-2 ring-white dark:ring-slate-900 shadow-xs animate-in zoom-in-50 duration-200">

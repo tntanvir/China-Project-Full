@@ -237,10 +237,11 @@ export default function CompanyProfilePdfViewer({
           <a
             href={pdfUrl}
             download="Wuping-Feitian-PCB-Company-Profile.pdf"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 px-3.5 py-1.5 text-xs font-black text-white shadow-md shadow-emerald-600/25 transition active:scale-95 cursor-pointer"
+            className="inline-flex items-center gap-1 sm:gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-[11px] sm:text-xs font-black text-white shadow-md shadow-emerald-600/25 transition active:scale-95 cursor-pointer whitespace-nowrap"
           >
-            <Download className="size-3.5 stroke-[2.5]" />
-            <span>Download PDF (6.9 MB)</span>
+            <Download className="size-3 sm:size-3.5 stroke-[2.5] shrink-0" />
+            <span className="hidden sm:inline">Download PDF (6.9 MB)</span>
+            <span className="sm:hidden">PDF (6.9M)</span>
           </a>
 
           {/* Open Native PDF in New Tab */}

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/authStore";
 import { AuthService } from "@/services/auth.service";
-import { getRoleDashboardPath } from "@/lib/auth-routes";
+import { getRoleDashboardPath, getSafeRedirectUrl } from "@/lib/auth-routes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,6 +25,8 @@ import {
 export default function LoginPage() {
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
+  const user = useAuthStore((state) => state.user);
+  const isAuthLoading = useAuthStore((state) => state.isLoading);
   const [loading, setLoading] = React.useState(false);
   const [formData, setFormData] = React.useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = React.useState(false);
@@ -40,6 +42,14 @@ export default function LoginPage() {
     }
   }, []);
 
+  // When already authenticated, immediately redirect to target page or dashboard
+  React.useEffect(() => {
+    if (!isAuthLoading && user) {
+      const targetDestination = getSafeRedirectUrl(redirectUrl, user.role);
+      router.replace(targetDestination);
+    }
+  }, [isAuthLoading, user, redirectUrl, router]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (errorMsg) setErrorMsg("");
@@ -50,12 +60,11 @@ export default function LoginPage() {
     setLoading(true);
     setErrorMsg("");
     try {
-      const user = await AuthService.login(formData);
-      login(user);
+      const loggedInUser = await AuthService.login(formData);
+      login(loggedInUser);
       toast.success("Login successful. Welcome back!");
-      const params = new URLSearchParams(window.location.search);
-      const redirect = params.get("redirect") || getRoleDashboardPath(user?.role);
-      router.replace(redirect);
+      const targetDestination = getSafeRedirectUrl(redirectUrl, loggedInUser?.role);
+      router.replace(targetDestination);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unable to sign in. Please verify your credentials.";
       setErrorMsg(message);

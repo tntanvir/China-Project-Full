@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getBackendOrigin } from "@/lib/api-config";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -60,7 +61,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const backendOrigin = (process.env.NEXT_PUBLIC_API_ORIGIN || "http://localhost:5000").replace(/\/+$/, "");
+    const backendOrigin = getBackendOrigin();
     const targetUrl =
       rawUrl.startsWith("http://") || rawUrl.startsWith("https://")
         ? rawUrl

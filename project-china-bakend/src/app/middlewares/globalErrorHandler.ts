@@ -31,7 +31,7 @@ import { ZodError } from "zod";
 import ApiError from "../errors/ApiError";
 
 const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-    console.error("Global Error Handler caught:", err);
+
     let statusCode: number = 500;
     let message = typeof err === "string" ? err : err?.message || "Something went wrong!";
     let errorType = "UNKNOWN_SERVER_ERROR";
@@ -86,12 +86,19 @@ const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
         errorSources = [{ path: "server", message: err.message }];
     }
 
+    // Smart Logging: concise warning for client errors (4xx), detailed stack for server errors (5xx)
+    if (statusCode >= 500) {
+        console.error(`🔥 [Server Error ${statusCode}] ${req.method} ${req.originalUrl}:`, err);
+    } else {
+        console.warn(`⚠️  [Client ${statusCode}] ${req.method} ${req.originalUrl} - ${message}`);
+    }
+
     res.status(statusCode).json({
         success: false,
         errorType,
         message,
         errorSources,
-        stack: process.env.NODE_ENV === "development" ? err?.stack : null
+        stack: process.env.NODE_ENV === "development" && statusCode >= 500 ? err?.stack : null
     });
 };
 

@@ -584,7 +584,7 @@ export const sourceDictionary: Dictionary = {
   navbar: {
     companyName: "FT PCB (Feitian Electronic Technology)",
     logoAlt: "FT PCB Logo",
-    badge: "Direct Factory PCB & PCBA Partner",
+    badge: "Direct Factory PCB  Partner",
     countries: "Global Region",
     selectCountry: "Select Country / Language",
     navigation: "Navigation",
@@ -705,7 +705,7 @@ export const sourceDictionary: Dictionary = {
     },
     products: {
       eyebrow: "Product Families",
-      title: "PCB & PCBA Product Categories",
+      title: "PCB  Product Categories",
       description: "Show users the main product families quickly, with visual examples for each board type and assembly service.",
       allLink: "All Products",
       videoTitle: "Product Showcase Video",
@@ -790,7 +790,7 @@ export const sourceDictionary: Dictionary = {
     },
     network: {
       badge: "Worldwide Air Express • Direct Connecting Flight Links",
-      title: "Global Precision PCB & PCBA Supply Chain",
+      title: "Global Precision PCB  Supply Chain",
       description: "Direct 3D flight routes connecting our Wuping manufacturing campus to over 60 countries. Seamless DHL, FedEx, and UPS air express networks with real-time tracking.",
     },
     testimonials: {
@@ -815,7 +815,7 @@ export const sourceDictionary: Dictionary = {
   },
   heroSlider: {
     badge: "1-32 Layers • Rigid FR4",
-    quoteTitle: "Fast PCB & PCBA Instant Quote",
+    quoteTitle: "Fast PCB  Instant Quote",
     tabPcb: "Standard PCB",
     tabPcba: "SMT Assembly",
     boardType: "Board Type",
@@ -955,7 +955,7 @@ export const sourceDictionary: Dictionary = {
     submitting: "Sending Inquiry...",
   },
   productCategories: {
-    eyebrow: "PCB & PCBA Product Families",
+    eyebrow: "PCB  Product Families",
     title: "Core Electronics Manufacturing Catalog",
     description: "Show users the main product families quickly, with visual examples for each board type and assembly service.",
     viewGrid: "Card Grid",
@@ -1046,7 +1046,7 @@ export const sourceDictionary: Dictionary = {
   },
   networkGlobe: {
     badge: "Worldwide Air Express • Direct Connecting Flight Links",
-    title: "Global Precision PCB & PCBA Supply Chain",
+    title: "Global Precision PCB  Supply Chain",
     description: "Direct 3D flight routes connecting our Wuping manufacturing campus to over 60 countries. Seamless DHL, FedEx, and UPS air express networks with real-time tracking.",
     telemetry: {
       coverageLabel: "Coverage",

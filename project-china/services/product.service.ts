@@ -1,7 +1,8 @@
 import { cache } from "react";
 import { apiRequest } from "./api-client";
+import { getApiBaseUrl } from "@/lib/api-config";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+const API_BASE_URL = getApiBaseUrl();
 
 export interface IProduct {
   id: string;

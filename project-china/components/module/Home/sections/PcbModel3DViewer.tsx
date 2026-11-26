@@ -968,7 +968,7 @@ export default function PcbModel3DViewer() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-6 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                 {SOLDER_MASK_COLORS.map((color) => {
                   const isSelected = selectedColor.id === color.id;
                   return (
@@ -1033,7 +1033,7 @@ export default function PcbModel3DViewer() {
                     onClick={() => setSurfaceFinish("enig")}
                     className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer ${
                       surfaceFinish === "enig"
-                        ? "bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30"
+                        ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 font-black"
                         : "text-gray-500 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white"
                     }`}
                   >

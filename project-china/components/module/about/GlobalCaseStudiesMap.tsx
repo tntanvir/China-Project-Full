@@ -317,7 +317,7 @@ export default function GlobalCaseStudiesMap() {
             <button
               key={study.id}
               onClick={() => setSelectedId(study.id)}
-              className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-xs md:text-sm font-bold transition-all border cursor-pointer ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-[11px] sm:text-xs md:text-sm font-bold transition-all border cursor-pointer ${
                 isSelected
                   ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 border-slate-900 dark:border-white shadow-xl scale-[1.03]"
                   : "bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-slate-400"
@@ -372,9 +372,9 @@ export default function GlobalCaseStudiesMap() {
                 <div className="text-2xl font-black text-white">
                   {selectedStudy.client}
                 </div>
-                <div className="flex items-center gap-1 text-amber-400">
+                <div className="flex items-center gap-1 text-emerald-400">
                   {[...Array(selectedStudy.rating)].map((_, i) => (
-                    <Star key={i} className="size-4 fill-amber-400 text-amber-400" />
+                    <Star key={i} className="size-4 fill-emerald-400 text-emerald-400" />
                   ))}
                   <span className="text-xs font-bold text-white ml-2">
                     {isZh ? "5.0 / 5.0 卓越质量评级" : "5.0 / 5.0 Quality Rating"}
@@ -406,8 +406,8 @@ export default function GlobalCaseStudiesMap() {
 
                 {/* Challenge & Solution Grid */}
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/40 space-y-2">
-                    <div className="text-xs font-black uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
+                  <div className="p-4 rounded-2xl bg-teal-50/70 dark:bg-teal-950/20 border border-teal-200/60 dark:border-teal-900/40 space-y-2">
+                    <div className="text-xs font-black uppercase tracking-wider text-teal-700 dark:text-teal-400 flex items-center gap-1.5">
                       <Zap className="size-3.5" />
                       <span>{isZh ? "工程技术挑战" : "Technical Challenge"}</span>
                     </div>

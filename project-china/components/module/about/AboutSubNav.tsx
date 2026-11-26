@@ -116,10 +116,10 @@ export default function AboutSubNav() {
   };
 
   return (
-    <div className="border-b border-gray-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md sticky top-0 z-40 shadow-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between gap-4 py-2.5 overflow-x-auto scrollbar-none">
-          <nav className="flex items-center gap-1.5 shrink-0">
+    <div className="border-b border-gray-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md sticky top-0 z-40 shadow-xs w-full min-w-0">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 py-2 sm:py-2.5 overflow-x-auto no-scrollbar scroll-smooth">
+          <nav className="flex items-center gap-1 sm:gap-1.5 shrink-0 py-0.5">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = activeSection === item.id;
@@ -129,17 +129,17 @@ export default function AboutSubNav() {
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={(e) => scrollTo(item.id, e)}
-                  className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                     isActive
                       ? "bg-emerald-600 text-white shadow-sm shadow-emerald-600/30 scale-[1.02]"
                       : "text-gray-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-gray-100 dark:hover:bg-slate-800/80"
                   }`}
                 >
-                  <Icon className={`size-3.5 ${isActive ? "text-white" : "text-gray-400 dark:text-slate-500"}`} />
+                  <Icon className={`size-3 sm:size-3.5 shrink-0 ${isActive ? "text-white" : "text-gray-400 dark:text-slate-500"}`} />
                   <span>{item.title}</span>
                   {item.badge && (
                     <span
-                      className={`text-[9px] font-black uppercase px-1.5 py-0.2 rounded-full ${
+                      className={`text-[8.5px] sm:text-[9px] font-black uppercase px-1.5 py-0.2 rounded-full ${
                         isActive
                           ? "bg-white/25 text-white"
                           : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
@@ -153,16 +153,17 @@ export default function AboutSubNav() {
             })}
           </nav>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <a
               href="/docs/FTpcb-Company-Profile.pdf"
               download="Wuping-Feitian-PCB-Company-Profile.pdf"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 transition shadow-xs"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 transition shadow-xs whitespace-nowrap"
               title="Download Full Company Profile (PDF 6.9MB)"
             >
-              <Download className="size-3.5" />
-              <span className="hidden sm:inline">PDF Profile</span>
-              <span className="text-[10px] opacity-75 font-mono">(6.9MB)</span>
+              <Download className="size-3 sm:size-3.5 shrink-0" />
+              <span className="hidden xs:inline sm:inline">PDF Profile</span>
+              <span className="xs:hidden sm:hidden">PDF</span>
+              <span className="text-[9.5px] sm:text-[10px] opacity-75 font-mono">(6.9MB)</span>
             </a>
           </div>
         </div>

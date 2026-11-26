@@ -65,6 +65,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AdminService, type AdminCustomer } from "@/services/admin.service";
 import { PaginationMeta } from "@/services/api-client";
@@ -102,12 +103,12 @@ const orderStatusStyles: Record<string, { badge: string; dot: string }> = {
     dot: "bg-sky-500",
   },
   PROCESSING: {
-    badge: "bg-indigo-50 text-indigo-800 border-indigo-300 dark:bg-indigo-950/60 dark:text-indigo-300 dark:border-indigo-800",
-    dot: "bg-indigo-500",
+    badge: "bg-teal-50 text-teal-800 border-teal-300 dark:bg-teal-950/60 dark:text-teal-300 dark:border-teal-800",
+    dot: "bg-teal-500",
   },
   SHIPPED: {
-    badge: "bg-purple-50 text-purple-800 border-purple-300 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800",
-    dot: "bg-purple-500",
+    badge: "bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800",
+    dot: "bg-emerald-500",
   },
   DELIVERED: {
     badge: "bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800",
@@ -451,9 +452,13 @@ export default function AdminCustomersManager() {
               </span>
               <Users className="size-4 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white">
-              {stats.total}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white">
+                {stats.total}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Registered platform accounts</p>
           </CardContent>
         </Card>
@@ -466,9 +471,13 @@ export default function AdminCustomersManager() {
               </span>
               <UserCheck className="size-4 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300">
-              {stats.active}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300">
+                {stats.active}
+              </div>
+            )}
             <p className="text-[11px] text-emerald-600 dark:text-emerald-400/80 font-medium mt-0.5">
               Good standing & ready to order
             </p>
@@ -483,9 +492,13 @@ export default function AdminCustomersManager() {
               </span>
               <ShieldCheck className="size-4 text-sky-600 dark:text-sky-400" />
             </div>
-            <div className="mt-2 text-2xl font-black text-sky-600 dark:text-sky-400">
-              {stats.verified}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-sky-600 dark:text-sky-400">
+                {stats.verified}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Email / enterprise verified</p>
           </CardContent>
         </Card>
@@ -498,9 +511,13 @@ export default function AdminCustomersManager() {
               </span>
               <ShoppingBag className="size-4 text-blue-600 dark:text-blue-400" />
             </div>
-            <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400">
-              {stats.totalOrders}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400">
+                {stats.totalOrders}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Across all client accounts</p>
           </CardContent>
         </Card>
@@ -646,11 +663,95 @@ export default function AdminCustomersManager() {
 
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex flex-col items-center justify-center p-14 text-center">
-              <Loader2 className="size-8 animate-spin text-emerald-600 mb-3" />
-              <p className="text-sm font-bold text-gray-700 dark:text-slate-300">
-                Loading customer profiles from database...
-              </p>
+            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+              <Table className="min-w-[1360px] w-full border-collapse">
+                <TableHeader>
+                  <TableRow className="border-b border-gray-200 bg-gray-50/80 dark:border-slate-800 dark:bg-slate-900/80 text-xs">
+                    <TableHead className="w-[280px] min-w-[280px] font-extrabold text-slate-700 dark:text-slate-300 pl-4">
+                      <div className="flex items-center gap-1.5">
+                        <User className="size-3 text-emerald-600" />
+                        <span>Customer Profile</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[240px] min-w-[240px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <Building2 className="size-3 text-emerald-600" />
+                        <span>Company & Phone</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[220px] min-w-[220px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="size-3 text-emerald-600" />
+                        <span>Location / Address</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[180px] min-w-[180px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <ShoppingBag className="size-3 text-emerald-600" />
+                        <span>Activity & Orders</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[170px] min-w-[170px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <ShieldCheck className="size-3 text-emerald-600" />
+                        <span>Account Status</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[130px] min-w-[130px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="size-3 text-emerald-600" />
+                        <span>Joined Date</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[140px] min-w-[140px] sticky right-0 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-xs z-10 text-right pr-4 font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Actions</span>
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <TableRow key={i}>
+                      <TableCell className="pl-4">
+                        <div className="flex items-center gap-3">
+                          <Skeleton className="size-9 rounded-full shrink-0" />
+                          <div className="space-y-1.5">
+                            <Skeleton className="h-4 w-32" />
+                            <Skeleton className="h-3 w-40" />
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1.5">
+                          <Skeleton className="h-4 w-36" />
+                          <Skeleton className="h-3 w-28" />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-3 w-20 mt-1" />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Skeleton className="h-6 w-16 rounded-lg" />
+                          <Skeleton className="h-6 w-16 rounded-lg" />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-20 rounded-full" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-3.5 w-24" />
+                      </TableCell>
+                      <TableCell className="sticky right-0 bg-white/95 dark:bg-slate-900/95 text-right pr-4">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Skeleton className="h-8 w-16 rounded-lg" />
+                          <Skeleton className="h-8 w-8 rounded-lg" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           ) : customers.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-14 text-center">

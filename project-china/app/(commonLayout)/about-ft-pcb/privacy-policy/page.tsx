@@ -65,14 +65,14 @@ export default async function Page() {
             <Info className="h-4 w-4" />
             {content.heroEyebrow}
           </div>
-          <h1 className="mx-auto max-w-4xl text-5xl font-black tracking-[-0.04em] text-foreground md:text-7xl">
+          <h1 className="mx-auto max-w-4xl text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.04em] text-foreground leading-tight">
             {content.heroTitle}
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground md:text-xl">
+          <p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-sm sm:text-lg leading-relaxed text-muted-foreground md:text-xl">
             {content.heroDescription}
           </p>
-          <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-            <Button asChild size="lg" className="rounded-full px-8">
+          <div className="mt-8 sm:mt-10 flex flex-col justify-center gap-3 sm:gap-4 sm:flex-row w-full sm:w-auto">
+            <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-5 sm:px-8 text-xs sm:text-sm">
               <Link href={content.ctaHref}>
                 {content.ctaLabel}
                 <ArrowRight className="ml-2 h-5 w-5" />

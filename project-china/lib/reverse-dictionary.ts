@@ -151,7 +151,7 @@ Object.values(localizedNavItems).forEach((navItems) => {
 
 // 5. Hardcoded high-priority French phrases fallback to guarantee zero leakage
 const explicitFrenchMap: Record<string, string> = {
-  "Partenaire direct d'usine PCB & PCBA": "Direct Factory PCB & PCBA Partner",
+  "Partenaire direct d'usine PCB ": "Direct Factory PCB  Partner",
   "Régions du monde": "Global Region",
   "Choisir le pays et la langue": "Select Country / Language",
   "Navigation": "Navigation",
@@ -183,7 +183,7 @@ const explicitFrenchMap: Record<string, string> = {
   "Contrôle direct en usine, des fichiers Gerber à la livraison mondiale":
     "Direct Factory Control from Digital Gerber to Global Delivery",
   "Visite vidéo de l'usine connectée": "Smart Factory Tour Video",
-  "Catégories de produits PCB & PCBA": "PCB & PCBA Product Categories",
+  "Catégories de produits PCB ": "PCB  Product Categories",
   "Toutes les catégories": "All Products",
   "Vidéo de présentation des produits": "Product Showcase Video",
   "PCB rigide multicouche": "Rigid Multi-Layer PCB",
@@ -208,8 +208,8 @@ const explicitFrenchMap: Record<string, string> = {
   "Support technique 24/7": "24/7 Technical Support",
   "Express aérien mondial • Connexions directes":
     "Worldwide Air Express • Direct Connecting Flight Links",
-  "Chaîne d'approvisionnement mondiale de précision PCB & PCBA":
-    "Global Precision PCB & PCBA Supply Chain",
+  "Chaîne d'approvisionnement mondiale de précision PCB ":
+    "Global Precision PCB  Supply Chain",
   "Avis vérifiés d'ingénieurs matériels":
     "Verified Hardware Engineering Reviews",
   "Ce que disent les équipes d'ingénierie mondiales":
@@ -222,7 +222,7 @@ const explicitFrenchMap: Record<string, string> = {
   "Téléphone direct": "Direct Phone",
   "E-mail technique": "Engineering Email",
   "1-32 couches • FR4 rigide": "1-32 Layers • Rigid FR4",
-  "Calculateur en ligne immédiat PCB & PCBA": "Fast PCB & PCBA Instant Quote",
+  "Calculateur en ligne immédiat PCB ": "Fast PCB  Instant Quote",
   "PCB standard": "Standard PCB",
   "Assemblage CMS": "SMT Assembly",
   "Type de carte": "Board Type",

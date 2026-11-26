@@ -450,7 +450,7 @@ function WebhookCheckoutContent() {
                     </button>
                   </div>
                 </div>
-                <div className="pt-2 text-[11px] font-sans text-amber-300">
+                <div className="pt-2 text-[11px] font-sans text-emerald-300">
                   *Please include Order Reference <strong>#{orderId.slice(0, 8).toUpperCase()}</strong> in the wire transfer memo.
                 </div>
               </div>

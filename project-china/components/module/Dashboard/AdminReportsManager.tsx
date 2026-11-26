@@ -57,6 +57,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Area,
   AreaChart,
@@ -531,9 +532,13 @@ export default function AdminReportsManager() {
               </span>
               <CreditCard className="size-4 text-emerald-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300 font-mono">
-              ${(stats?.totalRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-24 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300 font-mono">
+                ${(stats?.totalRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </div>
+            )}
             <p className="text-[11px] text-emerald-600/80 font-medium mt-0.5">Realized paid settlements</p>
           </CardContent>
         </Card>
@@ -547,9 +552,13 @@ export default function AdminReportsManager() {
               </span>
               <Clock className="size-4 text-amber-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-amber-600 dark:text-amber-400 font-mono">
-              ${(stats?.pendingRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-24 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-amber-600 dark:text-amber-400 font-mono">
+                ${(stats?.pendingRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Pending CAM quote review</p>
           </CardContent>
         </Card>
@@ -563,9 +572,13 @@ export default function AdminReportsManager() {
               </span>
               <PackageCheck className="size-4 text-blue-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">
-              {stats?.totalOrders || 0}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">
+                {stats?.totalOrders || 0}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">
               {stats?.totalInquiries || 0} direct factory inquiries
             </p>
@@ -581,9 +594,13 @@ export default function AdminReportsManager() {
               </span>
               <TrendingUp className="size-4 text-purple-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-purple-600 dark:text-purple-400 font-mono">
-              ${(stats?.averageOrderValue || 0).toFixed(2)}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-20 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-purple-600 dark:text-purple-400 font-mono">
+                ${(stats?.averageOrderValue || 0).toFixed(2)}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Per verified customer build</p>
           </CardContent>
         </Card>
@@ -597,9 +614,13 @@ export default function AdminReportsManager() {
               </span>
               <Boxes className="size-4 text-emerald-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white font-mono">
-              ${(stats?.inventoryValuation || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-24 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white font-mono">
+                ${(stats?.inventoryValuation || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Physical warehouse valuation</p>
           </CardContent>
         </Card>
@@ -837,8 +858,8 @@ export default function AdminReportsManager() {
                   )}
                 </ResponsiveContainer>
               ) : (
-                <div className="flex h-full items-center justify-center">
-                  <Loader2 className="size-6 animate-spin text-emerald-600" />
+                <div className="flex h-full w-full items-center justify-center p-4">
+                  <Skeleton className="h-full w-full rounded-xl" />
                 </div>
               )}
             </div>
@@ -902,8 +923,8 @@ export default function AdminReportsManager() {
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="flex h-full items-center justify-center">
-                  <Loader2 className="size-5 animate-spin text-emerald-600" />
+                <div className="flex h-full w-full items-center justify-center p-4">
+                  <Skeleton className="size-44 rounded-full mx-auto" />
                 </div>
               )}
 
@@ -1191,9 +1212,64 @@ export default function AdminReportsManager() {
 
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex flex-col items-center justify-center p-12 text-center">
-              <Loader2 className="size-7 animate-spin text-emerald-600 mb-2" />
-              <p className="text-xs font-bold text-gray-500">Loading archived reports...</p>
+            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+              <Table className="min-w-[1000px] w-full border-collapse">
+                <TableHeader>
+                  <TableRow className="border-b border-gray-200 bg-gray-50/80 dark:border-slate-800 dark:bg-slate-900/80 text-xs">
+                    <TableHead className="w-[320px] min-w-[320px] font-extrabold text-slate-700 dark:text-slate-300 pl-4">
+                      Report Title
+                    </TableHead>
+                    <TableHead className="w-[180px] min-w-[180px] font-extrabold text-slate-700 dark:text-slate-300">
+                      Category
+                    </TableHead>
+                    <TableHead className="w-[120px] min-w-[120px] font-extrabold text-slate-700 dark:text-slate-300">
+                      Format
+                    </TableHead>
+                    <TableHead className="w-[180px] min-w-[180px] font-extrabold text-slate-700 dark:text-slate-300">
+                      Generated On
+                    </TableHead>
+                    <TableHead className="w-[120px] min-w-[120px] font-extrabold text-slate-700 dark:text-slate-300">
+                      Size
+                    </TableHead>
+                    <TableHead className="w-[120px] min-w-[120px] text-right font-extrabold text-slate-700 dark:text-slate-300 pr-4">
+                      Actions
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[1, 2, 3, 4].map((i) => (
+                    <TableRow key={i}>
+                      <TableCell className="pl-4">
+                        <div className="flex items-center gap-3">
+                          <Skeleton className="size-8 rounded-lg shrink-0" />
+                          <div className="space-y-1">
+                            <Skeleton className="h-4 w-44" />
+                            <Skeleton className="h-3 w-28" />
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-24 rounded-lg" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-5 w-14 rounded-full" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-3.5 w-24" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-3.5 w-16" />
+                      </TableCell>
+                      <TableCell className="text-right pr-4">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Skeleton className="h-8 w-8 rounded-lg" />
+                          <Skeleton className="h-8 w-8 rounded-lg" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           ) : filteredHistory.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-center">

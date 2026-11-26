@@ -1379,7 +1379,7 @@ export default function PcbQuote3DViewer({
               onClick={() => setIsExploded((prev) => !prev)}
               className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${
                 isExploded
-                  ? "bg-amber-600 text-white shadow-xs"
+                  ? "bg-emerald-600 text-white shadow-xs"
                   : "bg-gray-200/70 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-300"
               }`}
             >
@@ -1490,7 +1490,7 @@ export default function PcbQuote3DViewer({
                 onClick={() => setIsExploded((prev) => !prev)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border ${
                   isExploded
-                    ? "bg-amber-600 text-white border-amber-500 shadow-md shadow-amber-600/30"
+                    ? "bg-emerald-600 text-white border-emerald-500 shadow-md shadow-emerald-600/30"
                     : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
                 }`}
               >
@@ -1573,7 +1573,7 @@ export default function PcbQuote3DViewer({
                   </div>
                   <div className="flex justify-between border-b border-slate-800 pb-1">
                     <span className="text-slate-400">Surface Finish:</span>
-                    <span className="font-bold text-amber-400">{surfaceFinish}</span>
+                    <span className="font-bold text-emerald-400">{surfaceFinish}</span>
                   </div>
                   <div className="flex justify-between border-b border-slate-800 pb-1">
                     <span className="text-slate-400">Substrate Base:</span>

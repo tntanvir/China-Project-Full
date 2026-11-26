@@ -286,7 +286,7 @@ export default function LeadershipSpotlight() {
                 className="space-y-4"
               >
                 <div>
-                  <div className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 dark:bg-purple-950/80 border border-purple-300 dark:border-purple-700 px-3 py-1 text-[11px] font-black text-purple-700 dark:text-purple-300 mb-2">
+                  <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 px-3 py-1 text-[11px] font-black text-emerald-700 dark:text-emerald-300 mb-2">
                     <GraduationCap className="size-3" />
                     <span>{locale === "zh" ? "核心科研与产业领军阵容" : "Academic & Technical Leadership"}</span>
                   </div>
@@ -311,7 +311,7 @@ export default function LeadershipSpotlight() {
                   <div className="space-y-1.5">
                     {selectedLeader.academic.map((item, i) => (
                       <div key={i} className="flex items-start gap-2 text-xs text-gray-700 dark:text-slate-300">
-                        <CheckCircle2 className="size-3.5 text-purple-600 dark:text-purple-400 shrink-0 mt-0.5" />
+                        <CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </div>
                     ))}

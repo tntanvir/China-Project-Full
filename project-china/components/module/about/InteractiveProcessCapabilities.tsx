@@ -308,23 +308,23 @@ export default function InteractiveProcessCapabilities() {
   return (
     <div className="space-y-6">
       {/* Controls: Search and Categories */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 w-full min-w-0">
         {/* Category Filter Pills with Sliding Indicator */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none relative">
+        <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto pb-1 no-scrollbar relative w-full min-w-0">
           {categories.map((cat) => (
             <button
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
-              className={`relative px-3.5 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+              className={`relative px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
                 activeCategory === cat.key
                   ? "text-white"
-                  : "bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700 hover:border-blue-500/50"
+                  : "bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700 hover:border-emerald-500/50"
               }`}
             >
               {activeCategory === cat.key && (
                 <motion.div
                   layoutId="capTabIndicator"
-                  className="absolute inset-0 rounded-full bg-blue-600 shadow-sm shadow-blue-600/30"
+                  className="absolute inset-0 rounded-full bg-emerald-600 shadow-sm shadow-emerald-600/30"
                   transition={{ type: "spring", stiffness: 450, damping: 32 }}
                 />
               )}
@@ -334,7 +334,7 @@ export default function InteractiveProcessCapabilities() {
         </div>
 
         {/* Live Search Input */}
-        <div className="relative min-w-[240px]">
+        <div className="relative w-full md:w-auto md:min-w-[240px] shrink-0">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-gray-400" />
           <input
             type="text"
@@ -345,15 +345,15 @@ export default function InteractiveProcessCapabilities() {
             }
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 py-1.5 pl-9 pr-4 text-xs font-medium text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="w-full rounded-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 py-1.5 pl-9 pr-4 text-xs font-medium text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
           />
         </div>
       </div>
 
       {/* Specifications Table with Smooth Row Transitions */}
-      <div className="rounded-3xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+      <div className="rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md overflow-hidden w-full min-w-0">
+        <div className="overflow-x-auto no-scrollbar">
+          <table className="w-full text-left border-collapse min-w-[540px]">
             <thead>
               <tr className="border-b border-gray-200 dark:border-slate-800 bg-gray-50/80 dark:bg-slate-800/80 text-[11px] font-black uppercase tracking-wider text-gray-500 dark:text-slate-400">
                 <th className="py-3 px-5">
@@ -398,7 +398,7 @@ export default function InteractiveProcessCapabilities() {
                       {item.advanced}
                     </td>
                     <td className="py-3 px-4 text-right">
-                      <span className="rounded-full bg-blue-50 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 text-[9px] font-black px-2 py-0.5">
+                      <span className="rounded-full bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-[9px] font-black px-2 py-0.5">
                         IPC Class 2/3
                       </span>
                     </td>
@@ -419,9 +419,9 @@ export default function InteractiveProcessCapabilities() {
       </div>
 
       {/* IPC Notice & Quote Prompt */}
-      <div className="rounded-2xl border border-blue-100 dark:border-blue-900/60 bg-blue-50/40 dark:bg-blue-950/20 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="rounded-2xl border border-emerald-100 dark:border-emerald-900/60 bg-emerald-50/40 dark:bg-emerald-950/20 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <ShieldCheck className="size-5 text-blue-600 dark:text-blue-400 shrink-0" />
+          <ShieldCheck className="size-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
           <div className="text-xs text-gray-700 dark:text-slate-300">
             <strong>
               {isZh
@@ -436,7 +436,7 @@ export default function InteractiveProcessCapabilities() {
 
         <Link
           href="/pcb-quote"
-          className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 text-xs font-black shrink-0 shadow-sm transition active:scale-95"
+          className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 text-xs font-black shrink-0 shadow-sm shadow-emerald-600/20 transition active:scale-95"
         >
           <span>{isZh ? "在线配置 PCB 报价" : "Configure PCB Quote"}</span>
           <ArrowRight className="size-3.5" />

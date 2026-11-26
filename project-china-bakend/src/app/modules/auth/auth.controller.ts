@@ -4,6 +4,12 @@ import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendResponse";
 import { AuthService } from "./auth.service";
 
+const isSecureCookie = (req: Request): boolean => {
+    if (process.env.COOKIE_SECURE === "true") return true;
+    if (process.env.COOKIE_SECURE === "false") return false;
+    return req.secure || req.headers["x-forwarded-proto"] === "https";
+};
+
 const register = catchAsync(async (req: Request, res: Response) => {
     const result = await AuthService.register(req.body);
 
@@ -20,17 +26,18 @@ const login = catchAsync(async (req: Request, res: Response) => {
     const result = await AuthService.login(req.body, {
         ip: req.ip,
     });
+    const secure = isSecureCookie(req);
 
     res.cookie("accessToken", result.accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure,
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.cookie("refreshToken", result.refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure,
         sameSite: "lax",
         maxAge: 90 * 24 * 60 * 60 * 1000,
     });
@@ -62,10 +69,11 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     const token = req.cookies.refreshToken;
 
     const result = await AuthService.refreshToken(token, { ip: req.ip });
+    const secure = isSecureCookie(req);
 
     res.cookie("accessToken", result.accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure,
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
     });

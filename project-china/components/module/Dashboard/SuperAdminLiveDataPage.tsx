@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import { SuperAdminService, type AuditLog, type MonitoringStatus, type SecurityCenter } from "@/services/super-admin.service";
 
 type PageType = "monitoring" | "security" | "audit";
@@ -161,7 +162,15 @@ export default function SuperAdminLiveDataPage({ type }: { type: PageType }) {
                 </TableHeader>
                 <TableBody>
                   {loading ? (
-                    <TableRow><TableCell colSpan={5} className="py-10 text-center text-sm font-bold text-muted-foreground">Loading records...</TableCell></TableRow>
+                    [1, 2, 3, 4, 5].map((i) => (
+                      <TableRow key={i}>
+                        <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-48" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-28" /></TableCell>
+                      </TableRow>
+                    ))
                   ) : rows.length ? (
                     rows.map((row) => (
                       <TableRow key={row.id}>

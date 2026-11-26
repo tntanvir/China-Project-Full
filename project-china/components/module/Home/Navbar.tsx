@@ -516,15 +516,15 @@ export default function Navbar() {
       {/* 1. UPPER BRAND & ACTIONS BAR (Tier 1)                                  */}
       {/* ===================================================================== */}
       <div className="border-b border-gray-100 bg-white dark:border-slate-800/80 dark:bg-slate-950">
-        <div className="mx-auto flex max-w-[1380px] items-center justify-between gap-4 px-4 sm:px-6 py-2.5">
+        <div className="mx-auto flex max-w-[1380px] items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 py-2 sm:py-2.5">
           
           {/* Brand Logo & Compact Name */}
           <Link
             href="/"
-            className="flex shrink-0 items-center gap-3 group"
+            className="flex shrink-0 items-center gap-2 sm:gap-3 group min-w-0"
             title={dictionary.navbar.companyName}
           >
-            <div className="relative flex items-center justify-center">
+            <div className="relative flex items-center justify-center shrink-0">
               <Image
                 src="/images/chinaproject.png"
                 alt={dictionary.navbar.logoAlt}
@@ -534,11 +534,11 @@ export default function Navbar() {
                 className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-105"
               />
             </div>
-            <div className="flex flex-col">
-              <span suppressHydrationWarning className="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400 leading-none">
+            <div className="flex flex-col min-w-0">
+              <span suppressHydrationWarning className="hidden sm:inline-block text-[9px] font-black uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400 leading-none">
                 {dictionary.navbar.badge || "DIRECT FACTORY"}
               </span>
-              <span className="text-sm sm:text-base font-black tracking-tight text-gray-900 dark:text-white leading-tight group-hover:text-emerald-600 transition">
+              <span className="text-xs sm:text-base font-black tracking-tight text-gray-900 dark:text-white leading-tight group-hover:text-emerald-600 transition truncate">
                 FT <span className="text-emerald-600 dark:text-emerald-400">PCB</span>
               </span>
             </div>
@@ -546,27 +546,27 @@ export default function Navbar() {
 
 
           {/* Right Action Icons & Primary CTA */}
-          <div className="flex items-center gap-2 sm:gap-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             
             {/* Primary Emerald Quote Button */}
             <Link
               href="/pcb-quote"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3 sm:px-4 py-2 text-xs font-black text-white shadow-sm shadow-emerald-600/30 hover:bg-emerald-700 transition active:scale-95"
+              className="inline-flex items-center gap-1 sm:gap-1.5 rounded-xl bg-emerald-600 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-black text-white shadow-sm shadow-emerald-600/30 hover:bg-emerald-700 transition active:scale-95"
             >
               <Zap className="size-3.5 fill-current" />
               <span className="hidden sm:inline">{dictionary.sections?.hero?.quoteBtn || "Instant Quote"}</span>
-              <span className="sm:hidden">Quote</span>
+              <span className="sm:hidden text-[11px]">Quote</span>
             </Link>
 
             {/* Shopping Cart Button */}
             <Link
               href="/cart"
               aria-label="Shopping cart"
-              className="relative flex size-9 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-700 shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
+              className="relative flex size-8 sm:size-9 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-700 shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
             >
-              <ShoppingCart className="size-4" />
+              <ShoppingCart className="size-3.5 sm:size-4" />
               {cartCount > 0 ? (
-                <span className="absolute -right-1.5 -top-1.5 flex size-4.5 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-black text-white ring-2 ring-white dark:ring-slate-900">
+                <span className="absolute -right-1 -top-1 sm:-right-1.5 sm:-top-1.5 flex size-4 sm:size-4.5 items-center justify-center rounded-full bg-emerald-600 text-[9px] sm:text-[10px] font-black text-white ring-2 ring-white dark:ring-slate-900">
                   {cartCount}
                 </span>
               ) : null}
@@ -581,28 +581,32 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className="flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-bold text-gray-700 shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
+                className="flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-2 sm:px-2.5 py-1.5 text-xs font-bold text-gray-700 shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition h-8 sm:h-9 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500 dark:hover:text-emerald-400"
               >
-                <UserRound className="size-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">{dictionary.navbar?.login || "Sign In"}</span>
+                <UserRound className="size-3.5 sm:size-4 text-emerald-600 dark:text-emerald-400" />
+                <span className="hidden md:inline">{dictionary.navbar?.login || "Sign In"}</span>
               </Link>
             )}
 
-            {/* Language Selector */}
-            <LanguageSelector />
+            {/* Language Selector (desktop only, accessible on mobile inside slide-down drawer) */}
+            <div className="hidden md:block">
+              <LanguageSelector />
+            </div>
 
-            {/* Theme Toggle */}
-            <ModeToggle />
+            {/* Theme Toggle (desktop only, accessible on mobile inside slide-down drawer) */}
+            <div className="hidden sm:block">
+              <ModeToggle />
+            </div>
 
             {/* Mobile Menu Hamburger */}
             <button
               type="button"
-              className="flex size-9 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-700 shadow-xs hover:border-emerald-500 lg:hidden dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500"
+              className="flex size-8 sm:size-9 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-700 shadow-xs hover:border-emerald-500 lg:hidden dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-emerald-500 cursor-pointer"
               onClick={() => setMobileOpen((value) => !value)}
               aria-expanded={mobileOpen}
               aria-label="Toggle navigation"
             >
-              {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+              {mobileOpen ? <X className="size-4 sm:size-5" /> : <Menu className="size-4 sm:size-5" />}
             </button>
           </div>
 
@@ -613,9 +617,9 @@ export default function Navbar() {
       {/* 2. DEDICATED DESKTOP NAVIGATION BAR (Tier 2 - Zero Overflow!)          */}
       {/* ===================================================================== */}
       <div className="hidden border-b border-gray-200/80 bg-white/95 backdrop-blur-md lg:block dark:border-slate-800/80 dark:bg-slate-900/95">
-        <div className="mx-auto flex max-w-[1380px] items-center justify-between px-4 sm:px-6">
+        <div className="mx-auto flex max-w-[1380px] items-center justify-between px-3 sm:px-6">
           
-          <nav className="flex items-center gap-1 py-1.5">
+          <nav className="flex items-center gap-0.5 xl:gap-1 py-1.5 overflow-x-auto no-scrollbar">
             {homeItem ? (
               <Link
                 href="/"
@@ -637,7 +641,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right Secondary Trust Badge */}
-          <div className="flex items-center gap-3 text-xs font-semibold text-gray-500 dark:text-slate-400">
+          <div className="flex items-center gap-3 text-xs font-semibold text-gray-500 dark:text-slate-400 shrink-0">
             <Link
               href="/pcb-quote"
               className="flex items-center gap-1 text-[11px] font-bold text-emerald-700 hover:text-emerald-800 transition dark:text-emerald-400 dark:hover:text-emerald-300"
@@ -654,7 +658,7 @@ export default function Navbar() {
       {/* 3. MOBILE SLIDE-DOWN DRAWER                                            */}
       {/* ===================================================================== */}
       {mobileOpen ? (
-        <div className="border-b border-gray-200 bg-white p-4 lg:hidden shadow-lg animate-in slide-in-from-top-2 duration-150 dark:border-slate-800 dark:bg-slate-950">
+        <div className="border-b border-gray-200 bg-white p-3.5 sm:p-4 lg:hidden shadow-lg animate-in slide-in-from-top-2 duration-150 dark:border-slate-800 dark:bg-slate-950 max-h-[calc(100vh-60px)] overflow-y-auto overscroll-contain">
           <div className="grid gap-2">
             
             {/* Quick Action Top in Mobile */}

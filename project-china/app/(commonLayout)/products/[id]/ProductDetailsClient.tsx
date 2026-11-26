@@ -79,11 +79,11 @@ export function ProductDetailsClient({
           {/* Product Info */}
           <div className="flex flex-col">
             <div className="mb-4 flex items-center gap-3">
-              <span className="inline-block rounded-md bg-fuchsia-500/10 px-3 py-1 text-xs font-bold text-fuchsia-400 uppercase tracking-wider border border-fuchsia-500/20">
+              <span className="inline-block rounded-md bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-400 uppercase tracking-wider border border-emerald-500/20">
                 {product.category}
               </span>
               {product.isFeatured && (
-                <span className="inline-block rounded-md bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-400 uppercase tracking-wider border border-amber-500/20">
+                <span className="inline-block rounded-md bg-teal-500/10 px-3 py-1 text-xs font-bold text-teal-400 uppercase tracking-wider border border-teal-500/20">
                   Featured
                 </span>
               )}

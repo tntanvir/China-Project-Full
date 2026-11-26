@@ -95,16 +95,16 @@ export default function UserAccountMenu({ user }: { user: User }) {
         <Button
           type="button"
           variant="outline"
-          className="h-11 gap-2 rounded-full px-2 pr-3"
+          className="h-8 sm:h-9 gap-1.5 rounded-xl px-1.5 sm:px-2 sm:pr-3"
           aria-label="Open user account menu"
         >
-          <Avatar className="size-8 ring-2 ring-primary/15">
+          <Avatar className="size-6 sm:size-7 ring-2 ring-primary/15">
             <AvatarImage src={user.profilePhoto || undefined} alt={user.name || user.email} />
-            <AvatarFallback className="bg-primary/10 text-xs font-black text-primary">
-              {user.profilePhoto ? <UserCog className="h-4 w-4" /> : getInitials(user)}
+            <AvatarFallback className="bg-primary/10 text-[10px] sm:text-xs font-black text-primary">
+              {user.profilePhoto ? <UserCog className="h-3.5 w-3.5" /> : getInitials(user)}
             </AvatarFallback>
           </Avatar>
-          <span className="hidden max-w-28 truncate text-sm font-bold text-foreground lg:block">
+          <span className="hidden max-w-28 truncate text-xs sm:text-sm font-bold text-foreground lg:block">
             {user.name || "Account"}
           </span>
         </Button>
@@ -113,7 +113,7 @@ export default function UserAccountMenu({ user }: { user: User }) {
       <DropdownMenuContent
         align="end"
         sideOffset={10}
-        className="w-80 rounded-2xl border-border/80 bg-card/95 p-2 shadow-premium backdrop-blur-2xl"
+        className="w-[min(320px,calc(100vw-2rem))] rounded-2xl border-border/80 bg-card/95 p-2 shadow-premium backdrop-blur-2xl"
       >
         <DropdownMenuLabel className="p-3">
           <div className="flex min-w-0 items-center gap-3">

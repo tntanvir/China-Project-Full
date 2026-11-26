@@ -72,7 +72,7 @@ const stats = [
 
 const fallbackShowcaseProducts = [
   ["Multilayer Industrial PCB", "Premium 4-8 layer fabrication for industrial automation and IoT gateway controllers."],
-  ["Turnkey SMT Assembled Board", "Surface mount assembled board with genuine BOM sourcing and full AOI quality verification."],
+  ["Heavy Copper High-Power PCB", "High-power 3-6oz thick copper bare boards for industrial motor drives and power converters."],
   ["High-TG Impedance Controlled Board", "Precision differential impedance matched boards for high-speed digital communications."],
   ["Double-Sided Aluminum Core PCB", "Thermal management metal-core circuit board for high-output LED arrays."],
   ["Flexible Sensor Circuit", "Ultra-thin polyimide flex board for wearable medical monitoring devices."],
@@ -115,23 +115,23 @@ const videos = [
 
 const facilityZones = [
   {
-    id: "smt",
-    title: "High-Speed SMT Assembly",
-    subtitle: "Surface Mount Technology",
-    badge: "6 Automated Lines",
-    tagline: "Ultra-fast Yamaha YSM20R modular mounters with 0201 chip capability and 10-zone nitrogen reflow profiling.",
-    image: "/images/generated/smt_assembly.png",
+    id: "multilayer",
+    title: "High-Precision Multilayer PCB Fabrication",
+    subtitle: "Vacuum Lamination & CNC Drilling",
+    badge: "2 to 32 Layers",
+    tagline: "High-precision multi-opening vacuum hot-press laminators, Schmoll CNC mechanical drilling, and laser microvias for rigid bare boards.",
+    image: "/images/generated/rigid_pcb.png",
     specs: [
-      { label: "Placement Speed", val: "60,000 CPH / line" },
-      { label: "Component Min", val: "0201 (0.6×0.3mm)" },
-      { label: "BGA Pitch", val: "0.25mm Ultra-Fine" },
-      { label: "Reflow Oven", val: "10-Zone Nitrogen (N₂)" },
+      { label: "Layer Count", val: "2 - 32 Layers" },
+      { label: "Min Hole Size", val: "0.15mm (6 mil)" },
+      { label: "Aspect Ratio", val: "12:1 Deep-Hole" },
+      { label: "Press Vacuum", val: "<5 mbar Hot Press" },
     ],
     highlights: [
-      "Yamaha & Panasonic high-speed modular placement machines",
-      "Automatic solder paste stencil printers with 2D paste inspection",
-      "Inline 3D AOI (Automated Optical Inspection) post-soldering",
-      "ESD Class 0 electro-static dissipative controlled clean environment",
+      "High-precision multi-opening vacuum hot-press lamination lines",
+      "Schmoll high-speed dual-spindle CNC drilling machines (200k RPM)",
+      "Orbotech automated optical inspection (AOI) for inner layer verification",
+      "Vertical continuous automated copper plating (VCP) for uniform barrel plating",
     ],
   },
   {
@@ -294,21 +294,21 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
     <div className="bg-white dark:bg-slate-950 text-gray-900 dark:text-slate-100 selection:bg-emerald-100 dark:selection:bg-emerald-900/60 selection:text-emerald-900 dark:selection:text-emerald-100 transition-colors duration-300">
       
       {/* 1. Factory Stats & Capability Bar (Clean PCBWay White Style) */}
-      <section className="border-b border-gray-100 dark:border-slate-800/80 bg-gray-50/60 dark:bg-slate-900/40 py-8 lg:py-10">
-        <div className="mx-auto max-w-[1360px] px-4 sm:px-6">
-          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+      <section className="border-b border-gray-100 dark:border-slate-800/80 bg-gray-50/60 dark:bg-slate-900/40 py-6 sm:py-8 lg:py-10">
+        <div className="mx-auto max-w-[1360px] px-3 sm:px-6">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-6 lg:grid-cols-4">
             {statsItems.map((item) => (
               <div
                 key={item.label}
-                className="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm transition hover:border-emerald-400 dark:hover:border-emerald-500 hover:shadow-md"
+                className="rounded-xl sm:rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 sm:p-5 shadow-sm transition hover:border-emerald-400 dark:hover:border-emerald-500 hover:shadow-md min-w-0"
               >
-                <div className="text-2xl font-black tracking-tight text-emerald-600 dark:text-emerald-400 sm:text-3xl">
+                <div className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-emerald-600 dark:text-emerald-400">
                   {item.value}
                 </div>
-                <div className="mt-1 text-sm font-bold text-gray-900 dark:text-slate-100">
+                <div className="mt-1 text-xs sm:text-sm font-bold text-gray-900 dark:text-slate-100 leading-snug">
                   {item.label}
                 </div>
-                <div className="mt-1 text-xs text-gray-500 dark:text-slate-400">
+                <div className="mt-0.5 sm:mt-1 text-[10.5px] sm:text-xs text-gray-500 dark:text-slate-400 leading-snug">
                   {item.desc}
                 </div>
               </div>
@@ -412,7 +412,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   key={zone.id || idx}
                   type="button"
                   onClick={() => setFacilityZoneIndex(idx)}
-                  className={`flex flex-col items-start rounded-2xl border p-3.5 text-left transition-all ${
+                  className={`flex flex-col items-start rounded-xl sm:rounded-2xl border p-2.5 sm:p-3.5 text-left transition-all min-w-0 ${
                     isActive
                       ? "border-emerald-600 dark:border-emerald-500 bg-white dark:bg-slate-900 shadow-md shadow-emerald-600/10 ring-2 ring-emerald-500/20"
                       : "border-gray-200/90 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-white dark:hover:bg-slate-900"
@@ -576,25 +576,25 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-2.5">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
                 <Link
                   href="/pcb-quote"
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-black text-white shadow-md shadow-emerald-600/30 hover:bg-emerald-700 transition active:scale-95"
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-black text-white shadow-md shadow-emerald-600/30 hover:bg-emerald-700 transition active:scale-95 text-center"
                 >
                   <Zap className="size-3.5 fill-current" />
-                  Instant Factory Quote
+                  <span>Instant Factory Quote</span>
                 </Link>
                 <a
                   href="/docs/FTpcb-Company-Profile.pdf"
                   download="Wuping-Feitian-PCB-Company-Profile.pdf"
-                  className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-xs font-bold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-xs font-bold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition text-center"
                 >
                   <Download className="size-3.5 text-emerald-600" />
                   <span>Profile PDF (6.9MB)</span>
                 </a>
                 <Link
                   href="/about-ft-pcb"
-                  className="inline-flex items-center justify-center gap-1 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2.5 text-xs font-bold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition"
+                  className="inline-flex items-center justify-center gap-1 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2.5 text-xs font-bold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition text-center"
                 >
                   <span>{dictionary.navbar?.navItems?.[1]?.title || "About FT PCB"}</span>
                   <ArrowRight className="size-3.5" />
@@ -606,44 +606,44 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
           </div>
 
           {/* Under-Showcase 4-Pillar Capacity Highlights Strip */}
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <div className="flex items-center gap-3 rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
-                <Building2 className="size-5" />
+          <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-4 w-full min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-4 shadow-xs min-w-0">
+              <span className="flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
+                <Building2 className="size-4 sm:size-5" />
               </span>
-              <div>
-                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">15,000 m²</div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">3 Dedicated Factory Buildings</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs sm:text-base lg:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight truncate">15,000 m²</div>
+                <div className="text-[9.5px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">3 Dedicated Factory Buildings</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
-                <Cpu className="size-5" />
+            <div className="flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-4 shadow-xs min-w-0">
+              <span className="flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
+                <Cpu className="size-4 sm:size-5" />
               </span>
-              <div>
-                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">100,000 m²/mo</div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">Multi-Layer & Special Board</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs sm:text-base lg:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight truncate">100,000 m²/mo</div>
+                <div className="text-[9.5px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">Multi-Layer & Special Board</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
-                <Factory className="size-5" />
+            <div className="flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-4 shadow-xs min-w-0">
+              <span className="flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
+                <Factory className="size-4 sm:size-5" />
               </span>
-              <div>
-                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">30M RMB Capital</div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">Specialized "Little Giant"</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs sm:text-base lg:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight truncate">30M RMB Capital</div>
+                <div className="text-[9.5px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">Specialized "Little Giant"</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
-                <Award className="size-5" />
+            <div className="flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-4 shadow-xs min-w-0">
+              <span className="flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
+                <Award className="size-4 sm:size-5" />
               </span>
-              <div>
-                <div className="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight">IATF 16949</div>
-                <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium">Automotive Grade Certified</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs sm:text-base lg:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight truncate">IATF 16949</div>
+                <div className="text-[9.5px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">Automotive Grade Certified</div>
               </div>
             </div>
           </div>

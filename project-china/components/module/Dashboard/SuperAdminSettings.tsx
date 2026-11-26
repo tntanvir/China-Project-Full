@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { SuperAdminService, type SystemSetting } from "@/services/super-admin.service";
 
@@ -159,7 +160,13 @@ export default function SuperAdminSettings() {
                 </TableHeader>
                 <TableBody>
                   {loading ? (
-                    <TableRow><TableCell colSpan={3} className="py-10 text-center text-sm font-bold text-muted-foreground">Loading settings...</TableCell></TableRow>
+                    [1, 2, 3, 4].map((i) => (
+                      <TableRow key={i}>
+                        <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-52" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-28" /></TableCell>
+                      </TableRow>
+                    ))
                   ) : filteredSettings.length ? (
                     filteredSettings.map((setting) => (
                       <TableRow key={setting.id}>

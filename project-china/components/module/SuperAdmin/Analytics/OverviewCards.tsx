@@ -38,34 +38,34 @@ export default function OverviewCards({ data }: { data: any }) {
       </Card>
 
       {/* Customers Card */}
-      <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20 shadow-sm">
+      <Card className="bg-gradient-to-br from-teal-500/10 to-teal-600/5 border-teal-500/20 shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-purple-600 dark:text-purple-400">Total Customers</CardTitle>
-          <div className="h-8 w-8 bg-purple-500/20 rounded-full flex items-center justify-center">
-            <Users className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+          <CardTitle className="text-sm font-medium text-teal-600 dark:text-teal-400">Total Customers</CardTitle>
+          <div className="h-8 w-8 bg-teal-500/20 rounded-full flex items-center justify-center">
+            <Users className="h-4 w-4 text-teal-600 dark:text-teal-400" />
           </div>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-foreground">{data.customers.total}</div>
           <p className="text-xs text-muted-foreground mt-1 flex gap-2">
-            <span className="text-purple-600 dark:text-purple-400">{data.customers.active} Active</span>
+            <span className="text-teal-600 dark:text-teal-400">{data.customers.active} Active</span>
             <span className="text-destructive">{data.customers.blocked} Blocked</span>
           </p>
         </CardContent>
       </Card>
 
       {/* Products Card */}
-      <Card className="bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500/20 shadow-sm">
+      <Card className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border-emerald-500/20 shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-orange-600 dark:text-orange-400">Products & Catalog</CardTitle>
-          <div className="h-8 w-8 bg-orange-500/20 rounded-full flex items-center justify-center">
-            <Package className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+          <CardTitle className="text-sm font-medium text-emerald-600 dark:text-emerald-400">Products & Catalog</CardTitle>
+          <div className="h-8 w-8 bg-emerald-500/20 rounded-full flex items-center justify-center">
+            <Package className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           </div>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-foreground">{data.products.total}</div>
           <p className="text-xs text-muted-foreground mt-1 flex gap-2">
-            <span className="text-orange-600 dark:text-orange-400">{data.products.active} Active Items</span>
+            <span className="text-emerald-600 dark:text-emerald-400">{data.products.active} Active Items</span>
           </p>
         </CardContent>
       </Card>

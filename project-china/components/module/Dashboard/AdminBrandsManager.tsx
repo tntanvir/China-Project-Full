@@ -56,6 +56,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { AdminService, type BrandRecord } from "@/services/admin.service";
 
@@ -375,9 +376,13 @@ export default function AdminBrandsManager() {
               </span>
               <Building2 className="size-4 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white">
-              {metrics.total}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white">
+                {metrics.total}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Approved vendor network</p>
           </CardContent>
         </Card>
@@ -390,9 +395,13 @@ export default function AdminBrandsManager() {
               </span>
               <ShieldCheck className="size-4 text-emerald-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300">
-              {metrics.verified}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300">
+                {metrics.verified}
+              </div>
+            )}
             <p className="text-[11px] text-emerald-600/80 font-medium mt-0.5">
               ISO / UL certified sources
             </p>
@@ -407,9 +416,13 @@ export default function AdminBrandsManager() {
               </span>
               <Cpu className="size-4 text-blue-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400">
-              {metrics.semiconductors}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400">
+                {metrics.semiconductors}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Microcontrollers & SoCs</p>
           </CardContent>
         </Card>
@@ -417,14 +430,18 @@ export default function AdminBrandsManager() {
         <Card className="rounded-2xl border-gray-200/80 dark:border-slate-800 shadow-xs">
           <CardContent className="p-4 sm:p-5">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-purple-700 dark:text-purple-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">
                 Laminates & Substrates
               </span>
-              <Layers className="size-4 text-purple-600" />
+              <Layers className="size-4 text-teal-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-purple-600 dark:text-purple-400">
-              {metrics.laminates}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-teal-600 dark:text-teal-400">
+                {metrics.laminates}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">FR-4, Rogers & Polyimide</p>
           </CardContent>
         </Card>
@@ -542,11 +559,82 @@ export default function AdminBrandsManager() {
 
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex flex-col items-center justify-center p-14 text-center">
-              <Loader2 className="size-8 animate-spin text-emerald-600 mb-3" />
-              <p className="text-sm font-bold text-gray-700 dark:text-slate-300">
-                Loading brand directory from database...
-              </p>
+            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+              <Table className="min-w-[1240px] w-full border-collapse">
+                <TableHeader>
+                  <TableRow className="border-b border-gray-200 bg-gray-50/80 dark:border-slate-800 dark:bg-slate-900/80 text-xs">
+                    <TableHead className="w-[300px] min-w-[300px] font-extrabold text-slate-700 dark:text-slate-300 pl-4">
+                      <div className="flex items-center gap-1.5">
+                        <Building2 className="size-3 text-emerald-600" />
+                        <span>Brand & Manufacturer</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[200px] min-w-[200px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <Layers className="size-3 text-emerald-600" />
+                        <span>Domain / Category</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[160px] min-w-[160px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="size-3 text-emerald-600" />
+                        <span>Origin</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[180px] min-w-[180px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <Globe className="size-3 text-emerald-600" />
+                        <span>Official Website</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[260px] min-w-[260px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Capabilities & Description</span>
+                    </TableHead>
+                    <TableHead className="w-[140px] min-w-[140px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Status</span>
+                    </TableHead>
+                    <TableHead className="w-[140px] min-w-[140px] sticky right-0 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-xs z-10 text-right pr-4 font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Actions</span>
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <TableRow key={i}>
+                      <TableCell className="pl-4">
+                        <div className="flex items-center gap-3">
+                          <Skeleton className="size-9 rounded-xl shrink-0" />
+                          <div className="space-y-1.5">
+                            <Skeleton className="h-4 w-32" />
+                            <Skeleton className="h-3 w-20" />
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-28 rounded-lg" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-20" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-28" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-3.5 w-48" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-16 rounded-full" />
+                      </TableCell>
+                      <TableCell className="sticky right-0 bg-white/95 dark:bg-slate-900/95 text-right pr-4">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Skeleton className="h-8 w-14 rounded-lg" />
+                          <Skeleton className="h-8 w-8 rounded-lg" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           ) : filteredBrands.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-14 text-center">

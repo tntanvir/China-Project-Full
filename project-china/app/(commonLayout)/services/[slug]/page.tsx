@@ -177,7 +177,7 @@ export default async function ServiceCategoryPage({ params }: { params: Promise<
               </p>
               
               <div className="mt-10 flex flex-wrap gap-4">
-                <Link href="/pcb-quote" className="rounded-full bg-cyan-500 hover:bg-cyan-400 text-[#030914] px-8 py-4 font-black transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)]">
+                <Link href="/pcb-quote" className="rounded-full bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 font-black transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)]">
                   Get Instant Quote
                 </Link>
                 <Link href="#contact" className="rounded-full border border-white/20 bg-white/5 hover:bg-white/10 text-white px-8 py-4 font-black transition-all backdrop-blur-sm">
@@ -187,7 +187,7 @@ export default async function ServiceCategoryPage({ params }: { params: Promise<
             </div>
             
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-tr from-cyan-500/20 to-purple-500/20 blur-2xl rounded-3xl" />
+              <div className="absolute -inset-4 bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 blur-2xl rounded-3xl" />
               <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl aspect-[4/3] group">
                 <Image 
                   src={service.image} 
@@ -201,10 +201,10 @@ export default async function ServiceCategoryPage({ params }: { params: Promise<
                 <div className="absolute bottom-0 left-0 p-6 w-full">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <ShieldCheck className="text-cyan-400 w-6 h-6" />
+                      <ShieldCheck className="text-emerald-400 w-6 h-6" />
                       <span className="text-white font-bold tracking-wide uppercase text-sm">Certified Quality</span>
                     </div>
-                    <div className="h-1 w-1/3 bg-gradient-to-r from-cyan-500 to-transparent rounded-full opacity-50" />
+                    <div className="h-1 w-1/3 bg-gradient-to-r from-emerald-500 to-transparent rounded-full opacity-50" />
                   </div>
                 </div>
               </div>
@@ -223,8 +223,8 @@ export default async function ServiceCategoryPage({ params }: { params: Promise<
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {service.features.map((feature: any, idx: number) => (
-              <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 backdrop-blur-sm group hover:-translate-y-2 hover:shadow-[0_10px_40px_-10px_rgba(6,182,212,0.2)]">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6 text-cyan-400 group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-black transition-all shadow-inner">
+              <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 backdrop-blur-sm group hover:-translate-y-2 hover:shadow-[0_10px_40px_-10px_rgba(16,185,129,0.2)]">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 text-emerald-400 group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-inner">
                   <Cpu className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-black text-white mb-3">{feature.title}</h3>
@@ -238,20 +238,20 @@ export default async function ServiceCategoryPage({ params }: { params: Promise<
       {/* Applications */}
       <section className="py-24 relative overflow-hidden">
         {/* Abstract shapes */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-500/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none" />
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
             <div className="order-2 lg:order-1 grid sm:grid-cols-2 gap-4">
               {service.applications.map((app: string, idx: number) => (
-                <div key={idx} className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl p-5 hover:border-cyan-500/30 transition-colors group">
-                  <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 group-hover:scale-110 transition-transform" />
+                <div key={idx} className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl p-5 hover:border-emerald-500/30 transition-colors group">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 group-hover:scale-110 transition-transform" />
                   <span className="font-bold text-slate-200">{app}</span>
                 </div>
               ))}
             </div>
             <div className="order-1 lg:order-2">
-              <div className="inline-flex items-center gap-2 rounded-full border border-purple-400/25 bg-purple-400/10 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-purple-300 mb-6">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-emerald-300 mb-6">
                 <Zap className="h-4 w-4" /> Applications
               </div>
               <h2 className="text-3xl font-black text-white sm:text-5xl mb-6 leading-tight">

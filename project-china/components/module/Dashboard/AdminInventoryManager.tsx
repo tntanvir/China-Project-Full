@@ -56,6 +56,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import { AdminService, type AdminInventoryProduct } from "@/services/admin.service";
 
 type StockFilter = "ALL" | "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK";
@@ -322,9 +323,13 @@ export default function AdminInventoryManager() {
               </span>
               <Package className="size-4 text-gray-400" />
             </div>
-            <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white">
-              {metrics.totalItems}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white">
+                {metrics.totalItems}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Unique inventory SKUs</p>
           </CardContent>
         </Card>
@@ -338,9 +343,13 @@ export default function AdminInventoryManager() {
               </span>
               <Boxes className="size-4 text-emerald-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300 font-mono">
-              {metrics.totalUnits.toLocaleString()}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300 font-mono">
+                {metrics.totalUnits.toLocaleString()}
+              </div>
+            )}
             <p className="text-[11px] text-emerald-600 dark:text-emerald-400/80 font-medium mt-0.5">
               Available warehouse units
             </p>
@@ -356,15 +365,19 @@ export default function AdminInventoryManager() {
               </span>
               <CheckCircle2 className="size-4 text-emerald-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-emerald-600 dark:text-emerald-400">
-              {metrics.inStock}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-emerald-600 dark:text-emerald-400">
+                {metrics.inStock}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">&gt; 50 units reserved</p>
           </CardContent>
         </Card>
 
         {/* Low Stock Alert */}
-        <Card className="rounded-2xl border-amber-300/80 bg-amber-50/30 dark:bg-amber-950/20 dark:border-amber-800/60 shadow-xs">
+        <Card className="rounded-2xl border-amber-300/80 bg-amber-50/30 dark:border-amber-800/60 shadow-xs">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
@@ -372,9 +385,13 @@ export default function AdminInventoryManager() {
               </span>
               <AlertTriangle className="size-4 text-amber-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-amber-600 dark:text-amber-400">
-              {metrics.lowStock}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-amber-600 dark:text-amber-400">
+                {metrics.lowStock}
+              </div>
+            )}
             <p className="text-[11px] text-amber-600/80 font-medium mt-0.5">&le; 50 units remaining</p>
           </CardContent>
         </Card>
@@ -388,9 +405,13 @@ export default function AdminInventoryManager() {
               </span>
               <XCircle className="size-4 text-rose-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-rose-600 dark:text-rose-400">
-              {metrics.outOfStock}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-rose-600 dark:text-rose-400">
+                {metrics.outOfStock}
+              </div>
+            )}
             <p className="text-[11px] text-rose-600/80 font-medium mt-0.5">Replenishment required</p>
           </CardContent>
         </Card>
@@ -404,9 +425,13 @@ export default function AdminInventoryManager() {
               </span>
               <span className="text-xs font-black text-blue-600">$ USD</span>
             </div>
-            <div className="mt-2 text-xl font-black text-blue-600 dark:text-blue-400 font-mono">
-              ${metrics.totalValuation.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-20 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-xl font-black text-blue-600 dark:text-blue-400 font-mono">
+                ${metrics.totalValuation.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Asset inventory value</p>
           </CardContent>
         </Card>
@@ -545,11 +570,79 @@ export default function AdminInventoryManager() {
 
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex flex-col items-center justify-center p-14 text-center">
-              <Loader2 className="size-8 animate-spin text-emerald-600 mb-3" />
-              <p className="text-sm font-bold text-gray-700 dark:text-slate-300">
-                Loading warehouse inventory from database...
-              </p>
+            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+              <Table className="min-w-[1260px] w-full border-collapse">
+                <TableHeader>
+                  <TableRow className="border-b border-gray-200 bg-gray-50/80 dark:border-slate-800 dark:bg-slate-900/80 text-xs">
+                    <TableHead className="w-[320px] min-w-[320px] font-extrabold text-slate-700 dark:text-slate-300 pl-4">
+                      <div className="flex items-center gap-1.5">
+                        <Package className="size-3 text-emerald-600" />
+                        <span>Product & Material SKU</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[180px] min-w-[180px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <Layers className="size-3 text-emerald-600" />
+                        <span>Category</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[120px] min-w-[120px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Unit Price</span>
+                    </TableHead>
+                    <TableHead className="w-[230px] min-w-[230px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Available Stock</span>
+                    </TableHead>
+                    <TableHead className="w-[150px] min-w-[150px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Stock Status</span>
+                    </TableHead>
+                    <TableHead className="w-[140px] min-w-[140px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Valuation</span>
+                    </TableHead>
+                    <TableHead className="w-[120px] min-w-[120px] sticky right-0 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-xs z-10 text-right pr-4 font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Actions</span>
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <TableRow key={i}>
+                      <TableCell className="pl-4">
+                        <div className="flex items-center gap-3">
+                          <Skeleton className="size-10 rounded-xl shrink-0" />
+                          <div className="space-y-1.5">
+                            <Skeleton className="h-4 w-36" />
+                            <Skeleton className="h-3 w-24" />
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-24 rounded-lg" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-16" />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Skeleton className="h-4 w-20" />
+                          <Skeleton className="h-7 w-20 rounded-lg" />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-20 rounded-full" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-16" />
+                      </TableCell>
+                      <TableCell className="sticky right-0 bg-white/95 dark:bg-slate-900/95 text-right pr-4">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Skeleton className="h-8 w-14 rounded-lg" />
+                          <Skeleton className="h-8 w-8 rounded-lg" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-14 text-center">

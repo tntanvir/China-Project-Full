@@ -44,6 +44,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Skeleton } from "@/components/ui/skeleton";
 import { SupportService } from "@/services/support.service";
 import { RealtimeService } from "@/services/realtime.service";
 import { useAuthStore } from "@/store/authStore";
@@ -630,27 +631,39 @@ export default function SupportTicketsManager() {
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Total Tickets
             </span>
-            <p className="text-xl font-black text-slate-900 dark:text-white mt-1">
-              {metrics.total}
-            </p>
+            {loading ? (
+              <Skeleton className="h-7 w-14 mt-1 rounded-lg" />
+            ) : (
+              <p className="text-xl font-black text-slate-900 dark:text-white mt-1">
+                {metrics.total}
+              </p>
+            )}
           </div>
 
           <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-[#070b14] border border-slate-200/80 dark:border-slate-800/80">
             <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
               Active / Open Inquiries
             </span>
-            <p className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1">
-              {metrics.open}
-            </p>
+            {loading ? (
+              <Skeleton className="h-7 w-14 mt-1 rounded-lg" />
+            ) : (
+              <p className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1">
+                {metrics.open}
+              </p>
+            )}
           </div>
 
           <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-[#070b14] border border-slate-200/80 dark:border-slate-800/80">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Resolved & Closed
             </span>
-            <p className="text-xl font-black text-slate-700 dark:text-slate-300 mt-1">
-              {metrics.closed}
-            </p>
+            {loading ? (
+              <Skeleton className="h-7 w-14 mt-1 rounded-lg" />
+            ) : (
+              <p className="text-xl font-black text-slate-700 dark:text-slate-300 mt-1">
+                {metrics.closed}
+              </p>
+            )}
           </div>
         </div>
       </section>
@@ -694,9 +707,24 @@ export default function SupportTicketsManager() {
           {/* Tickets Scroll List */}
           <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#0b1220] p-3 shadow-sm flex-1 overflow-y-auto max-h-[620px] space-y-2">
             {loading ? (
-              <div className="p-8 text-center text-xs text-slate-400 flex flex-col items-center justify-center">
-                <Loader2 className="size-6 animate-spin text-emerald-600 mb-2" />
-                Loading support tickets...
+              <div className="space-y-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 space-y-2"
+                  >
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="h-3.5 w-20" />
+                      <Skeleton className="h-4 w-16 rounded-full" />
+                    </div>
+                    <Skeleton className="h-4 w-44" />
+                    <Skeleton className="h-3 w-32" />
+                    <div className="flex items-center justify-between pt-1 border-t border-slate-200/40 dark:border-slate-800/40">
+                      <Skeleton className="h-3 w-20" />
+                      <Skeleton className="h-3 w-16" />
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : filteredTickets.length > 0 ? (
               filteredTickets.map((ticket) => {

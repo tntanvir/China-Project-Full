@@ -181,7 +181,7 @@ export function FloatingWhatsAppWidget() {
   const whatsapp = FT_SOCIAL_LINKS.find((l) => l.id === "whatsapp")!;
 
   return (
-    <aside aria-label="Instant WhatsApp support" className="fixed bottom-6 right-6 z-40 flex items-center gap-2 group pointer-events-none">
+    <aside aria-label="Instant WhatsApp support" className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-2 group pointer-events-none">
       <div className="hidden sm:block opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200">
         <div className="rounded-xl border border-gray-200/90 bg-white/95 px-3 py-1.5 text-xs font-bold text-gray-800 shadow-xl backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/95 dark:text-slate-100 flex items-center gap-1.5">
           <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />

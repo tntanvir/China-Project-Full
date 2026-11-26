@@ -2,6 +2,8 @@ import { prisma } from "../../shared/prisma";
 import { Order, OrderStatus, PaymentMethod, PaymentStatus } from "@prisma/client";
 import { NotificationService } from "../notification/notification.service";
 import { socketManager } from "../../shared/socket";
+import httpStatus from "http-status";
+import ApiError from "../../errors/ApiError";
 
 const createOrderFromCart = async (userId: string, payload: { shippingAddress: string; billingAddress?: string }): Promise<Order> => {
     // 1. Fetch user's cart
@@ -15,7 +17,7 @@ const createOrderFromCart = async (userId: string, payload: { shippingAddress: s
     });
 
     if (!cart || cart.items.length === 0) {
-        throw new Error("Cart is empty");
+        throw new ApiError(httpStatus.BAD_REQUEST, "Cart is empty");
     }
 
     // 2. Calculate total amount
@@ -191,11 +193,11 @@ const getOrderById = async (userId: string, orderId: string, role: string): Prom
     });
 
     if (!order) {
-        throw new Error("Order not found");
+        throw new ApiError(httpStatus.NOT_FOUND, "Order not found");
     }
 
     if (role !== "ADMIN" && role !== "SUPER_ADMIN" && order.userId !== userId) {
-        throw new Error("You are not authorized to view this order");
+        throw new ApiError(httpStatus.FORBIDDEN, "You are not authorized to view this order");
     }
 
     return order;
@@ -208,7 +210,7 @@ const updateOrderStatus = async (orderId: string, payload: { status: OrderStatus
     });
 
     if (!order) {
-        throw new Error("Order not found");
+        throw new ApiError(httpStatus.NOT_FOUND, "Order not found");
     }
 
     const updatedOrder = await prisma.order.update({
@@ -234,15 +236,15 @@ const cancelOrder = async (userId: string, orderId: string, role: string) => {
     const order = await prisma.order.findUnique({ where: { id: orderId } });
 
     if (!order) {
-        throw new Error("Order not found");
+        throw new ApiError(httpStatus.NOT_FOUND, "Order not found");
     }
 
     if (role !== "ADMIN" && role !== "SUPER_ADMIN" && order.userId !== userId) {
-        throw new Error("You are not authorized to cancel this order");
+        throw new ApiError(httpStatus.FORBIDDEN, "You are not authorized to cancel this order");
     }
 
     if (["PRODUCTION", "QUALITY_CONTROL", "PACKAGING", "SHIPPED", "DELIVERED"].includes(order.status)) {
-        throw new Error("This order can no longer be cancelled");
+        throw new ApiError(httpStatus.BAD_REQUEST, "This order can no longer be cancelled");
     }
 
     const updatedOrder = await prisma.order.update({
@@ -281,7 +283,7 @@ const confirmOrderPayment = async (
     });
 
     if (!order) {
-        throw new Error("Order not found");
+        throw new ApiError(httpStatus.NOT_FOUND, "Order not found");
     }
 
     const updatedOrder = await prisma.order.update({

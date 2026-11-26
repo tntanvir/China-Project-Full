@@ -1627,7 +1627,7 @@ function PCBQuoteContent() {
                 </div>
 
                 {/* Payment Gateway Selection (PCBWay Style) */}
-                <div className="mt-5 pt-4 border-t border-gray-100 dark:border-slate-800 space-y-2.5">
+                <div id="quote-payment-section" className="mt-5 pt-4 border-t border-gray-100 dark:border-slate-800 space-y-2.5">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-bold text-gray-700 dark:text-slate-300">
                       Payment Method:
@@ -1819,6 +1819,39 @@ function PCBQuoteContent() {
           </div>
         )}
       </div>
+
+      {/* Mobile Sticky Bottom Floating Action Bar */}
+      {currentStep === 1 && (
+        <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 p-3 shadow-2xl">
+          <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
+            <div>
+              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">Estimated Total</span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-xl font-black text-emerald-600 dark:text-emerald-400">${pricing.total.toFixed(2)}</span>
+                <span className="text-[10px] text-gray-400 font-medium">({effectiveQty} pcs)</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                onClick={() => {
+                  const paymentSection = document.getElementById("quote-payment-section");
+                  if (paymentSection) {
+                    paymentSection.scrollIntoView({ behavior: "smooth" });
+                  } else {
+                    handleProceedToPayment(selectedGateway || "stripe");
+                  }
+                }}
+                disabled={isSubmitting}
+                className="h-10 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md shadow-emerald-600/30 gap-1.5 cursor-pointer"
+              >
+                <Zap className="size-3.5 fill-current" />
+                <span>Pay / Checkout</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -405,20 +405,20 @@ export default function AboutPcb3DViewer({
       <div ref={mountRef} className="absolute inset-0 cursor-grab active:cursor-grabbing" />
 
       {/* Top HUD Header */}
-      <div className="absolute top-4 left-4 right-4 z-20 flex flex-wrap items-center justify-between gap-3 pointer-events-none">
+      <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 right-2.5 sm:right-4 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
         <div className="flex items-center gap-2 pointer-events-auto">
-          <div className="rounded-2xl bg-black/60 backdrop-blur-md px-3.5 py-1.5 border border-white/10 text-white flex items-center gap-2 shadow-lg">
-            <Cpu className="size-4 text-emerald-400" />
-            <span className="text-xs font-black tracking-wide">
+          <div className="rounded-xl sm:rounded-2xl bg-black/60 backdrop-blur-md px-2.5 sm:px-3.5 py-1 sm:py-1.5 border border-white/10 text-white flex items-center gap-1.5 sm:gap-2 shadow-lg">
+            <Cpu className="size-3.5 sm:size-4 text-emerald-400 shrink-0" />
+            <span className="text-[11px] sm:text-xs font-black tracking-wide truncate">
               {isZh ? "FT PCB 3D 交互式检测系统" : "FT PCB 3D Interactive Core"}
             </span>
-            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 px-2 py-0.2 rounded border border-emerald-800">
+            <span className="text-[9px] sm:text-[10px] font-mono text-emerald-400 bg-emerald-950/80 px-1.5 sm:px-2 py-0.2 rounded border border-emerald-800 shrink-0">
               WebGL PBR
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 pointer-events-auto">
+        <div className="flex items-center gap-1 sm:gap-1.5 pointer-events-auto">
           {/* Rotation Toggle */}
           <button
             type="button"
@@ -432,13 +432,13 @@ export default function AboutPcb3DViewer({
                 ? "Pause Auto-Rotate"
                 : "Start Auto-Rotate"
             }
-            className={`size-8 rounded-xl flex items-center justify-center border text-xs transition cursor-pointer backdrop-blur-md ${
+            className={`size-7 sm:size-8 rounded-lg sm:rounded-xl flex items-center justify-center border text-xs transition cursor-pointer backdrop-blur-md ${
               isRotating
                 ? "bg-emerald-600 text-white border-emerald-500 shadow-md shadow-emerald-600/30"
                 : "bg-black/60 text-slate-300 border-white/10 hover:text-white"
             }`}
           >
-            <RotateCw className="size-3.5" />
+            <RotateCw className="size-3 sm:size-3.5" />
           </button>
 
           {/* Zoom Buttons */}
@@ -446,17 +446,17 @@ export default function AboutPcb3DViewer({
             type="button"
             onClick={() => handleZoom("in")}
             title={isZh ? "放大视图" : "Zoom In"}
-            className="size-8 rounded-xl bg-black/60 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 flex items-center justify-center backdrop-blur-md transition cursor-pointer"
+            className="size-7 sm:size-8 rounded-lg sm:rounded-xl bg-black/60 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 flex items-center justify-center backdrop-blur-md transition cursor-pointer"
           >
-            <ZoomIn className="size-3.5" />
+            <ZoomIn className="size-3 sm:size-3.5" />
           </button>
           <button
             type="button"
             onClick={() => handleZoom("out")}
             title={isZh ? "缩小视图" : "Zoom Out"}
-            className="size-8 rounded-xl bg-black/60 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 flex items-center justify-center backdrop-blur-md transition cursor-pointer"
+            className="size-7 sm:size-8 rounded-lg sm:rounded-xl bg-black/60 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 flex items-center justify-center backdrop-blur-md transition cursor-pointer"
           >
-            <ZoomOut className="size-3.5" />
+            <ZoomOut className="size-3 sm:size-3.5" />
           </button>
 
           {/* Fullscreen Toggle */}
@@ -472,54 +472,54 @@ export default function AboutPcb3DViewer({
                 ? "Exit Fullscreen"
                 : "Fullscreen 3D Viewer"
             }
-            className="size-8 rounded-xl bg-black/60 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 flex items-center justify-center backdrop-blur-md transition cursor-pointer"
+            className="size-7 sm:size-8 rounded-lg sm:rounded-xl bg-black/60 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 flex items-center justify-center backdrop-blur-md transition cursor-pointer"
           >
-            {isFullscreen ? <Minimize2 className="size-3.5" /> : <Maximize2 className="size-3.5" />}
+            {isFullscreen ? <Minimize2 className="size-3 sm:size-3.5" /> : <Maximize2 className="size-3 sm:size-3.5" />}
           </button>
         </div>
       </div>
 
       {/* Bottom Controls Bar: Inspection Mode & Solder Mask Color */}
-      <div className="absolute bottom-4 left-4 right-4 z-20 flex flex-wrap items-center justify-between gap-3 pointer-events-none">
+      <div className="absolute bottom-2.5 sm:bottom-4 left-2.5 sm:left-4 right-2.5 sm:right-4 z-20 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pointer-events-none">
         {/* Inspection Mode Switcher */}
-        <div className="flex items-center gap-1 bg-black/70 backdrop-blur-md p-1 rounded-2xl border border-white/10 shadow-lg pointer-events-auto">
+        <div className="flex items-center gap-1 bg-black/70 backdrop-blur-md p-1 rounded-xl sm:rounded-2xl border border-white/10 shadow-lg pointer-events-auto overflow-x-auto no-scrollbar">
           <button
             type="button"
             onClick={() => setMode("assembled")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+            className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[10.5px] sm:text-xs font-bold transition cursor-pointer whitespace-nowrap ${
               mode === "assembled"
                 ? "bg-emerald-600 text-white shadow-xs"
                 : "text-slate-300 hover:text-white"
             }`}
           >
-            {isZh ? "PCBA 成品贴片" : "PCBA Assembled"}
+            {isZh ? "PCBA 贴片" : "PCBA Assembled"}
           </button>
           <button
             type="button"
             onClick={() => setMode("bare")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+            className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[10.5px] sm:text-xs font-bold transition cursor-pointer whitespace-nowrap ${
               mode === "bare"
-                ? "bg-amber-600 text-white shadow-xs"
+                ? "bg-emerald-600 text-white shadow-xs"
                 : "text-slate-300 hover:text-white"
             }`}
           >
-            {isZh ? "FR4 裸板走线" : "Bare FR4 PCB"}
+            {isZh ? "FR4 裸板" : "Bare FR4 PCB"}
           </button>
           <button
             type="button"
             onClick={() => setMode("xray")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+            className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[10.5px] sm:text-xs font-bold transition cursor-pointer whitespace-nowrap ${
               mode === "xray"
                 ? "bg-cyan-600 text-white shadow-xs"
                 : "text-slate-300 hover:text-white"
             }`}
           >
-            {isZh ? "X射线内层透视" : "X-Ray Layers"}
+            {isZh ? "X射线透视" : "X-Ray Layers"}
           </button>
         </div>
 
         {/* Color Palette Switcher */}
-        <div className="flex items-center gap-1.5 bg-black/70 backdrop-blur-md p-1.5 rounded-2xl border border-white/10 shadow-lg pointer-events-auto">
+        <div className="flex items-center self-start sm:self-auto gap-1 sm:gap-1.5 bg-black/70 backdrop-blur-md p-1 sm:p-1.5 rounded-xl sm:rounded-2xl border border-white/10 shadow-lg pointer-events-auto">
           {COLOR_PRESETS.map((color) => {
             const isSelected = color.id === currentColor;
             return (

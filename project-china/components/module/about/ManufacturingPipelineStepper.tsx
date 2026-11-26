@@ -274,18 +274,18 @@ export default function ManufacturingPipelineStepper() {
               </motion.div>
             </AnimatePresence>
 
-            <div className="absolute top-6 left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-md px-3 py-1 text-xs font-mono font-bold text-white border border-white/20">
-              <Clock className="size-3 text-emerald-400" />
+            <div className="absolute top-3 sm:top-6 left-3 sm:left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-md px-2.5 sm:px-3 py-0.5 sm:py-1 text-[10.5px] sm:text-xs font-mono font-bold text-white border border-white/20">
+              <Clock className="size-3 text-emerald-400 shrink-0" />
               <span>{currentStep.duration}</span>
             </div>
 
-            <div className="absolute bottom-6 left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-emerald-950/80 backdrop-blur-md px-3 py-1 text-xs font-mono font-bold text-emerald-300 border border-emerald-800">
+            <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-emerald-950/80 backdrop-blur-md px-2.5 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-mono font-bold text-emerald-300 border border-emerald-800">
               <span>{currentStep.tolerance}</span>
             </div>
           </div>
 
           {/* Details & Specifications */}
-          <div className="lg:col-span-6 p-6 sm:p-10 flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-6 p-4 sm:p-6 lg:p-10 flex flex-col justify-between space-y-4 sm:space-y-6">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep.step}

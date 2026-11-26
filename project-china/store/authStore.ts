@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { clearClientAuthCookies, setClientAuthCookies } from '@/lib/auth-routes';
+import { getApiBaseUrl } from '@/lib/api-config';
 
 export interface User {
   id: string;
@@ -26,10 +28,12 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   isLoading: true,
   login: (user) => {
+    setClientAuthCookies(user.role);
     set({ user, isAuthenticated: true, isLoading: false });
   },
   logout: async () => {
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+    clearClientAuthCookies();
+    const API_BASE_URL = getApiBaseUrl();
     await fetch(`${API_BASE_URL}/auth/logout`, {
       method: "POST",
       credentials: "include",
@@ -37,7 +41,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ user: null, isAuthenticated: false, isLoading: false });
   },
   checkAuth: async () => {
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+    const API_BASE_URL = getApiBaseUrl();
     try {
       const response = await fetch(`${API_BASE_URL}/auth/me`, {
         credentials: "include",
@@ -51,6 +55,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         }).catch(() => null);
 
         if (!refreshResponse?.ok) {
+          clearClientAuthCookies();
           set({ user: null, isAuthenticated: false, isLoading: false });
           return;
         }
@@ -61,16 +66,20 @@ export const useAuthStore = create<AuthState>((set) => ({
         const retryPayload = await retryResponse.json();
 
         if (!retryResponse.ok || !retryPayload.success) {
+          clearClientAuthCookies();
           set({ user: null, isAuthenticated: false, isLoading: false });
           return;
         }
 
+        setClientAuthCookies(retryPayload.data?.role);
         set({ user: retryPayload.data, isAuthenticated: true, isLoading: false });
         return;
       }
 
+      setClientAuthCookies(payload.data?.role);
       set({ user: payload.data, isAuthenticated: true, isLoading: false });
     } catch {
+      clearClientAuthCookies();
       set({ user: null, isAuthenticated: false, isLoading: false });
     }
   },

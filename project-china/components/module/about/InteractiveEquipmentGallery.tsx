@@ -407,8 +407,8 @@ export default function InteractiveEquipmentGallery() {
             </AnimatePresence>
 
             {/* Slide Badge */}
-            <div className="absolute top-6 left-6 z-20 inline-flex items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-md px-3 py-1 text-xs font-mono font-bold text-white border border-white/20">
-              <FileText className="size-3 text-emerald-400" />
+            <div className="absolute top-3 sm:top-6 left-3 sm:left-6 z-20 inline-flex items-center gap-1.5 rounded-full bg-black/70 backdrop-blur-md px-2.5 sm:px-3 py-0.5 sm:py-1 text-[10.5px] sm:text-xs font-mono font-bold text-white border border-white/20">
+              <FileText className="size-3 text-emerald-400 shrink-0" />
               <span>
                 {isZh
                   ? `官方画册第 ${selectedMachine.slideNumber} 页`
@@ -418,15 +418,15 @@ export default function InteractiveEquipmentGallery() {
 
             <button
               onClick={() => handleJumpToSlide(selectedMachine.slideNumber)}
-              className="absolute bottom-6 right-6 z-20 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 text-xs font-black shadow-lg backdrop-blur-md transition active:scale-95 cursor-pointer"
+              className="absolute bottom-3 sm:bottom-6 right-3 sm:right-6 z-20 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-black shadow-lg backdrop-blur-md transition active:scale-95 cursor-pointer"
             >
               <span>{isZh ? "在42页阅读器中查看" : "View in 42-Page Reader"}</span>
-              <ExternalLink className="size-3.5" />
+              <ExternalLink className="size-3 sm:size-3.5 shrink-0" />
             </button>
           </div>
 
           {/* Machine Specs & Details with Smooth Motion */}
-          <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-5 p-4 sm:p-6 lg:p-8 flex flex-col justify-between space-y-4 sm:space-y-6">
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedMachine.id}

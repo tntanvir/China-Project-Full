@@ -1,5 +1,6 @@
-﻿"use client";
+"use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart, Heart, Star } from "lucide-react";
@@ -9,8 +10,13 @@ import { toast } from "sonner";
 import type { IProduct } from "@/services/product.service";
 import { useCartStore } from "@/store/cartStore";
 
+const DEFAULT_PCB_IMAGE = "/images/generated/rigid_pcb.png";
+
 export function ProductCard({ product }: { product: IProduct }) {
   const addItem = useCartStore((state) => state.addItem);
+  const [imgSrc, setImgSrc] = useState<string>(
+    product.images?.[0] || DEFAULT_PCB_IMAGE
+  );
 
   const handleAddToCart = () => {
     addItem(product, 1);
@@ -19,38 +25,38 @@ export function ProductCard({ product }: { product: IProduct }) {
 
   const discountPrice = product.price ? product.price * 0.9 : 0;
 
-
   return (
     <article className="premium-card group relative flex flex-col overflow-hidden transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-premium">
       <Link href={`/products/${product.slug}`} className="block" aria-label={`View ${product.name}`}>
         <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-        <Image 
-          src={product.images?.[0] || "/image/chinaproject.png"}
-          alt={product.name} 
-          fill 
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" 
-          className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" 
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-80" />
-        
-        {product.isFeatured && (
-          <div className="absolute left-3 top-3 rounded-full bg-[image:var(--gradient-primary)] px-3 py-1 text-xs font-bold text-primary-foreground shadow-lg">
-            Featured
-          </div>
-        )}
+          <Image 
+            src={imgSrc}
+            alt={product.name} 
+            fill 
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" 
+            className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" 
+            onError={() => setImgSrc(DEFAULT_PCB_IMAGE)}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-80" />
+          
+          {product.isFeatured && (
+            <div className="absolute left-3 top-3 rounded-full bg-[image:var(--gradient-primary)] px-3 py-1 text-xs font-bold text-primary-foreground shadow-lg">
+              Featured
+            </div>
+          )}
 
-        <button 
-          type="button"
-          onClick={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            toast.success(`${product.name} added to wishlist`);
-          }}
-          className="absolute right-3 top-3 rounded-full border border-border/70 bg-background/70 p-2 text-muted-foreground backdrop-blur-md transition-colors hover:border-primary/50 hover:text-primary"
-        >
-          <Heart className="w-4 h-4" />
-        </button>
-      </div>
+          <button 
+            type="button"
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              toast.success(`${product.name} added to wishlist`);
+            }}
+            className="absolute right-3 top-3 rounded-full border border-border/70 bg-background/70 p-2 text-muted-foreground backdrop-blur-md transition-colors hover:border-primary/50 hover:text-primary"
+          >
+            <Heart className="w-4 h-4" />
+          </button>
+        </div>
       </Link>
 
       <div className="flex flex-1 flex-col p-6 relative z-10">
@@ -69,7 +75,7 @@ export function ProductCard({ product }: { product: IProduct }) {
         </Link>
         
         <p className="mb-4 line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-          {product.description || "High-quality precision PCB engineered for maximum performance and durability in critical applications."}
+          {product.description || "High-quality precision bare PCB engineered for maximum performance and durability in critical applications."}
         </p>
 
         <div className="flex items-end justify-between mb-6">
@@ -112,4 +118,3 @@ export function ProductCard({ product }: { product: IProduct }) {
     </article>
   );
 }
-

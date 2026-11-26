@@ -38,8 +38,14 @@ class SocketManager {
     private onlineUsers: Map<string, Set<string>> = new Map();
 
     public init(server: HttpServer) {
+        const envOrigins = (process.env.CORS_ORIGINS || "")
+            .split(",")
+            .map((origin) => origin.trim())
+            .filter(Boolean);
+
         const allowedOrigins = [
             config.frontend_url,
+            ...envOrigins,
             "http://localhost:3000",
             "http://localhost:3001",
             "http://127.0.0.1:3000",

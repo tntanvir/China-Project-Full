@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,11 +14,11 @@ type Activity = {
 };
 
 const getActivityIcon = (action: string) => {
-  if (action.includes("ORDER")) return <ShoppingCart className="h-4 w-4 text-blue-500" />;
-  if (action.includes("PAYMENT")) return <CheckCircle className="h-4 w-4 text-green-500" />;
+  if (action.includes("ORDER")) return <ShoppingCart className="h-4 w-4 text-emerald-500" />;
+  if (action.includes("PAYMENT")) return <CheckCircle className="h-4 w-4 text-emerald-600" />;
   if (action.includes("LOGIN")) return <LogIn className="h-4 w-4 text-slate-500" />;
-  if (action.includes("REGISTER") || action.includes("USER")) return <UserPlus className="h-4 w-4 text-purple-500" />;
-  if (action.includes("GERBER")) return <FileCode2 className="h-4 w-4 text-orange-500" />;
+  if (action.includes("REGISTER") || action.includes("USER")) return <UserPlus className="h-4 w-4 text-emerald-500" />;
+  if (action.includes("GERBER")) return <FileCode2 className="h-4 w-4 text-teal-500" />;
   if (action.includes("TICKET")) return <ShieldAlert className="h-4 w-4 text-red-500" />;
   if (action.includes("PRODUCT")) return <Package className="h-4 w-4 text-teal-500" />;
   return <ActivityIcon className="h-4 w-4 text-muted-foreground" />;

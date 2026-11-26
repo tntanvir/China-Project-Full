@@ -48,6 +48,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   AdminService,
   type AdminCoupon,
@@ -334,9 +335,13 @@ export default function AdminCouponsManager() {
               </span>
               <Tag className="size-4 text-gray-400" />
             </div>
-            <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white font-mono">
-              {summary.total}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white font-mono">
+                {summary.total}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Configured promo vouchers</p>
           </CardContent>
         </Card>
@@ -350,9 +355,13 @@ export default function AdminCouponsManager() {
               </span>
               <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
-            <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300 font-mono">
-              {summary.active}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300 font-mono">
+                {summary.active}
+              </div>
+            )}
             <p className="text-[11px] text-emerald-600/80 font-medium mt-0.5">Live at checkout</p>
           </CardContent>
         </Card>
@@ -366,9 +375,13 @@ export default function AdminCouponsManager() {
               </span>
               <Clock className="size-4 text-rose-500" />
             </div>
-            <div className="mt-2 text-2xl font-black text-rose-600 dark:text-rose-400 font-mono">
-              {summary.expired}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-rose-600 dark:text-rose-400 font-mono">
+                {summary.expired}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Past expiration date</p>
           </CardContent>
         </Card>
@@ -382,9 +395,13 @@ export default function AdminCouponsManager() {
               </span>
               <AlertCircle className="size-4 text-amber-500" />
             </div>
-            <div className="mt-2 text-2xl font-black text-amber-600 dark:text-amber-400 font-mono">
-              {summary.inactive}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-amber-600 dark:text-amber-400 font-mono">
+                {summary.inactive}
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Toggled off by admin</p>
           </CardContent>
         </Card>
@@ -398,9 +415,13 @@ export default function AdminCouponsManager() {
               </span>
               <Percent className="size-4 text-blue-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">
-              {avgDiscount}%
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">
+                {avgDiscount}%
+              </div>
+            )}
             <p className="text-[11px] text-gray-400 mt-0.5">Across all coupon tiers</p>
           </CardContent>
         </Card>
@@ -497,12 +518,33 @@ export default function AdminCouponsManager() {
 
               <TableBody>
                 {loading ? (
-                  Array.from({ length: 5 }).map((_, idx) => (
-                    <TableRow key={idx}>
-                      <TableCell colSpan={6} className="h-16 text-center">
-                        <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
-                          <Loader2 className="size-4 animate-spin text-emerald-600" />
-                          <span>Loading coupon database...</span>
+                  [1, 2, 3, 4, 5].map((i) => (
+                    <TableRow key={i}>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Skeleton className="h-6 w-32 rounded-lg" />
+                          <Skeleton className="size-6 rounded-md" />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-20" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-16" />
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <Skeleton className="h-3.5 w-24" />
+                          <Skeleton className="h-3 w-16" />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-16 rounded-full" />
+                      </TableCell>
+                      <TableCell className="text-right pr-4 sticky right-0 bg-white dark:bg-slate-900">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Skeleton className="h-8 w-16 rounded-lg" />
+                          <Skeleton className="h-8 w-8 rounded-lg" />
                         </div>
                       </TableCell>
                     </TableRow>

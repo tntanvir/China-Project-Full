@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+dist
+.git
+.env
+.env.*
+*.log
+scratch
+QA_AUDIT_REPORT.md
+pdf_extracted_text.txt
+FTpcb Company profile En.up3.pdf
+*.tsbuildinfo

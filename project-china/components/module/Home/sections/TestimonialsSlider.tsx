@@ -454,8 +454,8 @@ export default function TestimonialsSlider() {
           <div className="rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/60 p-5 shadow-xs hover:border-emerald-300 dark:hover:border-emerald-500 transition-colors">
             <div className="flex items-center justify-between">
               <span className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight">IPC Class 2/3</span>
-              <span suppressHydrationWarning className="inline-flex items-center gap-1 rounded-md bg-purple-100/70 dark:bg-purple-950 px-2 py-0.5 text-[11px] font-bold text-purple-800 dark:text-purple-300">
-                <ShieldCheck className="size-3.5 text-purple-600 dark:text-purple-400" /> Certified
+              <span suppressHydrationWarning className="inline-flex items-center gap-1 rounded-md bg-emerald-100/70 dark:bg-emerald-950 px-2 py-0.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
+                <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" /> Certified
               </span>
             </div>
             <div className="mt-2 text-xs font-bold text-gray-900 dark:text-slate-100">{tHub?.kpis?.turnaroundLabel || "Industry Standard Guarantee"}</div>

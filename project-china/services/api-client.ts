@@ -1,4 +1,6 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+import { getApiBaseUrl } from "@/lib/api-config";
+
+const API_BASE_URL = getApiBaseUrl();
 
 export type PaginationMeta = {
   page: number;

@@ -149,42 +149,42 @@ export default function CostComparisonVisualizer() {
   const savingsPercent = Math.round((totalSavings / brokerTotal) * 100);
 
   return (
-    <div className="w-full space-y-12">
+    <div className="w-full space-y-8 sm:space-y-12 min-w-0">
       {/* Navigation Pills */}
-      <div className="flex justify-center">
-        <div className="inline-flex rounded-2xl bg-slate-100 dark:bg-slate-900/90 p-1.5 border border-slate-200 dark:border-slate-800 shadow-inner">
+      <div className="flex justify-center w-full min-w-0">
+        <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-1.5 rounded-xl sm:rounded-2xl bg-slate-100 dark:bg-slate-900/90 p-1 sm:p-1.5 border border-slate-200 dark:border-slate-800 shadow-inner max-w-full">
           <button
             onClick={() => setActiveTab("calculator")}
-            className={`px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all flex items-center gap-2 ${
+            className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer ${
               activeTab === "calculator"
                 ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
                 : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            <DollarSign className="size-4" />
-            <span>{locale === "zh" ? "源头直采成本模拟器" : "Interactive Savings Calculator"}</span>
+            <DollarSign className="size-3.5 sm:size-4 shrink-0" />
+            <span className="truncate">{locale === "zh" ? "成本模拟器" : "Savings Calculator"}</span>
           </button>
           <button
             onClick={() => setActiveTab("table")}
-            className={`px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all flex items-center gap-2 ${
+            className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer ${
               activeTab === "table"
                 ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
                 : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            <TrendingDown className="size-4" />
-            <span>{locale === "zh" ? "源头实体 vs 中介对标" : "Direct vs. Broker Breakdown"}</span>
+            <TrendingDown className="size-3.5 sm:size-4 shrink-0" />
+            <span className="truncate">{locale === "zh" ? "实体 vs 中介" : "Direct vs. Broker"}</span>
           </button>
           <button
             onClick={() => setActiveTab("guarantees")}
-            className={`px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all flex items-center gap-2 ${
+            className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs md:text-sm font-bold transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer ${
               activeTab === "guarantees"
                 ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
                 : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            <ShieldCheck className="size-4" />
-            <span>{locale === "zh" ? "三大无忧品质契约" : "3 Ironclad Guarantees"}</span>
+            <ShieldCheck className="size-3.5 sm:size-4 shrink-0" />
+            <span className="truncate">{locale === "zh" ? "品质契约" : "3 Guarantees"}</span>
           </button>
         </div>
       </div>
@@ -195,10 +195,10 @@ export default function CostComparisonVisualizer() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="grid gap-8 lg:grid-cols-12 items-center"
+          className="grid gap-6 sm:gap-8 lg:grid-cols-12 items-center w-full min-w-0"
         >
           {/* Controls Card */}
-          <Card className="lg:col-span-6 p-8 rounded-3xl border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 shadow-xl backdrop-blur-sm space-y-6">
+          <Card className="lg:col-span-6 p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 shadow-xl backdrop-blur-sm space-y-4 sm:space-y-6 w-full min-w-0">
             <div className="space-y-2">
               <span className="text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                 {locale === "zh" ? "源头实体大厂采购成本测算" : "Direct Source Factory Simulation"}
@@ -370,8 +370,8 @@ export default function CostComparisonVisualizer() {
           transition={{ duration: 0.3 }}
           className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden"
         >
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-sm">
+          <div className="overflow-x-auto no-scrollbar">
+            <table className="w-full text-left border-collapse text-xs sm:text-sm min-w-[540px]">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/80">
                   <th className="py-4 px-6 font-bold text-slate-700 dark:text-slate-300 w-1/4">

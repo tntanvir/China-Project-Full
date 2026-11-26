@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { ChatService } from "@/services/chat.service";
 import { RealtimeService } from "@/services/realtime.service";
@@ -708,9 +709,23 @@ export default function LiveEngineeringChat() {
           {/* Channels Scroll Area */}
           <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#0b1220] p-3 shadow-sm flex-1 overflow-y-auto max-h-[600px] space-y-2">
             {loading ? (
-              <div className="p-12 text-center text-xs text-slate-400 flex flex-col items-center justify-center">
-                <Loader2 className="size-6 animate-spin text-emerald-600 mb-2" />
-                Connecting live channels...
+              <div className="space-y-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 space-y-2"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Skeleton className="size-2 rounded-full" />
+                        <Skeleton className="h-4 w-28" />
+                      </div>
+                      <Skeleton className="h-3 w-14" />
+                    </div>
+                    <Skeleton className="h-3.5 w-44" />
+                    <Skeleton className="h-3 w-32" />
+                  </div>
+                ))}
               </div>
             ) : filteredRooms.length > 0 ? (
               filteredRooms.map((room) => {

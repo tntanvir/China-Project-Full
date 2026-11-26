@@ -34,6 +34,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { NotificationService } from "@/services/notification.service";
 import { RealtimeService } from "@/services/realtime.service";
 import { useAuthStore } from "@/store/authStore";
@@ -313,9 +314,13 @@ export default function NotificationsManager() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-0">
-            <div className="text-2xl font-black text-slate-900 dark:text-white font-mono">
-              {metrics.total}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-1 rounded-lg" />
+            ) : (
+              <div className="text-2xl font-black text-slate-900 dark:text-white font-mono">
+                {metrics.total}
+              </div>
+            )}
             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
               Recorded platform events
             </p>
@@ -330,9 +335,13 @@ export default function NotificationsManager() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-0">
-            <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
-              {metrics.unread}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-1 rounded-lg" />
+            ) : (
+              <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
+                {metrics.unread}
+              </div>
+            )}
             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
               Requires your attention
             </p>
@@ -347,9 +356,13 @@ export default function NotificationsManager() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-0">
-            <div className="text-2xl font-black text-slate-900 dark:text-white font-mono">
-              {metrics.orders}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-1 rounded-lg" />
+            ) : (
+              <div className="text-2xl font-black text-slate-900 dark:text-white font-mono">
+                {metrics.orders}
+              </div>
+            )}
             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
               Manufacturing & billing
             </p>
@@ -364,9 +377,13 @@ export default function NotificationsManager() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-0">
-            <div className="text-2xl font-black text-slate-900 dark:text-white font-mono">
-              {metrics.support}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-1 rounded-lg" />
+            ) : (
+              <div className="text-2xl font-black text-slate-900 dark:text-white font-mono">
+                {metrics.support}
+              </div>
+            )}
             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
               Engineering tickets & chat
             </p>
@@ -418,9 +435,29 @@ export default function NotificationsManager() {
         {/* Notifications List View */}
         <div className="divide-y divide-slate-100 dark:divide-slate-800/80">
           {loading ? (
-            <div className="p-16 text-center text-xs text-slate-400 flex flex-col items-center justify-center">
-              <Loader2 className="size-6 animate-spin text-emerald-600 mb-2" />
-              Loading notifications...
+            <div className="divide-y divide-slate-100 dark:divide-slate-800/80">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+                >
+                  <div className="flex items-start gap-3.5 flex-1 min-w-0">
+                    <Skeleton className="size-10 rounded-2xl shrink-0 mt-0.5" />
+                    <div className="flex-1 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Skeleton className="h-4 w-40" />
+                        <Skeleton className="h-4 w-16 rounded-full" />
+                      </div>
+                      <Skeleton className="h-3.5 w-full max-w-md" />
+                      <Skeleton className="h-3 w-28" />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 self-end sm:self-center">
+                    <Skeleton className="h-8 w-20 rounded-xl" />
+                    <Skeleton className="h-8 w-8 rounded-xl" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : filteredNotifications.length > 0 ? (
             filteredNotifications.map((notif) => {

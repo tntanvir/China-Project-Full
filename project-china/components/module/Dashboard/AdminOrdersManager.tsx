@@ -58,6 +58,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Sheet,
   SheetContent,
@@ -433,7 +434,11 @@ export default function AdminOrdersManager() {
               <span className="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Total Records</span>
               <PackageCheck className="size-4 text-gray-400" />
             </div>
-            <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white">{stats.totalCount}</div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-gray-900 dark:text-white">{stats.totalCount}</div>
+            )}
             <div className="text-[11px] text-gray-400">Orders & Inquiries</div>
           </CardContent>
         </Card>
@@ -444,9 +449,13 @@ export default function AdminOrdersManager() {
               <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Direct Inquiries</span>
               <Sparkles className="size-4 text-emerald-600" />
             </div>
-            <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300">
-              {stats.inquiriesCount}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-emerald-700 dark:text-emerald-300">
+                {stats.inquiriesCount}
+              </div>
+            )}
             <div className="text-[11px] text-emerald-600 dark:text-emerald-400/80 font-medium">Website Contact & DFM leads</div>
           </CardContent>
         </Card>
@@ -457,7 +466,11 @@ export default function AdminOrdersManager() {
               <span className="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">CAM / DFM Review</span>
               <Clock className="size-4 text-amber-500" />
             </div>
-            <div className="mt-2 text-2xl font-black text-amber-600 dark:text-amber-400">{stats.pending}</div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-amber-600 dark:text-amber-400">{stats.pending}</div>
+            )}
             <div className="text-[11px] text-gray-400">Pending quote / review</div>
           </CardContent>
         </Card>
@@ -468,7 +481,11 @@ export default function AdminOrdersManager() {
               <span className="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">In Production</span>
               <Layers className="size-4 text-blue-500" />
             </div>
-            <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400">{stats.production}</div>
+            {loading ? (
+              <Skeleton className="h-8 w-16 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-blue-600 dark:text-blue-400">{stats.production}</div>
+            )}
             <div className="text-[11px] text-gray-400">Active fabrication</div>
           </CardContent>
         </Card>
@@ -479,9 +496,13 @@ export default function AdminOrdersManager() {
               <span className="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Total Pipeline</span>
               <span className="text-xs font-extrabold text-emerald-600">$ USD</span>
             </div>
-            <div className="mt-2 text-2xl font-black text-emerald-600 dark:text-emerald-400">
-              ${stats.totalVolume.toFixed(2)}
-            </div>
+            {loading ? (
+              <Skeleton className="h-8 w-24 mt-2 rounded-lg" />
+            ) : (
+              <div className="mt-2 text-2xl font-black text-emerald-600 dark:text-emerald-400">
+                ${stats.totalVolume.toFixed(2)}
+              </div>
+            )}
             <div className="text-[11px] text-gray-400">Total pipeline value</div>
           </CardContent>
         </Card>
@@ -579,9 +600,13 @@ export default function AdminOrdersManager() {
                 <CardTitle className="text-lg font-black text-gray-900 dark:text-white">
                   Orders & Inquiry Records
                 </CardTitle>
-                <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-black text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                  {meta.total}
-                </span>
+                {loading ? (
+                  <Skeleton className="h-5 w-8 rounded-full" />
+                ) : (
+                  <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-black text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                    {meta.total}
+                  </span>
+                )}
               </div>
               <CardDescription className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
                 Direct factory manufacturing orders, CAM review files, and customer specifications.
@@ -605,9 +630,102 @@ export default function AdminOrdersManager() {
         </CardHeader>
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex flex-col items-center justify-center p-12 text-center">
-              <Loader2 className="size-8 animate-spin text-emerald-600 mb-3" />
-              <p className="text-sm font-bold text-gray-700 dark:text-slate-300">Loading factory orders from server...</p>
+            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+              <Table className="min-w-[1460px] w-full border-collapse">
+                <TableHeader>
+                  <TableRow className="border-b border-gray-200 bg-gray-50/80 dark:border-slate-800 dark:bg-slate-900/80 text-xs">
+                    <TableHead className="w-[140px] min-w-[140px] font-extrabold text-slate-700 dark:text-slate-300 pl-4">
+                      <div className="flex items-center gap-1.5">
+                        <Tag className="size-3 text-emerald-600" />
+                        <span>Inquiry / Order ID</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[230px] min-w-[230px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <UserRound className="size-3 text-emerald-600" />
+                        <span>Customer Contact</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[190px] min-w-[190px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <Cpu className="size-3 text-emerald-600" />
+                        <span>PCB Type</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[300px] min-w-[300px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <FileText className="size-3 text-emerald-600" />
+                        <span>Project Requirement</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[170px] min-w-[170px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <FileArchive className="size-3 text-emerald-600" />
+                        <span>CAD / Gerber</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[110px] min-w-[110px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Amount</span>
+                    </TableHead>
+                    <TableHead className="w-[170px] min-w-[170px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="size-3 text-emerald-600" />
+                        <span>Status</span>
+                      </div>
+                    </TableHead>
+                    <TableHead className="w-[130px] min-w-[130px] font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Submitted</span>
+                    </TableHead>
+                    <TableHead className="w-[130px] min-w-[130px] sticky right-0 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-xs z-10 text-right pr-4 font-extrabold text-slate-700 dark:text-slate-300">
+                      <span>Actions</span>
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <TableRow key={i}>
+                      <TableCell className="pl-4">
+                        <div className="space-y-1">
+                          <Skeleton className="h-4 w-28" />
+                          <Skeleton className="h-3 w-16" />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <Skeleton className="h-4 w-32" />
+                          <Skeleton className="h-3 w-40" />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-28" />
+                        <Skeleton className="h-3 w-20 mt-1" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-52" />
+                        <Skeleton className="h-3 w-36 mt-1" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-7 w-24 rounded-lg" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-16" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-24 rounded-full" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-3.5 w-20" />
+                      </TableCell>
+                      <TableCell className="sticky right-0 bg-white/95 dark:bg-slate-900/95 text-right pr-4">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Skeleton className="h-8 w-16 rounded-lg" />
+                          <Skeleton className="h-8 w-8 rounded-lg" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           ) : orders.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-center">
