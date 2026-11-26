@@ -20,6 +20,12 @@ server {
         add_header Content-Type text/plain;
     }
 
+    location = /health {
+        proxy_pass http://backend_upstream/health;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+    }
+
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }

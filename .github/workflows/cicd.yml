@@ -83,16 +83,26 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT || 22 }}
+          port: ${{ secrets.VPS_PORT || '22' }}
           script_stop: true
           script: |
             set -e
             APP_DIR="${{ secrets.VPS_APP_DIR || '/opt/ftpcb' }}"
             cd "$APP_DIR"
 
+            # Preserve active HTTPS Nginx config if SSL was provisioned on the VPS
+            if grep -q "ssl_certificate" nginx/conf.d/default.conf 2>/dev/null; then
+              cp nginx/conf.d/default.conf /tmp/ftpcb_nginx_ssl.conf.bak
+            fi
+
             echo "📥 Pulling latest main branch..."
             git fetch origin main
             git reset --hard origin/main
+
+            if [ -f /tmp/ftpcb_nginx_ssl.conf.bak ]; then
+              mv /tmp/ftpcb_nginx_ssl.conf.bak nginx/conf.d/default.conf
+              echo "🔒 Restored active HTTPS Nginx configuration."
+            fi
 
             if [ ! -f .env ]; then
               echo "❌ Missing $APP_DIR/.env file on VPS! Copy .env.production.example to .env first."
@@ -102,6 +112,7 @@ jobs:
             echo "🐳 Building and starting Docker Compose stack..."
             docker compose build --pull
             docker compose up -d --remove-orphans
+            docker compose exec -T nginx nginx -s reload 2>/dev/null || true
 
             echo "⏳ Waiting for services to become healthy..."
             sleep 10
