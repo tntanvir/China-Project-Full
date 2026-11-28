@@ -9,6 +9,8 @@ import { QuoteValidation } from "./quote.validation";
 
 const router = express.Router();
 
+router.get("/pricing-config", QuoteController.getPricingConfig);
+
 router.post(
     "/",
     auth(UserRole.CUSTOMER, UserRole.ADMIN, UserRole.SUPER_ADMIN),

@@ -56,6 +56,10 @@ export const useAuthStore = create<AuthState>((set) => ({
 
         if (!refreshResponse?.ok) {
           clearClientAuthCookies();
+          await fetch(`${API_BASE_URL}/auth/logout`, {
+            method: "POST",
+            credentials: "include",
+          }).catch(() => null);
           set({ user: null, isAuthenticated: false, isLoading: false });
           return;
         }
@@ -67,6 +71,10 @@ export const useAuthStore = create<AuthState>((set) => ({
 
         if (!retryResponse.ok || !retryPayload.success) {
           clearClientAuthCookies();
+          await fetch(`${API_BASE_URL}/auth/logout`, {
+            method: "POST",
+            credentials: "include",
+          }).catch(() => null);
           set({ user: null, isAuthenticated: false, isLoading: false });
           return;
         }

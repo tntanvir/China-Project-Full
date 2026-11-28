@@ -34,10 +34,9 @@ export function ProductCard({ product }: { product: IProduct }) {
             alt={product.name} 
             fill 
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" 
-            className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" 
+            className="object-cover transition-transform duration-700 group-hover:scale-110" 
             onError={() => setImgSrc(DEFAULT_PCB_IMAGE)}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-80" />
           
           {product.isFeatured && (
             <div className="absolute left-3 top-3 rounded-full bg-[image:var(--gradient-primary)] px-3 py-1 text-xs font-bold text-primary-foreground shadow-lg">

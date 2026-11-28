@@ -271,6 +271,157 @@ const seedCoupons = catchAsync(async (_req: Request, res: Response) => {
     });
 });
 
+const getPricingConfig = catchAsync(async (_req: Request, res: Response) => {
+    const result = await AdminService.getPricingConfig();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Quote pricing configuration fetched successfully.",
+        data: result,
+    });
+});
+
+const updatePricingConfig = catchAsync(async (req: Request, res: Response) => {
+    const actor = (req as Request & { user?: { email?: string; id?: string } }).user;
+    const result = await AdminService.updatePricingConfig(req.body, actor?.email || actor?.id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Quote pricing configuration saved successfully.",
+        data: result,
+    });
+});
+
+const getCatalogFamilies = catchAsync(async (_req: Request, res: Response) => {
+    const result = await AdminService.getCatalogFamilies();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Manufacturing catalog fetched successfully.",
+        data: result,
+    });
+});
+
+const createCatalogFamily = catchAsync(async (req: Request, res: Response) => {
+    const actor = (req as Request & { user?: { email?: string; id?: string } }).user;
+    const result = await AdminService.createCatalogFamily(req.body, actor?.email || actor?.id, req.file);
+
+    sendResponse(res, {
+        statusCode: httpStatus.CREATED,
+        success: true,
+        message: "Catalog product added successfully.",
+        data: result,
+    });
+});
+
+const updateCatalogFamily = catchAsync(async (req: Request, res: Response) => {
+    const actor = (req as Request & { user?: { email?: string; id?: string } }).user;
+    const result = await AdminService.updateCatalogFamily(
+        String(req.params.id),
+        req.body,
+        actor?.email || actor?.id,
+        req.file,
+    );
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Catalog product updated successfully.",
+        data: result,
+    });
+});
+
+const deleteCatalogFamily = catchAsync(async (req: Request, res: Response) => {
+    const actor = (req as Request & { user?: { email?: string; id?: string } }).user;
+    const result = await AdminService.deleteCatalogFamily(String(req.params.id), actor?.email || actor?.id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Catalog product deleted successfully.",
+        data: result,
+    });
+});
+
+const resetCatalogFamilies = catchAsync(async (req: Request, res: Response) => {
+    const actor = (req as Request & { user?: { email?: string; id?: string } }).user;
+    const result = await AdminService.resetCatalogFamilies(actor?.email || actor?.id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Catalog restored to default items.",
+        data: result,
+    });
+});
+
+const getEngineeringGuides = catchAsync(async (_req: Request, res: Response) => {
+    const result = await AdminService.getEngineeringGuides();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Engineering guides fetched successfully.",
+        data: result,
+    });
+});
+
+const createEngineeringGuide = catchAsync(async (req: Request, res: Response) => {
+    const actor = (req as Request & { user?: { email?: string; id?: string } }).user;
+    const result = await AdminService.createEngineeringGuide(req.body, actor?.email || actor?.id, req.file);
+
+    sendResponse(res, {
+        statusCode: httpStatus.CREATED,
+        success: true,
+        message: "Engineering guide published successfully.",
+        data: result,
+    });
+});
+
+const updateEngineeringGuide = catchAsync(async (req: Request, res: Response) => {
+    const actor = (req as Request & { user?: { email?: string; id?: string } }).user;
+    const result = await AdminService.updateEngineeringGuide(
+        String(req.params.id),
+        req.body,
+        actor?.email || actor?.id,
+        req.file,
+    );
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Engineering guide updated successfully.",
+        data: result,
+    });
+});
+
+const deleteEngineeringGuide = catchAsync(async (req: Request, res: Response) => {
+    const actor = (req as Request & { user?: { email?: string; id?: string } }).user;
+    const result = await AdminService.deleteEngineeringGuide(String(req.params.id), actor?.email || actor?.id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Engineering guide deleted successfully.",
+        data: result,
+    });
+});
+
+const resetEngineeringGuides = catchAsync(async (req: Request, res: Response) => {
+    const actor = (req as Request & { user?: { email?: string; id?: string } }).user;
+    const result = await AdminService.resetEngineeringGuides(actor?.email || actor?.id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Engineering guides restored to defaults.",
+        data: result,
+    });
+});
+
 export const AdminController = {
     getOverview,
     getCustomers,
@@ -296,4 +447,16 @@ export const AdminController = {
     updateCoupon,
     deleteCoupon,
     seedCoupons,
+    getPricingConfig,
+    updatePricingConfig,
+    getCatalogFamilies,
+    createCatalogFamily,
+    updateCatalogFamily,
+    deleteCatalogFamily,
+    resetCatalogFamilies,
+    getEngineeringGuides,
+    createEngineeringGuide,
+    updateEngineeringGuide,
+    deleteEngineeringGuide,
+    resetEngineeringGuides,
 };

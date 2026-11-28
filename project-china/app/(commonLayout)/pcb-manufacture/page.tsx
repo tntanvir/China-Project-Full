@@ -17,7 +17,7 @@ export default function Page() {
       title: "Process Flowchart",
       pageSlug: "process-flowchart",
       badge: "Official Factory SOP",
-      desc: "武平飞天电子科技官方生产工艺流程圖：多层板、双面板与24工步SOP参数表。",
+      desc: "Official PCB Production Process Flow Chart: Multilayer, Double-Sided & 24-Station SOP Parameter Sheet.",
     },
     {
       title: "Equipments",

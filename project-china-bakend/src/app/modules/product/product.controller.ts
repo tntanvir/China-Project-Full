@@ -3,6 +3,29 @@ import httpStatus from "http-status";
 import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendResponse";
 import { ProductService } from "./product.service";
+import { AdminService } from "../admin/admin.service";
+
+const getCatalogFamilies = catchAsync(async (_req: Request, res: Response) => {
+    const result = await AdminService.getCatalogFamilies();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Manufacturing catalog fetched successfully",
+        data: result,
+    });
+});
+
+const getEngineeringGuides = catchAsync(async (_req: Request, res: Response) => {
+    const result = await AdminService.getEngineeringGuides();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Engineering guides fetched successfully",
+        data: result,
+    });
+});
 
 const createProduct = catchAsync(async (req: Request, res: Response) => {
     const result = await ProductService.createProduct(req.body, req.files);
@@ -75,6 +98,8 @@ const deleteProduct = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const ProductController = {
+    getCatalogFamilies,
+    getEngineeringGuides,
     createProduct,
     getAllProducts,
     getProductById,

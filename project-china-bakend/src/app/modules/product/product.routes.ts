@@ -26,6 +26,18 @@ router.get(
     ProductController.getAllProducts
 );
 
+// Public Manufacturing Catalog Families (Home Hub)
+router.get(
+    "/catalog-families",
+    ProductController.getCatalogFamilies
+);
+
+// Public Engineering Insights & Design Guides (Home Knowledge Base)
+router.get(
+    "/engineering-guides",
+    ProductController.getEngineeringGuides
+);
+
 // Get Single Product by ID (Public)
 router.get(
     "/:id",

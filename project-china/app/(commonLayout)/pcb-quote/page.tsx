@@ -60,6 +60,12 @@ import {
 import { GerberService } from "@/services/gerber.service";
 import { OrderService } from "@/services/order.service";
 import { PaymentService } from "@/services/payment.service";
+import { PricingService } from "@/services/pricing.service";
+import {
+  calculateFullQuotePricing,
+  DEFAULT_QUOTE_PRICING_CONFIG,
+  type QuotePricingConfig,
+} from "@/lib/quote-pricing";
 import { useAuthStore } from "@/store/authStore";
 import dynamic from "next/dynamic";
 
@@ -273,7 +279,18 @@ function PCBQuoteContent() {
   const [submittingGateway, setSubmittingGateway] = useState<"stripe" | "paypal" | "bank_tt" | null>(null);
   const [isPaying, setIsPaying] = useState(false);
   const [restoredFromSession, setRestoredFromSession] = useState(false);
+  const [pricingConfig, setPricingConfig] = useState<QuotePricingConfig>(DEFAULT_QUOTE_PRICING_CONFIG);
   const isResumingRef = useRef(false);
+
+  useEffect(() => {
+    let active = true;
+    PricingService.getPublicPricingConfig().then((cfg) => {
+      if (active) setPricingConfig(cfg);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Key for session quote persistence
   const QUOTE_SESSION_KEY = "FT_PCB_PENDING_QUOTE";
@@ -380,61 +397,23 @@ function PCBQuoteContent() {
   const boardAreaCm2 = (Number(length) * Number(width)) / 100;
 
   const pricing = useMemo(() => {
-    let base = 5.0; // Rapid prototype introductory baseline (PCBWay $5 for 5pcs 2L)
-
-    // Layer multipliers
-    if (numLayers === 1) base = 4.5;
-    else if (numLayers === 2) base = 5.0;
-    else if (numLayers === 4) base = 28.0;
-    else if (numLayers === 6) base = 65.0;
-    else if (numLayers === 8) base = 120.0;
-    else base = 220.0;
-
-    // Quantity scaling
-    const qtyMultiplier = effectiveQty <= 5 ? 1 : 1 + (effectiveQty - 5) * 0.12;
-    let pcbFabrication = base * qtyMultiplier;
-
-    // Dimension scaling for larger boards
-    if (boardAreaCm2 > 100) {
-      pcbFabrication += ((boardAreaCm2 - 100) / 50) * 4 * (effectiveQty / 5);
-    }
-
-    // Material additions
-    if (material === "Aluminum") pcbFabrication += 12.0;
-    if (material === "Rogers") pcbFabrication += 85.0;
-    if (material === "HDI") pcbFabrication += 45.0;
-
-    // Surface finish additions
-    if (surfaceFinish === "ENIG") pcbFabrication += 18.0;
-    if (surfaceFinish === "Hard Gold") pcbFabrication += 35.0;
-    if (surfaceFinish === "Immersion Silver") pcbFabrication += 25.0;
-
-    // Special options
-    if (castellatedHoles === "Yes") pcbFabrication += 15.0;
-    if (edgePlating === "Yes") pcbFabrication += 16.0;
-    if (impedanceControl === "Yes") pcbFabrication += 10.0;
-
-    // Build Time speed fee
-    let speedFee = 0;
-    if (buildTime === "24h") speedFee = 0; // Free 24h rapid build promotion!
-    else if (buildTime === "48h") speedFee = 0;
-    else speedFee = 0;
-
-    // Shipping fee
     const country = shippingCountries.find((c) => c.code === selectedCountry) || shippingCountries[0];
-    const shippingFee = country.fee;
-
-    const total = pcbFabrication + speedFee + shippingFee;
-
-    return {
-      pcbFabrication: Math.max(5.0, Number(pcbFabrication.toFixed(2))),
-      engineeringFee: 0.0, // Waived CAM Check
-      eTestFee: 0.0, // 100% Free E-Test
-      shippingFee,
-      carrier: country.carrier,
-      total: Number(total.toFixed(2)),
-      weightKg: Number((0.08 * (effectiveQty / 5) * (numLayers / 2) * (boardAreaCm2 / 100)).toFixed(2)),
-    };
+    return calculateFullQuotePricing(
+      {
+        boardAreaCm2,
+        effectiveQty,
+        numLayers,
+        material,
+        surfaceFinish,
+        castellatedHoles,
+        edgePlating,
+        impedanceControl,
+        thickness: Number(thickness) || 1.6,
+        shippingFee: country.fee,
+        carrier: country.carrier,
+      },
+      pricingConfig
+    );
   }, [
     effectiveQty,
     numLayers,
@@ -444,8 +423,9 @@ function PCBQuoteContent() {
     castellatedHoles,
     edgePlating,
     impedanceControl,
-    buildTime,
+    thickness,
     selectedCountry,
+    pricingConfig,
   ]);
 
   // Handle Gerber upload

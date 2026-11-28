@@ -950,19 +950,13 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
           {/* ---------------- 1. Document Title Block (Matches Excel Screenshot) ---------------- */}
           <div
             style={{ width: layout.totalWidth }}
-            className="absolute top-6 left-0 flex flex-col items-center justify-center text-center pointer-events-none z-10"
+            className="absolute top-8 left-0 flex flex-col items-center justify-center text-center pointer-events-none z-10"
           >
-            <h1
-              className="text-2xl md:text-3xl font-extrabold tracking-wide text-black dark:text-slate-100"
-              style={{ fontFamily: "'Microsoft YaHei', 'SimHei', sans-serif" }}
-            >
-              武平飞天电子科技有限公司
-            </h1>
-            <p className="text-sm md:text-base font-bold text-red-600 tracking-wide mt-0.5">
+            <h1 className="text-xl md:text-2xl font-extrabold text-red-600 tracking-wide">
               Wuping Feitian Electronic Technology Co.,Ltd
-            </p>
+            </h1>
             <h2
-              className="text-lg md:text-xl font-black tracking-wider mt-1.5 text-black dark:text-slate-200"
+              className="text-lg md:text-xl font-black tracking-wider mt-2 text-black dark:text-slate-200"
               style={{ fontFamily: "'Microsoft YaHei', 'SimHei', sans-serif" }}
             >
               PCB生产工艺流程圖
@@ -1256,7 +1250,7 @@ export default function PcbProcessExcelFlowchart({ onSelectStation }: PcbProcess
               <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 max-w-3xl">
                 {(selectedStation as any).controlsZh ||
                   (selectedStation as any).descZh ||
-                  "武平飞天电子科技有限公司官方SOP作业规范，严格执行IPC-A-600与IPC-6012二级/三级标准管控。"}
+                  "Wuping Feitian Electronic Technology Co.,Ltd Official SOP Control, strictly adhering to IPC-A-600 & IPC-6012 Class 2/3 standards."}
               </p>
             </div>
           </div>

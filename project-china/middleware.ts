@@ -7,6 +7,30 @@ const protectedPrefixes = ["/dashboard", "/admin", "/super-admin"];
 // Authentication pages: Users who are already signed in shouldn't see these
 const authPrefixes = ["/login", "/register", "/forgot-password", "/reset-password"];
 
+function isJwtValid(token?: string): boolean {
+  if (!token) return false;
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return false;
+    const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
+    const payload = JSON.parse(atob(padded)) as { exp?: number };
+    if (typeof payload.exp === "number") {
+      return payload.exp * 1000 > Date.now();
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function clearAuthCookies(response: NextResponse) {
+  for (const name of ["accessToken", "refreshToken", "auth_session", "user_role"]) {
+    response.cookies.delete(name);
+  }
+  return response;
+}
+
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
@@ -15,7 +39,8 @@ export function middleware(request: NextRequest) {
   const authSession = request.cookies.get("auth_session")?.value;
   const userRole = request.cookies.get("user_role")?.value;
 
-  const isAuthenticated = Boolean(accessToken || refreshToken || authSession);
+  const hasValidToken = isJwtValid(accessToken) || isJwtValid(refreshToken);
+  const isAuthenticated = hasValidToken || (Boolean(authSession) && !accessToken && !refreshToken);
 
   // 1. Route Protection for Dashboard & Admin routes
   const isProtectedRoute = protectedPrefixes.some(
@@ -26,7 +51,7 @@ export function middleware(request: NextRequest) {
     if (!isAuthenticated) {
       const redirectTarget = encodeURIComponent(`${pathname}${search}`);
       const loginUrl = new URL(`/login?redirect=${redirectTarget}`, request.url);
-      return NextResponse.redirect(loginUrl);
+      return clearAuthCookies(NextResponse.redirect(loginUrl));
     }
 
     // Role-based gatekeeper in middleware when role cookie is present
@@ -54,27 +79,33 @@ export function middleware(request: NextRequest) {
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
   );
 
-  if (isAuthRoute && isAuthenticated) {
-    const redirectParam = request.nextUrl.searchParams.get("redirect");
-
-    // If a valid safe internal redirect exists, honor it
-    if (
-      redirectParam &&
-      redirectParam.startsWith("/") &&
-      !redirectParam.startsWith("//") &&
-      !redirectParam.startsWith("/login") &&
-      !redirectParam.startsWith("/register")
-    ) {
-      return NextResponse.redirect(new URL(redirectParam, request.url));
+  if (isAuthRoute) {
+    if (request.nextUrl.searchParams.get("session_expired") === "1") {
+      return clearAuthCookies(NextResponse.next());
     }
 
-    // Otherwise redirect to their role dashboard
-    const normalizedRole = userRole?.toUpperCase().replace(/[\s-]+/g, "_");
-    let target = "/dashboard";
-    if (normalizedRole === "SUPER_ADMIN") target = "/super-admin";
-    else if (normalizedRole === "ADMIN") target = "/admin";
+    if (isAuthenticated) {
+      const redirectParam = request.nextUrl.searchParams.get("redirect");
 
-    return NextResponse.redirect(new URL(target, request.url));
+      // If a valid safe internal redirect exists, honor it
+      if (
+        redirectParam &&
+        redirectParam.startsWith("/") &&
+        !redirectParam.startsWith("//") &&
+        !redirectParam.startsWith("/login") &&
+        !redirectParam.startsWith("/register")
+      ) {
+        return NextResponse.redirect(new URL(redirectParam, request.url));
+      }
+
+      // Otherwise redirect to their role dashboard
+      const normalizedRole = userRole?.toUpperCase().replace(/[\s-]+/g, "_");
+      let target = "/dashboard";
+      if (normalizedRole === "SUPER_ADMIN") target = "/super-admin";
+      else if (normalizedRole === "ADMIN") target = "/admin";
+
+      return NextResponse.redirect(new URL(target, request.url));
+    }
   }
 
   return NextResponse.next();

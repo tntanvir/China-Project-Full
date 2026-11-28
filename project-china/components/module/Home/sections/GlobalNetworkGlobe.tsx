@@ -561,7 +561,7 @@ export default function GlobalNetworkGlobe() {
                 <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300 min-w-0">
                   <Plane className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <div className="min-w-0 flex-1">
-                    <span className="font-bold text-gray-900 dark:text-slate-100">{netGlobe?.panel?.originLabel || "Direct Route"}: </span>
+                    <span className="font-bold text-gray-900 dark:text-slate-100">{netGlobe?.panel?.originLabel || "Route"}: </span>
                     <span className="text-gray-600 dark:text-slate-400 font-semibold break-words">
                       Wuping / Shenzhen (SZX) ➔ {activeRoute.name}
                     </span>
@@ -571,7 +571,7 @@ export default function GlobalNetworkGlobe() {
                 <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300 min-w-0">
                   <Clock className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <div className="min-w-0 flex-1">
-                    <span className="font-bold text-gray-900 dark:text-slate-100">{netGlobe?.panel?.leadTimeLabel || "Transit Duration"}: </span>
+                    <span className="font-bold text-gray-900 dark:text-slate-100">{netGlobe?.panel?.leadTimeLabel || "Transit"}: </span>
                     <span className="text-gray-600 dark:text-slate-400">{activeRoute.transit}</span>
                   </div>
                 </div>
@@ -579,23 +579,11 @@ export default function GlobalNetworkGlobe() {
                 <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300 min-w-0">
                   <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <div className="min-w-0 flex-1">
-                    <span className="font-bold text-gray-900 dark:text-slate-100">{netGlobe?.panel?.customsLabel || "Duty & Tax"}: </span>
+                    <span className="font-bold text-gray-900 dark:text-slate-100">{netGlobe?.panel?.customsLabel || "Customs"}: </span>
                     <span className="text-gray-600 dark:text-slate-400">{activeRoute.duty}</span>
                   </div>
                 </div>
-
-                <div className="flex items-start gap-2 text-gray-700 dark:text-slate-300 min-w-0">
-                  <CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                  <div className="min-w-0 flex-1">
-                    <span className="font-bold text-gray-900 dark:text-slate-100">Target Sectors: </span>
-                    <span className="text-gray-600 dark:text-slate-400">{activeRoute.clients}</span>
-                  </div>
-                </div>
               </div>
-
-              <p className="text-[10px] sm:text-[11px] text-gray-500 dark:text-slate-400 leading-relaxed pt-2 border-t border-gray-100 dark:border-slate-800">
-                {activeRoute.desc}
-              </p>
 
               {/* Action Buttons */}
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full min-w-0">
@@ -706,19 +694,6 @@ export default function GlobalNetworkGlobe() {
                   <span>Center China HQ</span>
                 </button>
               </div>
-            </div>
-
-            {/* Live Flight Dispatch Ticker */}
-            <div className="mt-3 sm:mt-4 w-full max-w-[560px] rounded-2xl border border-gray-200/80 dark:border-slate-800 bg-gray-50/70 dark:bg-slate-900/60 p-2.5 sm:p-3 text-[10.5px] sm:text-xs flex items-center justify-between gap-2 min-w-0">
-              <div className="flex items-center gap-2 font-bold text-gray-700 dark:text-slate-300 min-w-0 flex-1 truncate">
-                <span className="size-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse shrink-0" />
-                <span className="truncate">
-                  Link: Wuping HQ ➔ {activeRoute.name} ({activeRoute.carrier})
-                </span>
-              </div>
-              <span className="text-[9.5px] sm:text-[10px] font-black uppercase text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950 rounded px-2 py-0.5 shrink-0">
-                Live Flight
-              </span>
             </div>
 
           </div>

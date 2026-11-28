@@ -819,6 +819,226 @@ const deleteCoupon = async (id: string) => {
     return prisma.coupon.delete({ where: { id } });
 };
 
+import { mergePricingConfig, QUOTE_PRICING_SETTING_KEY } from "../../shared/pricingConfig";
+import {
+    CATALOG_FAMILIES_SETTING_KEY,
+    DEFAULT_CATALOG_FAMILIES,
+    mergeCatalogFamilies,
+    sanitizeCatalogItem,
+    type CatalogFamilyItem,
+} from "../../shared/catalogFamilies";
+import { fileUploader } from "../../helper/fileUploader";
+import {
+    DEFAULT_ENGINEERING_GUIDES,
+    ENGINEERING_GUIDES_SETTING_KEY,
+    mergeEngineeringGuides,
+    sanitizeEngineeringGuide,
+    type EngineeringGuideItem,
+} from "../../shared/engineeringGuides";
+
+const normalizeCatalogPayload = async (
+    payload: Record<string, any>,
+    file?: Express.Multer.File,
+): Promise<Partial<CatalogFamilyItem>> => {
+    const next: Record<string, any> = { ...payload };
+    if (typeof next.specs === "string") {
+        try {
+            next.specs = JSON.parse(next.specs);
+        } catch {
+            next.specs = [];
+        }
+    }
+    if (file?.path) {
+        const uploaded = await fileUploader.uploadToCloudinary(file.path, "catalog-families");
+        next.imageUrl = uploaded.url;
+    }
+    return next as Partial<CatalogFamilyItem>;
+};
+
+const getCatalogFamilies = async (): Promise<CatalogFamilyItem[]> => {
+    const row = await prisma.systemSetting.findUnique({
+        where: { key: CATALOG_FAMILIES_SETTING_KEY },
+    });
+    return mergeCatalogFamilies(row?.value);
+};
+
+const saveCatalogFamilies = async (items: CatalogFamilyItem[], updatedBy?: string) => {
+    await prisma.systemSetting.upsert({
+        where: { key: CATALOG_FAMILIES_SETTING_KEY },
+        update: {
+            value: items as unknown as object,
+            group: "CATALOG",
+            updatedBy,
+        },
+        create: {
+            key: CATALOG_FAMILIES_SETTING_KEY,
+            value: items as unknown as object,
+            group: "CATALOG",
+            updatedBy,
+        },
+    });
+    return items;
+};
+
+const createCatalogFamily = async (
+    payload: Partial<CatalogFamilyItem>,
+    updatedBy?: string,
+    file?: Express.Multer.File,
+) => {
+    const current = await getCatalogFamilies();
+    const normalized = await normalizeCatalogPayload(payload as Record<string, any>, file);
+    const item = sanitizeCatalogItem(normalized);
+    if (current.some((existing) => existing.id === item.id)) {
+        item.id = `${item.id}-${Date.now().toString(36)}`;
+    }
+    const next = [item, ...current];
+    await saveCatalogFamilies(next, updatedBy);
+    return item;
+};
+
+const updateCatalogFamily = async (
+    id: string,
+    payload: Partial<CatalogFamilyItem>,
+    updatedBy?: string,
+    file?: Express.Multer.File,
+) => {
+    const current = await getCatalogFamilies();
+    const index = current.findIndex((item) => item.id === id);
+    if (index === -1) {
+        throw new ApiError(httpStatus.NOT_FOUND, "Catalog item not found.");
+    }
+    const normalized = await normalizeCatalogPayload(payload as Record<string, any>, file);
+    const updated = sanitizeCatalogItem({ ...current[index], ...normalized, id }, id);
+    const next = [...current];
+    next[index] = updated;
+    await saveCatalogFamilies(next, updatedBy);
+    return updated;
+};
+
+const deleteCatalogFamily = async (id: string, updatedBy?: string) => {
+    const current = await getCatalogFamilies();
+    const next = current.filter((item) => item.id !== id);
+    if (next.length === current.length) {
+        throw new ApiError(httpStatus.NOT_FOUND, "Catalog item not found.");
+    }
+    await saveCatalogFamilies(next, updatedBy);
+    return { deletedId: id };
+};
+
+const resetCatalogFamilies = async (updatedBy?: string) => {
+    await saveCatalogFamilies(DEFAULT_CATALOG_FAMILIES, updatedBy);
+    return DEFAULT_CATALOG_FAMILIES;
+};
+
+const getEngineeringGuides = async (): Promise<EngineeringGuideItem[]> => {
+    const row = await prisma.systemSetting.findUnique({
+        where: { key: ENGINEERING_GUIDES_SETTING_KEY },
+    });
+    return mergeEngineeringGuides(row?.value);
+};
+
+const saveEngineeringGuides = async (items: EngineeringGuideItem[], updatedBy?: string) => {
+    await prisma.systemSetting.upsert({
+        where: { key: ENGINEERING_GUIDES_SETTING_KEY },
+        update: {
+            value: items as unknown as object,
+            group: "CONTENT",
+            updatedBy,
+        },
+        create: {
+            key: ENGINEERING_GUIDES_SETTING_KEY,
+            value: items as unknown as object,
+            group: "CONTENT",
+            updatedBy,
+        },
+    });
+    return items;
+};
+
+const createEngineeringGuide = async (
+    payload: Partial<EngineeringGuideItem>,
+    updatedBy?: string,
+    file?: Express.Multer.File,
+) => {
+    const current = await getEngineeringGuides();
+    const nextPayload: Record<string, any> = { ...payload };
+    if (file?.path) {
+        const uploaded = await fileUploader.uploadToCloudinary(file.path, "engineering-guides");
+        nextPayload.imageUrl = uploaded.url;
+    }
+    const item = sanitizeEngineeringGuide(nextPayload);
+    if (current.some((existing) => existing.id === item.id)) {
+        item.id = `${item.id}-${Date.now().toString(36)}`;
+    }
+    const next = [item, ...current];
+    await saveEngineeringGuides(next, updatedBy);
+    return item;
+};
+
+const updateEngineeringGuide = async (
+    id: string,
+    payload: Partial<EngineeringGuideItem>,
+    updatedBy?: string,
+    file?: Express.Multer.File,
+) => {
+    const current = await getEngineeringGuides();
+    const index = current.findIndex((item) => item.id === id);
+    if (index === -1) {
+        throw new ApiError(httpStatus.NOT_FOUND, "Engineering guide not found.");
+    }
+    const nextPayload: Record<string, any> = { ...payload };
+    if (file?.path) {
+        const uploaded = await fileUploader.uploadToCloudinary(file.path, "engineering-guides");
+        nextPayload.imageUrl = uploaded.url;
+    }
+    const updated = sanitizeEngineeringGuide({ ...current[index], ...nextPayload, id }, id);
+    const next = [...current];
+    next[index] = updated;
+    await saveEngineeringGuides(next, updatedBy);
+    return updated;
+};
+
+const deleteEngineeringGuide = async (id: string, updatedBy?: string) => {
+    const current = await getEngineeringGuides();
+    const next = current.filter((item) => item.id !== id);
+    if (next.length === current.length) {
+        throw new ApiError(httpStatus.NOT_FOUND, "Engineering guide not found.");
+    }
+    await saveEngineeringGuides(next, updatedBy);
+    return { deletedId: id };
+};
+
+const resetEngineeringGuides = async (updatedBy?: string) => {
+    await saveEngineeringGuides(DEFAULT_ENGINEERING_GUIDES, updatedBy);
+    return DEFAULT_ENGINEERING_GUIDES;
+};
+
+const getPricingConfig = async () => {
+    const row = await prisma.systemSetting.findUnique({
+        where: { key: QUOTE_PRICING_SETTING_KEY },
+    });
+    return mergePricingConfig(row?.value);
+};
+
+const updatePricingConfig = async (payload: unknown, updatedBy?: string) => {
+    const merged = mergePricingConfig(payload);
+    await prisma.systemSetting.upsert({
+        where: { key: QUOTE_PRICING_SETTING_KEY },
+        update: {
+            value: merged as unknown as object,
+            group: "PRICING",
+            updatedBy,
+        },
+        create: {
+            key: QUOTE_PRICING_SETTING_KEY,
+            value: merged as unknown as object,
+            group: "PRICING",
+            updatedBy,
+        },
+    });
+    return merged;
+};
+
 export const AdminService = {
     getOverview,
     getCustomers,
@@ -844,4 +1064,16 @@ export const AdminService = {
     updateCoupon,
     deleteCoupon,
     seedCoupons,
+    getPricingConfig,
+    updatePricingConfig,
+    getCatalogFamilies,
+    createCatalogFamily,
+    updateCatalogFamily,
+    deleteCatalogFamily,
+    resetCatalogFamilies,
+    getEngineeringGuides,
+    createEngineeringGuide,
+    updateEngineeringGuide,
+    deleteEngineeringGuide,
+    resetEngineeringGuides,
 };

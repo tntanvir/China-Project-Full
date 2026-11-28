@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import PcbProcessFlowchart from "@/components/module/pcb/PcbProcessFlowchart";
 
 export const metadata: Metadata = {
-  title: "PCB生产工艺流程圖 | PCB Production Process Flow Chart | 武平飞天电子科技 Wuping Feitian",
+  title: "PCB Production Process Flow Chart | Wuping Feitian Electronic Technology",
   description:
-    "武平飞天电子科技有限公司 (Wuping Feitian Electronic Technology Co.,Ltd) 官方PCB生产工艺流程圖与SOP工序参数表。涵盖开料、内层微影、真空层压、CNC钻孔、化学沉铜、VCP垂直连续电镀、图形电镀、外层蚀刻、阻焊印刷、表面处理、100%电测与FQC出货全流程。",
+    "Wuping Feitian Electronic Technology Co.,Ltd official PCB production process flow chart & SOP parameter sheet. Covers cutting, inner imaging, lamination, CNC drilling, PTH, VCP plating, outer etching, solder mask, surface finish, E-test, and FQC.",
   keywords: [
-    "武平飞天电子科技有限公司",
+    "Feitian PCB",
     "Wuping Feitian Electronic Technology Co.,Ltd",
     "PCB生产工艺流程圖",
     "PCB Production Process Flow Chart",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "IPC-A-600 Quality Gates",
   ],
   openGraph: {
-    title: "武平飞天电子科技有限公司 PCB生产工艺流程圖 (PCB Production Process Flow Chart)",
+    title: "PCB Production Process Flow Chart | Wuping Feitian Electronic Technology Co.,Ltd",
     description:
       "Wuping Feitian Electronic Technology Co.,Ltd official multilayer PCB production process flow chart, interactive diagram, and XLS spreadsheet SOP.",
     type: "article",

@@ -102,6 +102,16 @@ export default function Footer() {
           <div className="flex flex-wrap items-center gap-3">
             <p>{footer.copyright}</p>
             <span className="hidden sm:inline text-border">•</span>
+            <Link href="/privacy-policy" className="font-medium text-muted-foreground hover:text-primary transition-colors">
+              Privacy Policy
+            </Link>
+            <span className="text-border">•</span>
+            <Link href="/terms-of-service" className="font-medium text-muted-foreground hover:text-primary transition-colors">
+              Terms of Service
+            </Link>
+            <span className="hidden sm:inline text-border">•</span>
+            <span className="text-muted-foreground/80">Min ICP Bei No. 20012937-1</span>
+            <span className="hidden sm:inline text-border">•</span>
             <button
               type="button"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

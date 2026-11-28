@@ -511,7 +511,15 @@ export default function RegisterPage() {
                 className="mt-0.5 size-4 rounded border-slate-700 bg-slate-950 accent-emerald-500 focus:ring-emerald-500/40"
               />
               <span className="text-[11px] leading-relaxed">
-                I agree to the Feitian Technology (SYS-PCB) Terms of Service, Privacy Policy, and CAM Manufacturing Guidelines.
+                I agree to the Wuping Feitian Electronic Technology Co., Ltd.{" "}
+                <Link href="/terms-of-service" target="_blank" className="text-emerald-400 underline hover:text-emerald-300">
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link href="/privacy-policy" target="_blank" className="text-emerald-400 underline hover:text-emerald-300">
+                  Privacy Policy
+                </Link>
+                .
               </span>
             </label>
             {errors.terms && <p className="text-[11px] text-red-400 font-semibold mt-1">{errors.terms}</p>}

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   Award,
@@ -33,6 +33,19 @@ import { getPcbYoutubeEmbedUrl } from "@/lib/youtube-videos";
 import type { IProduct } from "@/services/product.service";
 import type { IPage } from "@/services/page.service";
 import { GerberService } from "@/services/gerber.service";
+import { GuidesService } from "@/services/guides.service";
+import {
+  DEFAULT_ENGINEERING_GUIDES,
+  resolveGuideImageUrl,
+  type EngineeringGuideItem,
+} from "@/lib/engineering-guides";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import GlobalNetworkGlobe from "./GlobalNetworkGlobe";
 import TestimonialsSlider from "./TestimonialsSlider";
@@ -80,31 +93,29 @@ const fallbackShowcaseProducts = [
 ];
 
 const advantages = [
-  ["Guaranteed High Quality", "100% E-test, flying probe testing, AOI visual inspection, and cross-section analysis.", ShieldCheck],
-  ["24h Quick-Turn Delivery", "Fast prototyping and responsive production scheduling built for urgent deadlines.", Clock3],
-  ["Factory Direct Pricing", "Transparent quotation with zero hidden markups from our own manufacturing plants.", Zap],
-  ["Cutting-Edge Technology", "Any-layer HDI, blind/buried vias, heavy copper (up to 6oz), and controlled impedance.", Cpu],
-  ["Global Express Logistics", "Worldwide insured door-to-door courier shipping via DHL, FedEx, and UPS.", Truck],
+  ["Guaranteed Quality", "100% E-test, flying probe, and AOI inspection.", ShieldCheck],
+  ["24h Quick-Turn", "Fast prototyping built for urgent deadlines.", Clock3],
+  ["Factory Direct", "Transparent pricing with zero markups.", Zap],
+  ["Advanced Tech", "HDI, blind/buried vias, up to 6oz copper.", Cpu],
+  ["Global Express", "Insured worldwide delivery via DHL, FedEx & UPS.", Truck],
 ];
 
-const certifications = ["ISO 9001:2015", "RoHS Compliant", "UL 94V-0 Certified", "IPC-A-600 Class 2/3", "IPC-A-610 Workmanship", "REACH Compliant"];
-
-
+const certifications = ["ISO 9001:2015", "RoHS", "UL 94V-0", "IPC Class 2/3", "REACH"];
 
 const processSteps = [
-  { step: "01", title: "Online Quote", desc: "Select board specs or upload Gerber files for instant pricing." },
-  { step: "02", title: "DFM Review", desc: "Free engineering design rule check before fabrication begins." },
-  { step: "03", title: "Cam & Tooling", desc: "High-precision photo tooling, drilling, and laser setup." },
-  { step: "04", title: "Fabrication", desc: "Copper plating, etching, solder mask, silkscreen, and surface finish." },
-  { step: "05", title: "Quality Control", desc: "100% flying probe testing, AOI inspection, and dimensional checks." },
-  { step: "06", title: "Vacuum Packing", desc: "Moisture-barrier ESD packing with desiccant and protective carton." },
-  { step: "07", title: "Express Delivery", desc: "Dispatched with real-time tracking via DHL, FedEx, or UPS." },
+  { step: "01", title: "Online Quote", desc: "Upload Gerber files for instant pricing." },
+  { step: "02", title: "DFM Review", desc: "Free CAM design rule verification." },
+  { step: "03", title: "CAM & Tooling", desc: "Photo tooling, drilling, and laser setup." },
+  { step: "04", title: "Fabrication", desc: "Plating, etching, mask, and surface finish." },
+  { step: "05", title: "Quality Control", desc: "100% flying probe and AOI inspection." },
+  { step: "06", title: "Vacuum Packing", desc: "Moisture-barrier ESD protective packing." },
+  { step: "07", title: "Express Delivery", desc: "Tracked shipping via DHL, FedEx, or UPS." },
 ];
 
 const articles = [
-  ["How DFM Analysis Improves PCB Production Yield", "Practical manufacturing tips for hardware engineers to avoid costly circuit board revisions and component fit issues.", "Engineering Guide"],
-  ["Choosing ENIG vs HASL for Your Circuit Board", "An in-depth breakdown of surface finishes, solderability, shelf-life, and contact pad durability for SMT.", "Material Selection"],
-  ["Turnkey SMT Assembly Checklist Before Production", "What files and BOM details hardware teams must prepare for error-free pick-and-place component assembly.", "Assembly Tips"],
+  ["How DFM Analysis Improves Yield", "Avoid common layout revisions and component fit issues before fabrication.", "Engineering"],
+  ["Choosing ENIG vs HASL Finish", "Compare solderability, flatness, and shelf life for SMT assembly.", "Materials"],
+  ["Turnkey SMT Assembly Checklist", "Prepare Gerber, BOM, and pick-and-place files for smooth production.", "Assembly"],
 ];
 
 const videos = [
@@ -260,6 +271,18 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
   const [facilityZoneIndex, setFacilityZoneIndex] = useState(0);
   const activeZone = zonesList[facilityZoneIndex] || zonesList[0];
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [guides, setGuides] = useState<EngineeringGuideItem[]>(DEFAULT_ENGINEERING_GUIDES);
+  const [activeGuide, setActiveGuide] = useState<EngineeringGuideItem | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    GuidesService.getPublicGuides().then((data) => {
+      if (active && data.length > 0) setGuides(data);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -300,16 +323,13 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
             {statsItems.map((item) => (
               <div
                 key={item.label}
-                className="rounded-xl sm:rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 sm:p-5 shadow-sm transition hover:border-emerald-400 dark:hover:border-emerald-500 hover:shadow-md min-w-0"
+                className="rounded-xl sm:rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 sm:p-5 shadow-sm transition hover:border-emerald-400 dark:hover:border-emerald-500 hover:shadow-md min-w-0"
               >
                 <div className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-emerald-600 dark:text-emerald-400">
                   {item.value}
                 </div>
                 <div className="mt-1 text-xs sm:text-sm font-bold text-gray-900 dark:text-slate-100 leading-snug">
                   {item.label}
-                </div>
-                <div className="mt-0.5 sm:mt-1 text-[10.5px] sm:text-xs text-gray-500 dark:text-slate-400 leading-snug">
-                  {item.desc}
                 </div>
               </div>
             ))}
@@ -412,28 +432,20 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   key={zone.id || idx}
                   type="button"
                   onClick={() => setFacilityZoneIndex(idx)}
-                  className={`flex flex-col items-start rounded-xl sm:rounded-2xl border p-2.5 sm:p-3.5 text-left transition-all min-w-0 ${
+                  className={`flex flex-col items-start rounded-xl sm:rounded-2xl border p-3 sm:p-4 text-left transition-all min-w-0 ${
                     isActive
                       ? "border-emerald-600 dark:border-emerald-500 bg-white dark:bg-slate-900 shadow-md shadow-emerald-600/10 ring-2 ring-emerald-500/20"
                       : "border-gray-200/90 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-white dark:hover:bg-slate-900"
                   }`}
                 >
-                  <div className="flex w-full items-center justify-between">
-                    <span className={`text-[10px] font-black uppercase tracking-wider ${isActive ? "text-emerald-700 dark:text-emerald-400" : "text-gray-400 dark:text-slate-500"}`}>
-                      Zone 0{idx + 1}
-                    </span>
-                    <span className={`rounded-full px-2 py-0.5 text-[9px] font-black uppercase ${
-                      isActive ? "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300" : "bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400"
-                    }`}>
-                      {zone.badge}
-                    </span>
-                  </div>
-                  <h4 className="mt-1.5 text-xs sm:text-sm font-black text-gray-900 dark:text-slate-100 leading-tight">
+                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-black uppercase ${
+                    isActive ? "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300" : "bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400"
+                  }`}>
+                    {zone.badge}
+                  </span>
+                  <h4 className="mt-2 text-xs sm:text-sm font-black text-gray-900 dark:text-slate-100 leading-tight">
                     {zone.title}
                   </h4>
-                  <p className="mt-0.5 text-[11px] text-gray-500 dark:text-slate-400 line-clamp-1">
-                    {zone.subtitle}
-                  </p>
                 </button>
               );
             })}
@@ -445,7 +457,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
             {/* Left: Active Department Image + Machine Specs + Process Checklist (7 Cols) */}
             <div className="flex flex-col justify-between rounded-3xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-xl shadow-gray-200/50 dark:shadow-none lg:col-span-7">
               <div>
-                {/* Visual Header Image with Glassmorphism Overlays */}
+                {/* Visual Header Image */}
                 <div className="relative h-[280px] sm:h-[340px] w-full overflow-hidden rounded-2xl border border-gray-100 dark:border-slate-800">
                   <Image
                     src={activeZone.image}
@@ -454,13 +466,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                     sizes="(max-width: 1024px) 100vw, 60vw"
                     className="object-cover transition-transform duration-700 hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/30 to-transparent" />
-                  
-                  {/* Floating Live Badge */}
-                  <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-gray-900/80 backdrop-blur-md px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white border border-white/20 shadow-xs">
-                    <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>Active Workshop: {activeZone.title}</span>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-950/85 via-gray-950/20 to-transparent" />
 
                   {/* Image Bottom Typography */}
                   <div className="absolute bottom-4 left-4 right-4 text-white">
@@ -470,9 +476,6 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                     <h3 className="mt-1.5 text-lg sm:text-xl font-black text-white">
                       {activeZone.title}
                     </h3>
-                    <p className="mt-0.5 text-xs text-gray-200 leading-relaxed max-w-xl">
-                      {activeZone.tagline}
-                    </p>
                   </div>
                 </div>
 
@@ -490,25 +493,19 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   ))}
                 </div>
 
-                {/* Quality & Process Highlights (2x2 Checklist) */}
-                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-slate-800">
-                  <div className="text-[11px] font-black uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-2">
-                    Verified Process Standards:
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-2 text-xs">
-                    {activeZone.highlights.map((item) => (
-                      <div key={item} className="flex items-start gap-2 text-gray-700 dark:text-slate-300 font-medium">
-                        <CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                        <span className="leading-tight">{item}</span>
-                      </div>
-                    ))}
-                  </div>
+                {/* Quality & Process Highlights */}
+                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-slate-800 grid sm:grid-cols-2 gap-2 text-xs">
+                  {activeZone.highlights.map((item) => (
+                    <div key={item} className="flex items-start gap-2 text-gray-700 dark:text-slate-300 font-medium">
+                      <CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                      <span className="leading-tight">{item}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
               {/* Bottom Quick Action Strip */}
-              <div className="mt-5 pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between text-xs">
-                <span className="text-gray-500 dark:text-slate-400 font-medium">IPC Class 2/3 and ISO 9001:2015 compliant line</span>
+              <div className="mt-5 pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center justify-end text-xs">
                 <Link
                   href="/pcb-quote"
                   className="inline-flex items-center gap-1 font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition"
@@ -527,7 +524,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   <span className="flex items-center gap-1.5 font-bold text-gray-800 dark:text-slate-200">
                     <span className="size-2 rounded-full bg-red-600 animate-ping" />
                     <span className="size-2 rounded-full bg-red-600" />
-                    <span>Live Video Tour: Automated Production</span>
+                    <span>Factory Video Tour</span>
                   </span>
                   <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100/70 dark:bg-emerald-950/70 rounded px-2 py-0.5">
                     HD 1080P
@@ -544,35 +541,29 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   />
                 </div>
 
-                <div className="p-4">
+                <div className="px-4 py-3">
                   <h4 className="text-xs sm:text-sm font-extrabold text-gray-900 dark:text-slate-100 leading-snug">
-                    Automated SMT & Multi-Layer PCB Production Line Tour
+                    Automated SMT & Multi-Layer Production Line
                   </h4>
-                  <p className="mt-1 text-xs text-gray-500 dark:text-slate-400 leading-relaxed">
-                    Watch our automated Yamaha high-speed placement lines, vacuum laminators, and automated optical inspection systems operating in real-time.
-                  </p>
                 </div>
               </div>
 
               {/* Environmental Control Card */}
-              <div className="rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm space-y-2">
+              <div className="rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="flex size-7 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex size-8 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold text-xs">
                       <Microscope className="size-4" />
                     </span>
                     <div>
-                      <h4 className="text-xs font-black text-gray-900 dark:text-slate-100">Class 10,000 Cleanroom Environment</h4>
-                      <p className="text-[10px] text-gray-500 dark:text-slate-400">Constant Temperature (22±2°C) & Humidity (55±5%)</p>
+                      <h4 className="text-xs font-black text-gray-900 dark:text-slate-100">Class 10,000 Cleanroom</h4>
+                      <p className="text-[10px] text-gray-500 dark:text-slate-400">22±2°C Temp • 55±5% Humidity</p>
                     </div>
                   </div>
                   <span className="rounded bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 text-[10px] font-extrabold text-emerald-800 dark:text-emerald-300">
                     ISO Class 7
                   </span>
                 </div>
-                <p className="text-[11px] text-gray-600 dark:text-slate-300 leading-relaxed">
-                  Positive pressure laminar airflow filters out airborne particles down to 0.5 microns, ensuring zero particulate defects on inner-layer dry films and solder mask application.
-                </p>
               </div>
 
               {/* Action Buttons */}
@@ -590,7 +581,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-xs font-bold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 transition text-center"
                 >
                   <Download className="size-3.5 text-emerald-600" />
-                  <span>Profile PDF (6.9MB)</span>
+                  <span>Company Profile</span>
                 </a>
                 <Link
                   href="/about-ft-pcb"
@@ -603,49 +594,6 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
 
             </div>
 
-          </div>
-
-          {/* Under-Showcase 4-Pillar Capacity Highlights Strip */}
-          <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-4 w-full min-w-0">
-            <div className="flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-4 shadow-xs min-w-0">
-              <span className="flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
-                <Building2 className="size-4 sm:size-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs sm:text-base lg:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight truncate">15,000 m²</div>
-                <div className="text-[9.5px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">3 Dedicated Factory Buildings</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-4 shadow-xs min-w-0">
-              <span className="flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
-                <Cpu className="size-4 sm:size-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs sm:text-base lg:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight truncate">100,000 m²/mo</div>
-                <div className="text-[9.5px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">Multi-Layer & Special Board</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-4 shadow-xs min-w-0">
-              <span className="flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
-                <Factory className="size-4 sm:size-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs sm:text-base lg:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight truncate">30M RMB Capital</div>
-                <div className="text-[9.5px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">Specialized "Little Giant"</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border border-gray-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-4 shadow-xs min-w-0">
-              <span className="flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
-                <Award className="size-4 sm:size-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs sm:text-base lg:text-lg font-black text-gray-900 dark:text-slate-100 leading-tight truncate">IATF 16949</div>
-                <div className="text-[9.5px] sm:text-[11px] text-gray-500 dark:text-slate-400 font-medium truncate">Automotive Grade Certified</div>
-              </div>
-            </div>
           </div>
 
         </div>
@@ -749,40 +697,94 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
           />
 
           <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {articles.map(([title, description, tag], index) => (
-              <article
-                key={title}
-                className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm transition hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-lg"
-              >
-                <div>
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
-                    <Image
-                      src={pcbImages[index % pcbImages.length]}
-                      alt={title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <span className="absolute left-3 top-3 rounded-md bg-emerald-600 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs">
-                      {tag}
-                    </span>
+            {guides.map((guide) => {
+              const imgSrc = resolveGuideImageUrl(guide.imageUrl);
+              const isDynamic = imgSrc.includes("/uploads/") || imgSrc.startsWith("http://");
+              return (
+                <article
+                  key={guide.id}
+                  onClick={() => setActiveGuide(guide)}
+                  className="group cursor-pointer flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm transition hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-lg"
+                >
+                  <div>
+                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800">
+                      <Image
+                        src={imgSrc}
+                        alt={guide.title}
+                        fill
+                        unoptimized={isDynamic}
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <span className="absolute left-3 top-3 rounded-md bg-emerald-600 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs">
+                        {guide.tag}
+                      </span>
+                    </div>
+                    <h3 className="mt-4 text-base font-extrabold text-gray-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                      {guide.title}
+                    </h3>
+                    <p className="mt-2 text-xs leading-relaxed text-gray-600 dark:text-slate-400">
+                      {guide.description}
+                    </p>
                   </div>
-                  <h3 className="mt-4 text-base font-extrabold text-gray-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
-                    {title}
-                  </h3>
-                  <p className="mt-2 text-xs leading-relaxed text-gray-600 dark:text-slate-400">
-                    {description}
-                  </p>
-                </div>
 
-                <div className="mt-5 border-t border-gray-100 dark:border-slate-800 pt-4">
-                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-400 group-hover:underline">
-                    Read Engineering Guide <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </article>
-            ))}
+                  <div className="mt-5 border-t border-gray-100 dark:border-slate-800 pt-4 flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-400 group-hover:underline">
+                      Read Engineering Guide <ArrowRight className="h-3.5 w-3.5" />
+                    </span>
+                    <span className="text-[11px] text-gray-400 dark:text-slate-500 font-medium">{guide.readTime}</span>
+                  </div>
+                </article>
+              );
+            })}
           </div>
+
+          <Dialog open={Boolean(activeGuide)} onOpenChange={(open) => { if (!open) setActiveGuide(null); }}>
+            <DialogContent className="sm:max-w-2xl max-h-[88vh] overflow-y-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
+              {activeGuide && (
+                <>
+                  <DialogHeader>
+                    <div className="flex items-center gap-2 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
+                      <span className="rounded-md bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5">
+                        {activeGuide.tag}
+                      </span>
+                      <span className="text-gray-400">•</span>
+                      <span className="text-gray-500 dark:text-slate-400">{activeGuide.readTime}</span>
+                    </div>
+                    <DialogTitle className="text-xl font-black text-gray-900 dark:text-white pt-1">
+                      {activeGuide.title}
+                    </DialogTitle>
+                    <DialogDescription className="text-xs text-gray-500 dark:text-slate-400">
+                      By {activeGuide.author}
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800 my-2">
+                    <Image
+                      src={resolveGuideImageUrl(activeGuide.imageUrl)}
+                      alt={activeGuide.title}
+                      fill
+                      unoptimized={activeGuide.imageUrl.includes("/uploads/") || activeGuide.imageUrl.startsWith("http://")}
+                      className="object-cover"
+                    />
+                  </div>
+
+                  <div className="whitespace-pre-line text-sm leading-relaxed text-gray-700 dark:text-slate-300">
+                    {activeGuide.content}
+                  </div>
+
+                  <div className="pt-4 border-t border-gray-100 dark:border-slate-800 flex justify-end">
+                    <Link
+                      href="/pcb-quote"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-extrabold text-white hover:bg-emerald-500 transition"
+                    >
+                      Start Instant PCB Quote <ArrowRight className="size-3.5" />
+                    </Link>
+                  </div>
+                </>
+              )}
+            </DialogContent>
+          </Dialog>
         </div>
       </section>
 
@@ -800,7 +802,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                 Ready to Build Your Circuit Board?
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-slate-300">
-                Send your Gerber design, BOM, or custom PCB requirements directly to our factory CAM engineering team. Fast quotation within 2 hours.
+                Send your Gerber files, BOM, or custom PCB requirements directly to our CAM team for a fast quote.
               </p>
 
               <div className="mt-8 space-y-4 text-xs font-bold text-gray-700 dark:text-slate-300">
@@ -814,7 +816,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   <span className="flex size-9 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">
                     <Phone className="h-4 w-4" />
                   </span>
-                  <span>+86 189 2742 6587 (Direct Line)</span>
+                  <span>+86 189 2742 6587</span>
                 </div>
                 <a
                   href="https://wa.me/message/KOW2GMXJ7DKHG1"
@@ -825,10 +827,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   <span className="flex size-9 items-center justify-center rounded-xl bg-[#25D366] text-white shadow-xs group-hover:scale-105 transition-transform">
                     <WhatsAppIcon className="h-4.5 w-4.5" />
                   </span>
-                  <div>
-                    <span className="font-bold block text-xs">WhatsApp: +86 189 2742 6587</span>
-                    <span className="text-[10px] text-gray-500 dark:text-slate-400 block">Click for 24/7 instant engineering chat ↗</span>
-                  </div>
+                  <span className="font-bold text-xs">WhatsApp: +86 189 2742 6587</span>
                 </a>
 
                 <div className="flex items-start gap-3">
@@ -836,15 +835,12 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                     <Building2 className="h-4 w-4" />
                   </span>
                   <span className="text-[11px] font-medium leading-relaxed text-gray-600 dark:text-slate-400">
-                    Factory: Yanqian Industrial Cluster, Wuping County, Longyan City, Fujian Province, China | Shenzhen Tech Office: Fenghuang Zhi Gu, Baoan District, Shenzhen
+                    Yanqian Industrial Cluster, Wuping, Fujian | Shenzhen Office: Fenghuang Zhi Gu, Baoan
                   </span>
                 </div>
 
                 {/* FT Company Official Social Channels */}
                 <div className="pt-4 border-t border-gray-100 dark:border-slate-800">
-                  <span className="block text-[10px] font-black uppercase tracking-wider text-gray-400 dark:text-slate-500 mb-2">
-                    FT Official Social Media Channels
-                  </span>
                   <SocialLinksRow />
                 </div>
               </div>
@@ -910,7 +906,7 @@ export default function PremiumWupingHomepage({ products = [] }: { products?: IP
                   required
                   rows={4}
                   className="w-full rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-xs font-semibold text-gray-800 dark:text-slate-100 outline-none transition placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:border-emerald-600 dark:focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                  placeholder="Include layer count, board dimensions, target quantity, surface finish (ENIG/HASL), and delivery timeline."
+                  placeholder="Layer count, dimensions, quantity, surface finish, and timeline..."
                 />
               </label>
 

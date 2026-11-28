@@ -1188,7 +1188,7 @@ export default function PcbProcessFlowchart() {
     ]);
 
     const headerBlock = [
-      `"${t.header.companyZh} / ${t.header.companyEn}"`,
+      `"${t.header.companyEn}"`,
       `"${t.header.title} - ${t.spreadsheet.title}"`,
       `"${t.header.docRef} | ${t.header.sopBadge} | ${t.header.certBadge}"`,
       `""`,
@@ -1427,13 +1427,10 @@ export default function PcbProcessFlowchart() {
                 </span>
               </div>
 
-              {/* Exact Company and Chart Title Provided by User */}
+              {/* Company Title */}
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-emerald-400 tracking-tight leading-tight">
-                {t.header.companyZh}
-              </h2>
-              <h3 className="text-lg sm:text-xl font-bold text-slate-700 dark:text-slate-300 font-mono mt-0.5">
                 {t.header.companyEn}
-              </h3>
+              </h2>
 
               <div className="mt-3 flex items-center gap-3">
                 <div className="h-6 w-1.5 bg-emerald-500 rounded-full" />
@@ -1622,8 +1619,8 @@ export default function PcbProcessFlowchart() {
                   </h3>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400">
                     {diagramStyle === "excel"
-                      ? "武平飞天电子科技 生产工艺流程图（Production_Process_Flow_Chart.xls）原版视觉重现"
-                      : "基于Mermaid引擎自动排布的工序连接关系拓扑"}
+                      ? "Wuping Feitian Electronic Technology • Production_Process_Flow_Chart.xls Visual Flowchart"
+                      : "Mermaid Automated Topology Flowchart"}
                   </p>
                 </div>
               </div>

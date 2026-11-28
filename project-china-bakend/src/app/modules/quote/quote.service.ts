@@ -2,6 +2,7 @@ import { QuoteStatus, UserRole } from "@prisma/client";
 import httpStatus from "http-status";
 import ApiError from "../../errors/ApiError";
 import { prisma } from "../../shared/prisma";
+import { mergePricingConfig, QUOTE_PRICING_SETTING_KEY, type QuotePricingConfig } from "../../shared/pricingConfig";
 import { NotificationService } from "../notification/notification.service";
 
 type QuotePayload = {
@@ -23,26 +24,78 @@ type Actor = {
     role: UserRole;
 };
 
-const calculateQuotePrice = (payload: QuotePayload) => {
-    const areaCm2 = (payload.width * payload.height) / 100;
-    const layerMultiplier = Math.max(payload.layerCount / 2, 1);
-    const materialMultiplier = payload.materialType.toLowerCase().includes("rogers")
-        ? 2.4
-        : payload.materialType.toLowerCase().includes("aluminum")
-          ? 1.6
-          : 1;
-    const finishMultiplier = payload.surfaceFinish.toLowerCase().includes("enig") ? 1.25 : 1;
-    const copperMultiplier = Math.max(payload.copperWeight, 1);
-    const thicknessFee = payload.boardThickness > 1.6 ? 8 : 0;
-    const base = 18;
+const getPricingConfig = async (): Promise<QuotePricingConfig> => {
+    const row = await prisma.systemSetting.findUnique({
+        where: { key: QUOTE_PRICING_SETTING_KEY },
+    });
+    return mergePricingConfig(row?.value);
+};
 
-    return Number(
-        (base + areaCm2 * 0.08 * payload.quantity * layerMultiplier * materialMultiplier * finishMultiplier * copperMultiplier + thicknessFee).toFixed(2),
+const calculateQuotePrice = (payload: QuotePayload, config: QuotePricingConfig) => {
+    const areaDm2 = (payload.width * payload.height) / 10000;
+    const layers = Math.max(payload.layerCount || 2, 1);
+    const qty = Math.max(payload.quantity || 5, 1);
+    const matLower = payload.materialType.toLowerCase();
+    const finishLower = payload.surfaceFinish.toLowerCase();
+
+    if (
+        config.promoEnabled &&
+        layers <= 2 &&
+        areaDm2 <= config.promoMaxAreaDm2 &&
+        qty <= config.promoMaxQty &&
+        !finishLower.includes("enig") &&
+        !finishLower.includes("gold") &&
+        !finishLower.includes("silver") &&
+        !matLower.includes("rogers") &&
+        !matLower.includes("aluminum") &&
+        !matLower.includes("hdi")
+    ) {
+        return Number((config.promoPrice + config.scaling.engineeringFee + config.scaling.eTestFee).toFixed(2));
+    }
+
+    let base =
+        layers === 1
+            ? config.layerPrices.layer1
+            : layers === 2
+              ? config.layerPrices.layer2
+              : layers <= 4
+                ? config.layerPrices.layer4
+                : layers <= 6
+                  ? config.layerPrices.layer6
+                  : layers <= 8
+                    ? config.layerPrices.layer8Plus
+                    : config.layerPrices.layer10Plus;
+
+    if (finishLower.includes("enig")) base += config.finishFees.ENIG;
+    else if (finishLower.includes("gold")) base += config.finishFees["Hard Gold"];
+    else if (finishLower.includes("silver")) base += config.finishFees["Immersion Silver"];
+    else if (finishLower.includes("lead") && !finishLower.includes("free")) base += config.finishFees["HASL-LEAD"];
+    else base += config.finishFees.HASL;
+
+    if (matLower.includes("rogers")) base += config.materialFees.Rogers;
+    else if (matLower.includes("aluminum")) base += config.materialFees.Aluminum;
+    else if (matLower.includes("hdi")) base += config.materialFees.HDI;
+    else base += config.materialFees.FR4;
+
+    const areaFactor = Math.max(0, areaDm2 - 1.0) * (layers * config.scaling.areaRatePerDm2PerLayer);
+    const qtyFactor = Math.max(0, qty - 5) * (config.scaling.qtyBaseUnitFee + layers * config.scaling.qtyPerLayerFee);
+    const thicknessFee = payload.boardThickness > 1.6 ? config.scaling.thicknessOver16Fee : 0;
+    const copperMultiplier = Math.max(payload.copperWeight || 1, 1);
+
+    const total = Math.max(
+        config.minOrderPrice,
+        (base + areaFactor + qtyFactor) * (copperMultiplier > 1 ? 1 + (copperMultiplier - 1) * 0.25 : 1) +
+            thicknessFee +
+            config.scaling.engineeringFee +
+            config.scaling.eTestFee,
     );
+
+    return Number(total.toFixed(2));
 };
 
 const createQuote = async (userId: string, payload: QuotePayload) => {
-    const calculatedPrice = calculateQuotePrice(payload);
+    const pricingConfig = await getPricingConfig();
+    const calculatedPrice = calculateQuotePrice(payload, pricingConfig);
 
     const quote = await prisma.quote.create({
         data: {
@@ -242,6 +295,7 @@ const convertQuoteToOrder = async (
 };
 
 export const QuoteService = {
+    getPricingConfig,
     calculateQuotePrice,
     createQuote,
     getMyQuotes,

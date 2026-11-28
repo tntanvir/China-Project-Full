@@ -2,6 +2,7 @@ import express from "express";
 import { UserRole } from "@prisma/client";
 import auth from "../../middlewares/auth";
 import validateRequest from "../../middlewares/validateRequest";
+import { fileUploader } from "../../helper/fileUploader";
 import { AdminController } from "./admin.controller";
 import { AdminValidation } from "./admin.validation";
 
@@ -33,5 +34,17 @@ router.post("/coupons", AdminController.createCoupon);
 router.patch("/coupons/:id", AdminController.updateCoupon);
 router.delete("/coupons/:id", AdminController.deleteCoupon);
 router.post("/coupons/seed", AdminController.seedCoupons);
+router.get("/pricing-config", AdminController.getPricingConfig);
+router.put("/pricing-config", AdminController.updatePricingConfig);
+router.get("/catalog-families", AdminController.getCatalogFamilies);
+router.post("/catalog-families", fileUploader.upload.single("image"), AdminController.createCatalogFamily);
+router.patch("/catalog-families/:id", fileUploader.upload.single("image"), AdminController.updateCatalogFamily);
+router.delete("/catalog-families/:id", AdminController.deleteCatalogFamily);
+router.post("/catalog-families/reset", AdminController.resetCatalogFamilies);
+router.get("/engineering-guides", AdminController.getEngineeringGuides);
+router.post("/engineering-guides", fileUploader.upload.single("image"), AdminController.createEngineeringGuide);
+router.patch("/engineering-guides/:id", fileUploader.upload.single("image"), AdminController.updateEngineeringGuide);
+router.delete("/engineering-guides/:id", AdminController.deleteEngineeringGuide);
+router.post("/engineering-guides/reset", AdminController.resetEngineeringGuides);
 
 export const adminRoutes = router;

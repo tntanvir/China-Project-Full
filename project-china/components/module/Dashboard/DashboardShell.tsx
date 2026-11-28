@@ -5,8 +5,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import {
   Bell,
+  BookOpen,
   Boxes,
   Building2,
+  Calculator,
   ClipboardList,
   CreditCard,
   Database,
@@ -76,6 +78,9 @@ const adminNavGroups = [
       { label: "Orders & Inquiries", href: "/admin/orders", icon: PackageCheck },
       { label: "Customer Accounts", href: "/admin/customers", icon: Users },
       { label: "Products Catalog", href: "/admin/products", icon: Boxes },
+      { label: "Manufacturing Catalog", href: "/admin/catalog", icon: Layers3 },
+      { label: "Engineering Insights", href: "/admin/insights", icon: BookOpen },
+      { label: "Calculator Pricing", href: "/admin/pricing", icon: Calculator },
       { label: "Categories", href: "/admin/categories", icon: Layers3 },
       { label: "Brands", href: "/admin/brands", icon: Building2 },
       { label: "Inventory & Stock", href: "/admin/inventory", icon: Boxes },
@@ -122,6 +127,9 @@ const superAdminNavGroups = [
     title: "Platform Controls",
     items: [
       { label: "Global Payments", href: "/super-admin/payments", icon: CreditCard },
+      { label: "Manufacturing Catalog", href: "/admin/catalog", icon: Layers3 },
+      { label: "Engineering Insights", href: "/admin/insights", icon: BookOpen },
+      { label: "Calculator Pricing", href: "/admin/pricing", icon: Calculator },
       { label: "Business Analytics", href: "/super-admin/business-analytics", icon: BarChart3 },
       { label: "Audit Logs", href: "/super-admin/audit-logs", icon: ClipboardList },
       { label: "System Monitoring", href: "/super-admin/system-monitoring", icon: Database },
@@ -259,7 +267,7 @@ export default function DashboardShell({ children }: { children: React.ReactNode
     if (isLoading) return;
     if (!user) {
       const currentUrl = encodeURIComponent(window.location.pathname + window.location.search);
-      router.replace(`/login?redirect=${currentUrl}`);
+      router.replace(`/login?redirect=${currentUrl}&session_expired=1`);
     } else if (!allowed) {
       const fallback = getRoleDashboardPath(user.role);
       toast.error(`Access restricted. Redirecting to your workspace.`);

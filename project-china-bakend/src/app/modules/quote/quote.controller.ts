@@ -83,6 +83,17 @@ const approveQuote = catchAsync(async (req: AuthRequest, res: Response) => {
     });
 });
 
+const getPricingConfig = catchAsync(async (_req: Request, res: Response) => {
+    const result = await QuoteService.getPricingConfig();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Quote pricing configuration fetched successfully.",
+        data: result,
+    });
+});
+
 const rejectQuote = catchAsync(async (req: AuthRequest, res: Response) => {
     const result = await QuoteService.rejectQuote(String(req.params.quoteId), getActor(req), req.body);
 
@@ -95,6 +106,7 @@ const rejectQuote = catchAsync(async (req: AuthRequest, res: Response) => {
 });
 
 export const QuoteController = {
+    getPricingConfig,
     createQuote,
     getMyQuotes,
     getAllQuotes,

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { type ChangeEvent, useState, useRef } from "react";
+import { type ChangeEvent, useEffect, useState, useRef } from "react";
 import {
   AlertCircle,
   ArrowRight,
@@ -32,7 +32,13 @@ import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import { GerberService } from "@/services/gerber.service";
+import { PricingService } from "@/services/pricing.service";
 import { useDictionary } from "@/components/providers/language-provider";
+import {
+  calculateHeroQuotePrice,
+  DEFAULT_QUOTE_PRICING_CONFIG,
+  type QuotePricingConfig,
+} from "@/lib/quote-pricing";
 
 // High-resolution showcase slides
 const sliderImages = [
@@ -181,37 +187,47 @@ export default function NavbarSlider() {
   const [selectedColor, setSelectedColor] = useState("Green");
   const [surfaceFinish, setSurfaceFinish] = useState("HASL");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [pricingConfig, setPricingConfig] = useState<QuotePricingConfig>(DEFAULT_QUOTE_PRICING_CONFIG);
 
   const swiperRef = useRef<SwiperType | null>(null);
 
+  useEffect(() => {
+    let active = true;
+    PricingService.getPublicPricingConfig().then((cfg) => {
+      if (active) setPricingConfig(cfg);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const activeService = quoteServices[activeServiceIndex];
 
-  // Real-time instant price calculation (Industry standard PCB formula)
-  const estimatedPrice = (() => {
-    const qty = Number(selectedQty) || 5;
-    const layers = Number(selectedLayer.replace("+", "")) || 2;
-    const l = Number(dimensions.length) || 100;
-    const w = Number(dimensions.width) || 100;
-
-    // Convert inch to mm for calculation if selected
-    const lMm = unit === "inch" ? l * 25.4 : l;
-    const wMm = unit === "inch" ? w * 25.4 : w;
-    const areaDm2 = (lMm * wMm) / 10000;
-
-    // Base $5 special condition (1-2 layer, <= 100x100mm, <= 10 pcs)
-    if (layers <= 2 && areaDm2 <= 1.05 && qty <= 10 && surfaceFinish === "HASL") {
-      return 5.0;
+  const getServiceTag = (id: string, fallback: string) => {
+    if (id === "pcb-proto") {
+      const base = pricingConfig.promoEnabled ? pricingConfig.promoPrice : pricingConfig.layerPrices.layer2;
+      return `From $${base.toFixed(2)}`;
     }
+    if (id === "pcb-assembly") return pricingConfig.pcbAssemblyTag;
+    if (id === "flex-pcb") return pricingConfig.rigidFlexTag;
+    if (id === "smt-stencil") return `From $${pricingConfig.smdStencilPrice.toFixed(2)}`;
+    return fallback;
+  };
 
-    let base = layers === 1 ? 5 : layers === 2 ? 8 : layers === 4 ? 28 : layers === 6 ? 58 : 98;
-    if (surfaceFinish === "ENIG") base += 12; // Gold finish surcharge
-
-    const areaFactor = Math.max(0, areaDm2 - 1.0) * (layers * 3.5);
-    const qtyFactor = (qty - 5) * (0.65 + layers * 0.25);
-    const total = Math.max(5, base + areaFactor + qtyFactor);
-
-    return Number(total.toFixed(2));
-  })();
+  // Real-time instant price calculation driven by Admin Pricing Config
+  const estimatedPrice = calculateHeroQuotePrice(
+    {
+      serviceId: activeService.id,
+      length: Number(dimensions.length) || 100,
+      width: Number(dimensions.width) || 100,
+      unit,
+      layers: Number(selectedLayer.replace("+", "")) || 2,
+      qty: Number(selectedQty) || 5,
+      thickness: Number(selectedThickness) || 1.6,
+      surfaceFinish,
+    },
+    pricingConfig
+  );
 
   const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
@@ -378,16 +394,12 @@ export default function NavbarSlider() {
         <div className="mb-4 sm:mb-6 flex flex-col xl:flex-row xl:items-end xl:justify-between gap-3 sm:gap-4 border-b border-gray-200/80 dark:border-slate-800 pb-3.5 sm:pb-5 w-full min-w-0">
           <div className="flex-1 min-w-0 max-w-4xl">
             {/* Live Status Pill */}
-            <div className="inline-flex flex-wrap items-center gap-1.5 sm:gap-2 rounded-full bg-emerald-50/90 px-3 py-1 text-xs font-bold text-emerald-800 border border-emerald-200 mb-2 sm:mb-2.5 shadow-xs dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800/60">
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50/90 px-3 py-1 text-xs font-bold text-emerald-800 border border-emerald-200 mb-2 sm:mb-2.5 shadow-xs dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800/60">
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600" />
               </span>
-              <span>{heroCopy.eyebrow || "Direct Factory • Wuping High-Tech Zone"}</span>
-              <span className="hidden sm:inline-block h-3 w-px bg-emerald-300 dark:bg-emerald-700 mx-0.5" />
-              <span className="text-[10px] sm:text-[11px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-wide">
-                24H Turnaround Live
-              </span>
+              <span>{heroCopy.eyebrow || "Direct PCB & PCBA Factory"}</span>
             </div>
 
             {/* Main Headline */}
@@ -396,13 +408,13 @@ export default function NavbarSlider() {
             </h1>
 
             {/* Sub-headline */}
-            <p className="mt-1.5 text-xs sm:text-sm text-gray-600 dark:text-slate-300 leading-relaxed max-w-3xl">
+            <p className="mt-1.5 text-xs sm:text-sm text-gray-600 dark:text-slate-300 leading-relaxed max-w-2xl">
               {heroCopy.description}
             </p>
 
             {/* Trust Bullets */}
-            <div className="mt-2.5 sm:mt-3 flex flex-wrap items-center gap-x-4 sm:gap-x-5 gap-y-1.5 text-[11px] sm:text-xs font-semibold text-gray-600 dark:text-slate-400">
-              {(calcCopy?.badges || heroCopy.badges || ["1-32 Layer Capability", "IPC Class 2/3", "24h Rapid Dispatch"]).map((badge) => (
+            <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] sm:text-xs font-semibold text-gray-600 dark:text-slate-400">
+              {(calcCopy?.badges || heroCopy.badges || ["1-32 Layers", "100% E-Testing", "IPC Class 2/3"]).map((badge) => (
                 <div key={badge} className="flex items-center gap-1.5 shrink-0">
                   <CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                   <span>{badge}</span>
@@ -464,7 +476,7 @@ export default function NavbarSlider() {
                         </span>
                       </div>
                       <span className={`mt-0.5 text-[9px] sm:text-[10px] font-semibold truncate block w-full text-center ${isActive ? "text-emerald-100" : "text-gray-400 dark:text-slate-400"}`}>
-                        {service.tag}
+                        {getServiceTag(service.id, service.tag)}
                       </span>
                     </button>
                   );
@@ -785,11 +797,11 @@ export default function NavbarSlider() {
                   <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 text-[10px] sm:text-[11px] text-gray-600 dark:text-slate-400 mt-0.5 font-medium">
                     <span className="flex items-center gap-1">
                       <Clock className="size-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                      Build: <strong className="text-gray-900 dark:text-white">24-48 Hours</strong>
+                      Build: <strong className="text-gray-900 dark:text-white">{pricingConfig.buildTimeLabel}</strong>
                     </span>
                     <span className="flex items-center gap-1">
                       <ShieldCheck className="size-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                      DFM: <strong className="text-gray-900 dark:text-white">Free CAM Check</strong>
+                      DFM: <strong className="text-gray-900 dark:text-white">{pricingConfig.dfmCheckLabel}</strong>
                     </span>
                   </div>
                 </div>
@@ -928,16 +940,13 @@ export default function NavbarSlider() {
                         </div>
 
                         {/* Slide Content */}
-                        <div className="absolute inset-x-0 bottom-0 p-3.5 sm:p-5 lg:p-6 text-white">
+                        <div className="absolute inset-x-0 bottom-0 p-3.5 sm:p-5 text-white">
                           <span className="inline-block rounded bg-emerald-600 px-2 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-xs">
                             {image.badge}
                           </span>
-                          <h2 className="mt-1 sm:mt-1.5 text-sm sm:text-base lg:text-xl font-black tracking-tight text-white leading-snug">
+                          <h2 className="mt-1.5 text-sm sm:text-base lg:text-lg font-black tracking-tight text-white leading-snug">
                             {image.title}
                           </h2>
-                          <p className="mt-1 text-[10.5px] sm:text-xs leading-relaxed text-gray-200 line-clamp-2">
-                            {image.desc}
-                          </p>
                         </div>
                       </div>
                     </SwiperSlide>
@@ -946,46 +955,34 @@ export default function NavbarSlider() {
               </div>
             </div>
 
-            {/* 4 Trust & Guarantee Cards */}
-            <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full min-w-0">
-              <div className="flex items-start gap-2 sm:gap-2.5 rounded-xl border border-gray-200/80 bg-white p-2 sm:p-3 shadow-xs hover:border-emerald-300 transition dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-600 min-w-0">
-                <span className="flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
-                  <Clock className="size-3.5 sm:size-4" />
+            {/* 4 Trust & Guarantee Chips */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-2.5 w-full min-w-0">
+              <div className="flex items-center gap-2.5 rounded-xl border border-gray-200/80 bg-white px-3 py-2.5 shadow-xs hover:border-emerald-300 transition dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-600 min-w-0">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
+                  <Clock className="size-3.5" />
                 </span>
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-[11px] sm:text-xs font-extrabold text-gray-900 dark:text-white truncate">24H Quick-Turn</h3>
-                  <p className="text-[9.5px] sm:text-[10px] text-gray-500 dark:text-slate-400 leading-tight mt-0.5 line-clamp-2">Urgent prototypes ready in 24 hours.</p>
-                </div>
+                <h3 className="text-[11px] sm:text-xs font-extrabold text-gray-900 dark:text-white truncate">24H Quick-Turn</h3>
               </div>
 
-              <div className="flex items-start gap-2 sm:gap-2.5 rounded-xl border border-gray-200/80 bg-white p-2 sm:p-3 shadow-xs hover:border-emerald-300 transition dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-600 min-w-0">
-                <span className="flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
-                  <ShieldCheck className="size-3.5 sm:size-4" />
+              <div className="flex items-center gap-2.5 rounded-xl border border-gray-200/80 bg-white px-3 py-2.5 shadow-xs hover:border-emerald-300 transition dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-600 min-w-0">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
+                  <ShieldCheck className="size-3.5" />
                 </span>
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-[11px] sm:text-xs font-extrabold text-gray-900 dark:text-white truncate">100% E-Tested</h3>
-                  <p className="text-[9.5px] sm:text-[10px] text-gray-500 dark:text-slate-400 leading-tight mt-0.5 line-clamp-2">Flying probe & AOI visual check.</p>
-                </div>
+                <h3 className="text-[11px] sm:text-xs font-extrabold text-gray-900 dark:text-white truncate">100% E-Tested</h3>
               </div>
 
-              <div className="flex items-start gap-2 sm:gap-2.5 rounded-xl border border-gray-200/80 bg-white p-2 sm:p-3 shadow-xs hover:border-emerald-300 transition dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-600 min-w-0">
-                <span className="flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
-                  <Microscope className="size-3.5 sm:size-4" />
+              <div className="flex items-center gap-2.5 rounded-xl border border-gray-200/80 bg-white px-3 py-2.5 shadow-xs hover:border-emerald-300 transition dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-600 min-w-0">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
+                  <Microscope className="size-3.5" />
                 </span>
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-[11px] sm:text-xs font-extrabold text-gray-900 dark:text-white truncate">IPC Class 2/3</h3>
-                  <p className="text-[9.5px] sm:text-[10px] text-gray-500 dark:text-slate-400 leading-tight mt-0.5 line-clamp-2">High precision aerospace tolerance.</p>
-                </div>
+                <h3 className="text-[11px] sm:text-xs font-extrabold text-gray-900 dark:text-white truncate">IPC Class 2/3</h3>
               </div>
 
-              <div className="flex items-start gap-2 sm:gap-2.5 rounded-xl border border-gray-200/80 bg-white p-2 sm:p-3 shadow-xs hover:border-emerald-300 transition dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-600 min-w-0">
-                <span className="flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
-                  <Truck className="size-3.5 sm:size-4" />
+              <div className="flex items-center gap-2.5 rounded-xl border border-gray-200/80 bg-white px-3 py-2.5 shadow-xs hover:border-emerald-300 transition dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-600 min-w-0">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
+                  <Truck className="size-3.5" />
                 </span>
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-[11px] sm:text-xs font-extrabold text-gray-900 dark:text-white truncate">Global Express</h3>
-                  <p className="text-[9.5px] sm:text-[10px] text-gray-500 dark:text-slate-400 leading-tight mt-0.5 line-clamp-2">DHL, FedEx, UPS direct air dispatch.</p>
-                </div>
+                <h3 className="text-[11px] sm:text-xs font-extrabold text-gray-900 dark:text-white truncate">Global Express</h3>
               </div>
             </div>
 

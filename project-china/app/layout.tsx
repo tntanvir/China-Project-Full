@@ -79,7 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} min-h-full antialiased`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`min-h-full flex flex-col ${inter.variable} font-sans`} suppressHydrationWarning>
         <LanguageProvider>
           <AuthProvider>

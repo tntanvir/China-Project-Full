@@ -15,6 +15,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/pcb-quote",
     "/pcb-assembly",
     "/ai-manufacturing",
+    "/privacy-policy",
+    "/terms-of-service",
   ];
 
   const navSectionRoutes = getNavSectionParams().map(({ section }) => `/${section}`);

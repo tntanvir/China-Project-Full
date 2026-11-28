@@ -1,243 +1,52 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useDictionary } from "@/components/providers/language-provider";
 import {
+  DEFAULT_CATALOG_FAMILIES,
+  resolveCatalogImageUrl,
+  type ProductFamilyItem,
+} from "@/lib/catalog-families";
+import { CatalogService } from "@/services/catalog.service";
+import {
   ArrowRight,
-  BadgeCheck,
-  CheckCircle2,
-  ChevronRight,
   Clock3,
-  Cpu,
   Grid,
-  Layers,
   Microscope,
-  ShieldCheck,
-  Sparkles,
   Table,
-  Truck,
   UploadCloud,
-  Zap,
 } from "lucide-react";
 
-export interface ProductFamilyItem {
-  id: string;
-  title: string;
-  subtitle: string;
-  category: "Rigid & Multilayer PCB" | "Flex & Rigid-Flex PCB" | "Advanced & RF Substrates" | "Specialty & Metal Core PCB";
-  badge: string;
-  imageUrl: string;
-  description: string;
-  specs: {
-    label: string;
-    value: string;
-  }[];
-  turnaround: string;
-  bestFor: string;
-  quoteUrl: string;
-}
-
-export const productFamiliesData: ProductFamilyItem[] = [
-  {
-    id: "rigid-multilayer",
-    title: "Standard & High-TG Rigid PCB",
-    subtitle: "High-Density FR-4 Multilayer Fabrication",
-    category: "Rigid & Multilayer PCB",
-    badge: "1-32 Layers",
-    imageUrl: "/images/generated/bare_rigid_pcb.png",
-    description: "High-precision 1 to 32 layer rigid circuit boards built with Shengyi/KB high-TG170 laminates, controlled differential impedance, and laser microvias.",
-    specs: [
-      { label: "Layer Count", value: "1-32 Layers" },
-      { label: "Min Trace/Space", value: "3/3 mil (0.075mm)" },
-      { label: "Min Hole Size", value: "0.15mm (Mechanical)" },
-      { label: "Surface Finish", value: "ENIG 2u\", HASL, OSP, Hard Gold" },
-    ],
-    turnaround: "⚡ 24h Quick Turn",
-    bestFor: "Industrial controllers, computing gateways, IoT & consumer electronics",
-    quoteUrl: "/pcb-quote",
-  },
-  {
-    id: "hdi-microvia",
-    title: "Any-Layer HDI Microvia PCB",
-    subtitle: "Laser-Drilled Via-in-Pad Interconnects",
-    category: "Rigid & Multilayer PCB",
-    badge: "Any-Layer HDI",
-    imageUrl: "/images/generated/bare_hdi_pcb.png",
-    description: "Fine-line laser microvias, stacked/staggered via-in-pad (VIPPO), and high-density interconnect routing for ultra-miniaturized electronics.",
-    specs: [
-      { label: "Stackup Architecture", value: "1+N+1 to Any-Layer HDI" },
-      { label: "Laser Microvia", value: "0.075mm (3 mil)" },
-      { label: "Via Filling", value: "Copper / Epoxy Filled (VIPPO)" },
-      { label: "Aspect Ratio", value: "10:1 Through-Hole" },
-    ],
-    turnaround: "⚡ 4-5 Days Dispatch",
-    bestFor: "Smartphones, portable medical monitors, drone avionics, FPGA boards",
-    quoteUrl: "/pcb-quote",
-  },
-  {
-    id: "heavy-copper",
-    title: "Heavy Copper High-Power PCB",
-    subtitle: "Thermal Power Dissipation & Busbars",
-    category: "Rigid & Multilayer PCB",
-    badge: "Up to 6oz Copper",
-    imageUrl: "/images/generated/bare_heavy_copper.png",
-    description: "High-current circuit boards with up to 6oz (210µm) inner and outer copper weights designed for extreme current loads and rapid thermal transfer.",
-    specs: [
-      { label: "Copper Thickness", value: "2oz - 6oz (70µm - 210µm)" },
-      { label: "Current Capacity", value: "Up to 100A+ Continuous" },
-      { label: "Substrate Laminate", value: "High-TG180 Halogen-Free" },
-      { label: "Dielectric Isolation", value: "Tested to 3,500V DC" },
-    ],
-    turnaround: "⚡ 3-4 Days Turn",
-    bestFor: "EV motor inverters, power supply busbars, solar charge controllers",
-    quoteUrl: "/pcb-quote",
-  },
-  {
-    id: "flexible-fpc",
-    title: "Flexible Polyimide FPC",
-    subtitle: "Ultra-Thin Dynamic Bending Circuits",
-    category: "Flex & Rigid-Flex PCB",
-    badge: "1-6 Layers Flex",
-    imageUrl: "/images/generated/bare_flex_fpc.png",
-    description: "Ultra-thin, featherweight polyimide flex circuits engineered for dynamic bending, tight enclosures, and high-vibration environments.",
-    specs: [
-      { label: "Base Film", value: "DuPont Pyralux Polyimide" },
-      { label: "Board Thickness", value: "0.08mm - 0.25mm" },
-      { label: "Dynamic Bending", value: "> 100,000 Flex Cycles" },
-      { label: "Copper Foil", value: "RA Rolled Annealed Copper" },
-    ],
-    turnaround: "⚡ 48h Express Flex",
-    bestFor: "Wearable biomedical sensors, foldable displays, camera modules, IoT",
-    quoteUrl: "/pcb-quote",
-  },
-  {
-    id: "rigid-flex-pcb",
-    title: "Integrated Rigid-Flex PCB",
-    subtitle: "Hybrid Rigid & Polyimide Flex Integration",
-    category: "Flex & Rigid-Flex PCB",
-    badge: "Aerospace Grade",
-    imageUrl: "/images/generated/bare_rigid_flex.png",
-    description: "Eliminates bulky wire harnesses and solder connectors by integrating rigid multi-layer FR-4 sections directly with flexible polyimide circuits.",
-    specs: [
-      { label: "Structure", value: "2-16 Rigid + Flex Layers" },
-      { label: "Transition Zone", value: "Seamless (Zero Connectors)" },
-      { label: "Standards", value: "IPC-6013 Class 3 Compliant" },
-      { label: "Stiffener Options", value: "FR-4, Stainless Steel, Aluminum" },
-    ],
-    turnaround: "⚡ 5-7 Days Precision Run",
-    bestFor: "Aerospace avionics, military radar, surgical robotics, rugged sensors",
-    quoteUrl: "/pcb-quote",
-  },
-  {
-    id: "aluminum-mcpcb",
-    title: "Aluminum & Metal-Core PCB",
-    subtitle: "Superior Heat Dissipation Substrates",
-    category: "Advanced & RF Substrates",
-    badge: "1-3 W/m.K Thermal",
-    imageUrl: "/images/generated/bare_aluminum_mcpcb.png",
-    description: "Metal-backed circuit boards providing direct heat dissipation from high-power components to the chassis without requiring extra heatsinks.",
-    specs: [
-      { label: "Thermal Conductivity", value: "1.0 - 3.0 W/m.K" },
-      { label: "Metal Base Type", value: "Aluminum 5052 / 6061 / Copper" },
-      { label: "Breakdown Voltage", value: "> 3,000V AC Isolation" },
-      { label: "Maximum Panel", value: "Up to 1200mm × 500mm" },
-    ],
-    turnaround: "⚡ 48h Quick Turn",
-    bestFor: "High-lumen LED lighting, automotive headlights, audio amplifiers",
-    quoteUrl: "/pcb-quote",
-  },
-  {
-    id: "high-frequency-rogers",
-    title: "High Frequency RF & Microwave PCB",
-    subtitle: "Low Loss Hydrocarbon & PTFE Substrates",
-    category: "Advanced & RF Substrates",
-    badge: "Rogers / PTFE",
-    imageUrl: "/images/generated/bare_rogers_rf.png",
-    description: "Low dielectric loss (Df 0.002) and controlled dielectric constant (Dk 2.2 - 10.2) laminates engineered for high-frequency signal integrity up to 77GHz+.",
-    specs: [
-      { label: "Laminate Types", value: "Rogers RO4350B, RO4003C, Taconic" },
-      { label: "Dielectric Constant", value: "Dk 2.2 - 10.2 (±0.04 Tolerance)" },
-      { label: "Dissipation Factor", value: "Df 0.002 @ 10GHz" },
-      { label: "Surface Finish", value: "Immersion Silver, ENIG, Hard Gold" },
-    ],
-    turnaround: "⚡ 3-5 Days High-Freq",
-    bestFor: "5G telecom antennas, 77GHz automotive radar, RF transceivers, satellite",
-    quoteUrl: "/pcb-quote",
-  },
-  {
-    id: "aluminum-metal-core",
-    title: "Aluminum & Metal Core Substrates",
-    subtitle: "High Thermal Dissipation Base for Power Systems",
-    category: "Specialty & Metal Core PCB",
-    badge: "1-4W/m-K Thermal Base",
-    imageUrl: "/images/generated/bare_aluminum_mcpcb.png",
-    description: "Thermally conductive insulated metal substrates (IMS) featuring pure aluminum or copper backing, designed for automotive headlights, power converters, and high-intensity LED matrices.",
-    specs: [
-      { label: "Base Materials", value: "Aluminum (1060/5052), Copper Core" },
-      { label: "Thermal Conductivity", value: "1.0 - 4.0 W/m-K" },
-      { label: "Dielectric Layer", value: "High-voltage breakdown (3-5kV)" },
-      { label: "Surface Finish", value: "HASL Lead-Free, ENIG, OSP" },
-    ],
-    turnaround: "⚡ 2-4 Days Prototype",
-    bestFor: "LED lighting, power supplies, automotive EV inverters, motor controllers",
-    quoteUrl: "/pcb-quote",
-  },
-  {
-    id: "heavy-copper-pcb",
-    title: "Heavy Copper High-Power PCB",
-    subtitle: "3oz to 12oz Extreme Current Carrying Bare Boards",
-    category: "Specialty & Metal Core PCB",
-    badge: "Up to 12oz Copper",
-    imageUrl: "/images/generated/bare_heavy_copper.png",
-    description: "Heavy copper bare boards with up to 420µm outer/inner copper thickness, engineered to conduct hundreds of amperes without overheating or thermal delamination.",
-    specs: [
-      { label: "Copper Weight", value: "3oz - 12oz (105µm - 420µm)" },
-      { label: "Thermal Relief", value: "Integrated thermal vias & heat sinks" },
-      { label: "Dielectric Tg", value: "High-Tg FR-4 (Tg170°C - 180°C)" },
-      { label: "Quality Inspection", value: "100% Netlist Flying-Probe & Hi-Pot" },
-    ],
-    turnaround: "⚡ 3-5 Days Turnaround",
-    bestFor: "High-power distribution, battery management systems (BMS), industrial robotics",
-    quoteUrl: "/pcb-quote",
-  },
-  {
-    id: "high-density-hdi",
-    title: "Any-Layer HDI Microvia Boards",
-    subtitle: "Laser Microvias & Blind/Buried Stacks",
-    category: "Specialty & Metal Core PCB",
-    badge: "1+N+1 to 4+N+4 HDI",
-    imageUrl: "/images/generated/bare_hdi_pcb.png",
-    description: "Ultra-compact Any-Layer HDI bare boards with sub-3mil line/space width, copper filled microvias, and stacked laser via structures for ultra-dense packaging.",
-    specs: [
-      { label: "Microvia Technology", value: "CO2 / UV Laser (0.10mm microvia)" },
-      { label: "Min Line/Space", value: "2.5 mil / 2.5 mil (0.065mm)" },
-      { label: "Aspect Ratio", value: "0.8:1 - 1:1 Copper-Filled Via" },
-      { label: "Surface Finish", value: "ENIG (Electroless Nickel Immersion Gold)" },
-    ],
-    turnaround: "⚡ 3-5 Days Quick-Turn",
-    bestFor: "Mobile electronics, aerospace sensors, medical endoscopy, high-density wearables",
-    quoteUrl: "/pcb-quote",
-  },
-];
-
-const categoryTabs = [
-  "All Families",
-  "Rigid & Multilayer PCB",
-  "Flex & Rigid-Flex PCB",
-  "Advanced & RF Substrates",
-  "Specialty & Metal Core PCB",
-] as const;
+export type { ProductFamilyItem };
+export const productFamiliesData = DEFAULT_CATALOG_FAMILIES;
 
 export default function ProductCategoriesHub() {
   const dictionary = useDictionary();
   const prodCopy = dictionary.sections.products;
   const catCopy = dictionary.productCategories;
 
+  const [catalogItems, setCatalogItems] = useState<ProductFamilyItem[]>(DEFAULT_CATALOG_FAMILIES);
   const [activeTab, setActiveTab] = useState<string>("All Families");
   const [viewMode, setViewMode] = useState<"grid" | "matrix">("grid");
-  const [activePreviewId, setActivePreviewId] = useState<string>(productFamiliesData[0].id);
+
+  useEffect(() => {
+    let active = true;
+    CatalogService.getPublicCatalogFamilies().then((items) => {
+      if (active && items.length > 0) {
+        setCatalogItems(items);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const categoryTabs = useMemo(() => {
+    const dynamicCategories = Array.from(new Set(catalogItems.map((item) => item.category)));
+    return ["All Families", ...dynamicCategories];
+  }, [catalogItems]);
 
   const categoryTabLabels: Record<string, string> = {
     "All Families": catCopy?.categories?.all || "All Families",
@@ -248,7 +57,7 @@ export default function ProductCategoriesHub() {
   };
 
   const localizedFamilies = useMemo(() => {
-    return productFamiliesData.map((item) => {
+    return catalogItems.map((item) => {
       const trans = catCopy?.items?.[item.id];
       if (!trans) return item;
       return {
@@ -260,7 +69,7 @@ export default function ProductCategoriesHub() {
         bestFor: trans.bestFor || item.bestFor,
       };
     });
-  }, [catCopy]);
+  }, [catalogItems, catCopy]);
 
   const filteredFamilies = useMemo(() => {
     if (activeTab === "All Families") return localizedFamilies;
@@ -281,7 +90,7 @@ export default function ProductCategoriesHub() {
             {catCopy?.title || prodCopy.title || "PCB & PCBA Product Categories"}
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-slate-300 sm:text-base">
-            {catCopy?.description || prodCopy.description || "Explore our main product families quickly with visual examples, physical stackup capabilities, and technical tolerances for each board type and assembly service."}
+            {catCopy?.description || prodCopy.description || "Explore our bare PCB and turnkey PCBA capabilities."}
           </p>
         </div>
 
@@ -291,8 +100,8 @@ export default function ProductCategoriesHub() {
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5 sm:gap-2">
             {categoryTabs.map((tab) => {
               const count = tab === "All Families"
-                ? productFamiliesData.length
-                : productFamiliesData.filter((item) => item.category === tab).length;
+                ? catalogItems.length
+                : catalogItems.filter((item) => item.category === tab).length;
               const isActive = activeTab === tab;
               return (
                 <button
@@ -359,9 +168,10 @@ export default function ProductCategoriesHub() {
                   {/* Visual Example Image Banner with Badges */}
                   <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100 dark:bg-slate-800">
                     <Image
-                      src={item.imageUrl}
+                      src={resolveCatalogImageUrl(item.imageUrl)}
                       alt={item.title}
                       fill
+                      unoptimized={item.imageUrl.includes("/uploads/") || item.imageUrl.startsWith("http://")}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
@@ -393,20 +203,13 @@ export default function ProductCategoriesHub() {
                       {item.title}
                     </h3>
 
-                    <p className="mt-1 text-xs text-gray-500 dark:text-slate-400 font-medium">
-                      {item.subtitle}
-                    </p>
-
-                    <p className="mt-3 text-xs leading-relaxed text-gray-600 dark:text-slate-300">
+                    <p className="mt-2 text-xs leading-relaxed text-gray-600 dark:text-slate-300 line-clamp-2">
                       {item.description}
                     </p>
 
                     {/* Technical Specifications Grid */}
-                    <div className="mt-5 rounded-xl border border-gray-100 dark:border-slate-800 bg-gray-50/80 dark:bg-slate-800/60 p-3.5">
-                      <div className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 dark:text-slate-400 mb-2">
-                        {catCopy?.labels?.specs || "Manufacturing Tolerances & Specs:"}
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 text-[11px]">
+                    <div className="mt-4 rounded-xl border border-gray-100 dark:border-slate-800 bg-gray-50/80 dark:bg-slate-800/60 p-3.5">
+                      <div className="grid grid-cols-2 gap-2.5 text-[11px]">
                         {item.specs.map((spec, i) => (
                           <div key={i} className="flex flex-col">
                             <span className="text-[10px] text-gray-400 dark:text-slate-400 font-medium">{spec.label}</span>
@@ -414,12 +217,6 @@ export default function ProductCategoriesHub() {
                           </div>
                         ))}
                       </div>
-                    </div>
-
-                    {/* Best For Tagline */}
-                    <div className="mt-4 flex items-start gap-1.5 text-[11px] text-gray-500 dark:text-slate-400">
-                      <span className="font-bold text-gray-700 dark:text-slate-300 shrink-0">{catCopy?.labels?.bestFor || "Best for:"}</span>
-                      <span className="leading-snug">{item.bestFor}</span>
                     </div>
                   </div>
                 </div>
@@ -469,9 +266,10 @@ export default function ProductCategoriesHub() {
                         <div className="flex items-center gap-3">
                           <div className="relative size-12 shrink-0 overflow-hidden rounded-lg bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
                             <Image
-                              src={item.imageUrl}
+                              src={resolveCatalogImageUrl(item.imageUrl)}
                               alt={item.title}
                               fill
+                              unoptimized={item.imageUrl.includes("/uploads/") || item.imageUrl.startsWith("http://")}
                               className="object-cover"
                             />
                           </div>
@@ -517,7 +315,7 @@ export default function ProductCategoriesHub() {
         )}
 
         {/* Bottom Fast Track: Drag-and-Drop Gerber & BOM Sourcing Shortcut */}
-        <div className="mt-12 rounded-2xl border border-gray-200 dark:border-slate-800 bg-gray-50/70 dark:bg-slate-900/60 p-6 sm:p-8">
+        <div className="mt-10 rounded-2xl border border-gray-200 dark:border-slate-800 bg-gray-50/70 dark:bg-slate-900/60 p-6 sm:p-7">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="size-12 shrink-0 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md">
@@ -525,10 +323,10 @@ export default function ProductCategoriesHub() {
               </div>
               <div>
                 <h4 className="text-base sm:text-lg font-black text-gray-900 dark:text-white">
-                  {catCopy?.customTrack?.title || "Ready to fabricate your circuit boards or turnkey PCBA?"}
+                  {catCopy?.customTrack?.title || "Ready to start your PCB or PCBA build?"}
                 </h4>
-                <p className="mt-1 text-xs sm:text-sm text-gray-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-                  {catCopy?.customTrack?.description || "Upload your RS-274X Gerber, ODB++, or BOM file. Our automated CAM software validates your design rules with instant DFM analysis and direct factory pricing."}
+                <p className="mt-1 text-xs sm:text-sm text-gray-600 dark:text-slate-300 max-w-xl">
+                  {catCopy?.customTrack?.description || "Upload Gerber, ODB++, or BOM files for instant pricing and free DFM analysis."}
                 </p>
               </div>
             </div>
@@ -538,24 +336,15 @@ export default function ProductCategoriesHub() {
                 href="/pcb-quote"
                 className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-xs sm:text-sm font-extrabold text-white shadow-md hover:bg-emerald-700 transition-all"
               >
-                {catCopy?.customTrack?.uploadBtn || "Launch Instant Quote"} <ArrowRight className="size-4" />
+                {catCopy?.customTrack?.uploadBtn || "Instant Quote"} <ArrowRight className="size-4" />
               </Link>
               <Link
                 href="/gerber-view"
                 className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 text-xs sm:text-sm font-extrabold text-gray-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 shadow-2xs transition-all"
               >
-                <Microscope className="size-4 text-emerald-600 dark:text-emerald-400" /> {catCopy?.customTrack?.supportPill || "Free DFM Gerber Viewer"}
+                <Microscope className="size-4 text-emerald-600 dark:text-emerald-400" /> {catCopy?.customTrack?.supportPill || "Gerber Viewer"}
               </Link>
             </div>
-          </div>
-
-          {/* Quick Capability Guarantees */}
-          <div className="mt-6 pt-5 border-t border-gray-200/80 dark:border-slate-800 flex flex-wrap items-center justify-center lg:justify-between gap-4 text-xs text-gray-600 dark:text-slate-400 font-semibold">
-            <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400" /> 1-32 Layers Rigid Multilayer</span>
-            <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400" /> 0201 Passives & 0.4mm BGA Placement</span>
-            <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400" /> Rogers High-Frequency & DuPont Flex</span>
-            <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400" /> 100% AOI & Flying Probe Testing</span>
-            <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-3.5 text-emerald-600 dark:text-emerald-400" /> 24h & 48h Expedited Delivery</span>
           </div>
         </div>
 

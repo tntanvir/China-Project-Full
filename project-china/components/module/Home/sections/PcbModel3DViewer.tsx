@@ -846,10 +846,10 @@ export default function PcbModel3DViewer() {
               <span>Real-Time WebGL 3D Inspector</span>
             </div>
             <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-gray-900 dark:text-white">
-              Interactive 3D PCB & Multi-Layer Explorer
+              Interactive 3D PCB Explorer
             </h2>
-            <p className="mt-1.5 text-xs sm:text-sm text-gray-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-              Rotate, inspect, and customize high-speed PCB fabrication layers in real-time. Switch solder mask colors, examine BGA pitch tolerances, and test surface finish specs.
+            <p className="mt-1.5 text-xs sm:text-sm text-gray-600 dark:text-slate-400 max-w-xl">
+              Inspect solder mask finishes, copper layers, and BGA tolerances in real time.
             </p>
           </div>
 

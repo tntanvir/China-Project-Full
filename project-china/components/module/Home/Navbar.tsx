@@ -510,7 +510,7 @@ export default function Navbar() {
   const cartCount = useCartStore((state) => state.items.length);
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-xs dark:bg-slate-950 dark:border-b dark:border-slate-800">
+    <header className="sticky top-0 z-50 w-full bg-white shadow-xs dark:bg-slate-950 dark:border-b dark:border-slate-800">
       
       {/* ===================================================================== */}
       {/* 1. UPPER BRAND & ACTIONS BAR (Tier 1)                                  */}
